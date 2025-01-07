@@ -12,6 +12,7 @@ export default class Map
 		this.width = this.game.sizes.width
 		this.heigth = this.game.sizes.height
 		this.blocksize = 32
+		this.borderRatio = 0.875
 		this.x = 0
 		this.y = 0
 
@@ -68,6 +69,26 @@ export default class Map
 		this.drawMap()
 	}
 
+	drawWall(x, y)
+	{
+		this.game.canvasContext.fillStyle = this.wallColor
+		this.game.canvasContext.fillRect(
+			x * this.blocksize,
+			y * this.blocksize,
+			this.blocksize,
+			this.blocksize
+		)
+
+
+		// this.game.canvasContext.fillStyle = this.pathColor
+		// this.game.canvasContext.fillRect(
+		// 	x * this.blocksize + (this.blocksize - (this.blocksize * this.borderRatio)) * 0.5,
+		// 	y * this.blocksize + (this.blocksize - (this.blocksize * this.borderRatio)) * 0.5,
+		// 	this.blocksize * this.borderRatio,
+		// 	this.blocksize * this.borderRatio
+		// )
+	}
+
 	drawMap()
 	{
 		for (let y = 0; y < this.map.length; y++)
@@ -76,13 +97,7 @@ export default class Map
 			{
 				if (this.map[y][x] == 1)
 				{
-					this.game.canvasContext.fillStyle = this.wallColor
-					this.game.canvasContext.fillRect(
-						x * this.blocksize,
-						y * this.blocksize,
-						this.blocksize,
-						this.blocksize
-					)
+					this.drawWall(x, y)
 				}
 				else
 				{
