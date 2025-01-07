@@ -134,6 +134,10 @@ export default class Pacman
 		{
 			this.x += this.speed
 		}
+		if (this.x < 0)
+			this.x = (this.map.map[0].length - 1) * this.map.blocksize
+		else if (this.x > (this.map.map[0].length - 1) * this.map.blocksize)
+			this.x = 0
 
 	}
 
