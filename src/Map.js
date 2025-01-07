@@ -7,30 +7,105 @@ export default class Map
 		this.game = new Game()
 		this.sizes = this.game.sizes
 
-		this.img = new Image()
-		this.img.src ="./static/empty_map.jpg"
 
-		this.width = 664
-		this.heigth = 737
-		this.x = (this.sizes.width / 2) - (this.width / 2)
-		this.y = (this.sizes.height / 2) - (this.heigth / 2 * 1.13)
+		// Setup
+		this.width = this.game.sizes.width
+		this.heigth = this.game.sizes.height
+		this.blocksize = 32
+		this.x = 0
+		this.y = 0
 
+		this.wallColor = "#342DCA"
+		this.pathColor = "black"
+		this.coinColor = "#caa2db"
 
+		this.coins = []
 
 		this.map = [
-			'1111111111111111111111111111',
-			'1000000000000000000000000001',
-			'1111111111111111111111111111'
-		]
+			[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+			[1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1],
+			[1, 2, 1, 1, 1, 2, 1, 1, 1, 2, 1, 2, 1, 1, 1, 2, 1, 1, 1, 2, 1],
+			[1, 2, 1, 1, 1, 2, 1, 1, 1, 2, 1, 2, 1, 1, 1, 2, 1, 1, 1, 2, 1],
+			[1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1],
+			[1, 2, 1, 1, 1, 2, 1, 2, 1, 1, 1, 1, 1, 2, 1, 2, 1, 1, 1, 2, 1],
+			[1, 2, 2, 2, 2, 2, 1, 2, 2, 2, 1, 2, 2, 2, 1, 2, 2, 2, 2, 2, 1],
+			[1, 1, 1, 1, 1, 2, 1, 1, 1, 2, 1, 2, 1, 1, 1, 2, 1, 1, 1, 1, 1],
+			[0, 0, 0, 0, 1, 2, 1, 2, 2, 2, 2, 2, 2, 2, 1, 2, 1, 0, 0, 0, 0],
+			[1, 1, 1, 1, 1, 2, 1, 2, 1, 1, 2, 1, 1, 2, 1, 2, 1, 1, 1, 1, 1],
+			[2, 2, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2, 2, 2],
+			[1, 1, 1, 1, 1, 2, 1, 2, 1, 2, 2, 2, 1, 2, 1, 2, 1, 1, 1, 1, 1],
+			[0, 0, 0, 0, 1, 2, 1, 2, 1, 1, 1, 1, 1, 2, 1, 2, 1, 0, 0, 0, 0],
+			[0, 0, 0, 0, 1, 2, 1, 2, 2, 2, 2, 2, 2, 2, 1, 2, 1, 0, 0, 0, 0],
+			[1, 1, 1, 1, 1, 2, 2, 2, 1, 1, 1, 1, 1, 2, 2, 2, 1, 1, 1, 1, 1],
+			[1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1],
+			[1, 2, 1, 1, 1, 2, 1, 1, 1, 2, 1, 2, 1, 1, 1, 2, 1, 1, 1, 2, 1],
+			[1, 2, 2, 2, 1, 2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 1, 2, 2, 2, 1],
+			[1, 1, 2, 2, 1, 2, 1, 2, 1, 1, 1, 1, 1, 2, 1, 2, 1, 2, 2, 1, 1],
+			[1, 2, 2, 2, 2, 2, 1, 2, 2, 2, 1, 2, 2, 2, 1, 2, 2, 2, 2, 2, 1],
+			[1, 2, 1, 1, 1, 1, 1, 1, 1, 2, 1, 2, 1, 1, 1, 1, 1, 1, 1, 2, 1],
+			[1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1],
+			[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+		];
 
-		this.img.onload = () =>
+		this.saveCoins()
+
+	}
+
+	saveCoins()
+	{
+		for (let i = 0; i < this.map.length; i++)
 		{
-			this.update()
+			for (let j = 0; j < this.map[0].length; j++)
+			{
+				if (this.map[i][j] === 2)
+					this.coins.push({x: j, y: i, display: true})
+			}
 		}
 	}
 
 	update()
 	{
-		this.game.canvasContext.drawImage(this.img, this.x, this.y)
+		this.drawMap()
+	}
+
+	drawMap()
+	{
+		for (let y = 0; y < this.map.length; y++)
+		{
+			for (let x = 0; x < this.map[0].length; x++)
+			{
+				if (this.map[y][x] == 1)
+				{
+					this.game.canvasContext.fillStyle = this.wallColor
+					this.game.canvasContext.fillRect(
+						x * this.blocksize,
+						y * this.blocksize,
+						this.blocksize,
+						this.blocksize
+					)
+				}
+				else
+				{
+					this.game.canvasContext.fillStyle = this.pathColor
+					this.game.canvasContext.fillRect(
+						x * this.blocksize,
+						y * this.blocksize,
+						this.blocksize,
+						this.blocksize
+					)
+					let found = this.coins.find((element) => element.x === x && element.y === y)
+					if (found != null && found.display === true)
+					{
+						this.game.canvasContext.fillStyle = this.coinColor
+						this.game.canvasContext.fillRect(
+							(x * this.blocksize) + (this.blocksize - (this.blocksize * 0.125)) * 0.5,
+							(y * this.blocksize) + (this.blocksize - (this.blocksize * 0.125)) * 0.5,
+							this.blocksize * 0.125,
+							this.blocksize * 0.125
+						)
+					}
+				}
+			}
+		}
 	}
 }
