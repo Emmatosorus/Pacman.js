@@ -9,8 +9,11 @@ export default class Pacman
 		this.time = this.game.time
 		this.map = this.game.map
 
-		this.x = ((this.map.map.length / 2) - 1.5) * this.map.blocksize
-		this.y = ((this.map.map.length / 2) + 1.5) * this.map.blocksize
+		this.x = 0
+		this.y = 0
+
+		this.getStartingPosition()
+
 		this.width = 32
 		this.height = 32
 
@@ -29,6 +32,23 @@ export default class Pacman
 		this.win = false
 
 		this.loadSprites()
+	}
+
+	getStartingPosition()
+	{
+		for (let i = 0; i < this.map.map.length; i++)
+		{
+			for (let j = 0; j < this.map.map[0].length; j++)
+			{
+				if (this.map.map[i][j] === 4)
+				{
+					this.x = j * this.map.blocksize
+					this.y = i * this.map.blocksize										
+					return
+
+				}
+			}
+		}
 	}
 
 	loadSprites()
@@ -194,7 +214,10 @@ export default class Pacman
 		if (coin.display)
 		{
 			coin.display = false
-			this.game.score++
+			if (coin.big)
+				this.game.score += 50
+			else
+				this.game.score += 10
 		}
 		coin = this.map.coins.find((element) => element.display === true)
 		if (coin == null)
