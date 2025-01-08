@@ -20,17 +20,20 @@ export default class Game
 		this.map = new Map()
 		this.pacman = new Pacman()
 
+		this.isPlaying = true
 		this.score = 0
 
 		this.inputManager()
 
-		this.pacman.img[4].onload = () =>
+		this.pacman.img[5].onload = () =>
 		{
 		}
 		
 		this.time.on('tick', () => {
 			this.update()
 		})
+
+		
 
 	}
 
@@ -42,10 +45,8 @@ export default class Game
 
 	drawScore()
 	{
-		// Todo
-		// Load emulogic font and use it instead of Serif
 		this.canvasContext.fillStyle='black'
-		this.canvasContext.font = "bold 40px Serif"
+		this.canvasContext.font = "bold 40px Emulogic"
 		this.canvasContext.fillStyle='white'
 		this.canvasContext.fillText("Score: " + this.score, 700, 100)
 	}
@@ -75,12 +76,22 @@ export default class Game
 
 	update()
 	{
-		this.canvasContext.fillStyle='black'
-		this.canvasContext.fillRect(0, 0, this.canvas.width, this.canvas.height)
+		if (this.isPlaying === true)
+		{
+			this.canvasContext.fillStyle='black'
+			this.canvasContext.fillRect(0, 0, this.canvas.width, this.canvas.height)
 
-		this.map.update()
-		this.pacman.update()
-		this.drawScore()
+			this.map.update()
+			this.pacman.update()
+			this.drawScore()
+		}
+		else
+		{
+			this.map.update()
+			this.pacman.winAnimation()
+			if (this.pacman.win === true)
+				this.time.off('tick')
+		}
 
 	}
 }

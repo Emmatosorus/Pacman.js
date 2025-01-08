@@ -1,4 +1,3 @@
-import { element } from "three/tsl"
 import Game from "./Game"
 
 export default class Pacman
@@ -13,7 +12,7 @@ export default class Pacman
 		this.x = ((this.map.map.length / 2) - 1.5) * this.map.blocksize
 		this.y = ((this.map.map.length / 2) + 1.5) * this.map.blocksize
 		this.width = 32
-		this.heigt = 32
+		this.height = 32
 
 		this.DIRECTION_NONE = 0
 		this.DIRECTION_UP = 1
@@ -27,7 +26,16 @@ export default class Pacman
 		this.speed = 2
 		this.cur_img = 0
 
+		this.win = false
+
+		this.loadSprites()
+	}
+
+	loadSprites()
+	{
 		this.img = {}
+		this.frameCount = 6;
+        this.currentFrame = 1;
 
 		this.img[0] = new Image()
 		this.img[0].src ="./static/sprites/pacman_closed.png"
@@ -44,6 +52,8 @@ export default class Pacman
 		this.img[4] = new Image()
 		this.img[4].src ="./static/sprites/pacman_right.png"
 
+		this.img[5] = new Image()
+		this.img[5].src ="./static/sprites/pacman_win.png"
 	}
 
 	canMove(dir)
@@ -178,14 +188,89 @@ export default class Pacman
 		let x = Math.floor((this.x + 16) / this.map.blocksize)
 		let y = Math.floor((this.y + 16) / this.map.blocksize)
 
-		const coin = this.map.coins.find((element) => element.x === x && element.y === y)
+		let coin = this.map.coins.find((element) => element.x === x && element.y === y)
 		if (coin == null)
 			return
 		if (coin.display)
 		{
 			coin.display = false
-			this.game.score++		
+			this.game.score++
 		}
+		coin = this.map.coins.find((element) => element.display === true)
+		if (coin == null)
+		{
+			this.game.isPlaying = false
+		}
+	}
+
+	winAnimation()
+	{
+		if (this.win === true)
+			return
+
+		const animationTime = 0.25
+
+		const progress = this.time.deltaTimeSeconds / animationTime
+		
+		this.currentFrame += progress;
+		
+		let angle = 0
+
+		switch(this.direction)
+		{
+			case this.DIRECTION_UP:
+			{
+				angle = -Math.PI / 2
+				break
+			}
+			case this.DIRECTION_DOWN:
+			{
+				angle = Math.PI / 2
+				break
+			}
+			case this.DIRECTION_LEFT:
+			{
+				angle = Math.PI
+				break
+			}
+			case this.DIRECTION_RIGHT:
+			{
+				angle = 0
+				break
+			}
+		}
+
+		this.game.canvasContext.save();
+        this.game.canvasContext.translate(
+            this.x + this.map.blocksize / 2,
+            this.y + this.map.blocksize / 2
+        );
+        this.game.canvasContext.rotate(angle);
+		
+		this.game.canvasContext.translate(
+            -this.x - this.map.blocksize / 2,
+            -this.y - this.map.blocksize / 2
+        );
+        
+        this.game.canvasContext.drawImage(
+            this.img[5],
+            (Math.floor(this.currentFrame - 1)) * this.map.blocksize,
+            0,
+            this.map.blocksize,
+            this.map.blocksize,
+            this.x,
+            this.y,
+            this.width,
+            this.height
+        );
+
+        this.game.canvasContext.restore();
+
+		if (this.currentFrame > this.frameCount)
+		{
+			this.win = true
+		}
+		
 	}
 
 	update()

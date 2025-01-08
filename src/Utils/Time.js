@@ -7,7 +7,7 @@ export default class Time extends EventEmitter
         super()
 
         this.startTime = Date.now()
-        this.currentTime = this.start
+        this.currentTime = this.startTime
         this.elapsedTime = 0
         this.deltaTime = 16
 
@@ -18,8 +18,9 @@ export default class Time extends EventEmitter
     {
         const newCurrentTime = Date.now()
         this.deltaTime = newCurrentTime - this.currentTime
-        this.current = newCurrentTime
-        this.elapsedTime = this.current - this.startTime
+        this.deltaTimeSeconds = this.deltaTime * 0.001
+        this.currentTime = newCurrentTime
+        this.elapsedTime = this.currentTime - this.startTime
 
         this.trigger('tick')
 
