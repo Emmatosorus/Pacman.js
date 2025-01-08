@@ -46,7 +46,7 @@ export default class Game
 	drawScore()
 	{
 		this.canvasContext.fillStyle='black'
-		this.canvasContext.font = "bold 40px Emulogic"
+		this.canvasContext.font = "bold 20px Emulogic"
 		this.canvasContext.fillStyle='white'
 		this.canvasContext.fillText("Score: " + this.score, 700, 100)
 	}
