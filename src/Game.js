@@ -25,6 +25,7 @@ export default class Game
 		this.inputManager = new inputManager()
 
 		this.level = 0
+		this.fruitScores = [100, 300, 500, 700, 1000, 2000, 3000, 5000]
 		this.isPlaying = true
 		this.score = 0
 
@@ -70,7 +71,7 @@ export default class Game
 		{
 			this.map.update()
 			this.pacman.dieAnimation()
-			if (this.pacman.win === true)
+			if (this.pacman.die === true)
 				this.time.off('tick')
 		}
 

@@ -42,7 +42,7 @@ export default class Pacman
 		}
 	}
 
-	drawPacman(frameCount, animationTime, animate)
+	drawPacman(maxFrame, animationTime, animate)
 	{		
 		this.game.canvasContext.save();
         this.game.canvasContext.translate(
@@ -63,11 +63,11 @@ export default class Pacman
 			this.currentFrame += progress;
 		}
 
-		if (this.currentFrame >= frameCount)
-		{
+		if (this.currentFrame >= maxFrame)
+		{			
 			this.currentFrame = 0;
-			if (frameCount === this.sprites.animationFrameCount)
-				this.win = true
+			if (maxFrame === this.sprites.animationFrameCount)
+				this.die = true
 		}
 				
         this.game.canvasContext.drawImage(
@@ -87,12 +87,20 @@ export default class Pacman
 
 	eat()
 	{
-		let x = Math.floor((this.x + 16) / this.map.blocksize)
-		let y = Math.floor((this.y + 16) / this.map.blocksize)
+		let x = Math.floor((this.x + this.map.blocksize * 0.5) / this.map.blocksize)
+		let y = Math.floor((this.y + this.map.blocksize * 0.5) / this.map.blocksize)
 
 		let dot = this.map.dots.find((element) => element.x === x && element.y === y)
 		if (dot == null)
+		{
+			if (this.map.map[y][x] === 5 && this.map.fruitCollected === false)
+			{
+				this.map.fruitCollected = true
+				this.game.score += this.game.fruitScores[this.game.level]	
+				this.game.map.numberFruitCollected++			
+			}
 			return
+		}
 		if (dot.display)
 		{
 			dot.display = false
@@ -100,6 +108,7 @@ export default class Pacman
 				this.game.score += 50
 			else
 				this.game.score += 10
+			this.map.dotsCollected++
 		}
 		dot = this.map.dots.find((element) => element.display === true)
 		if (dot == null)

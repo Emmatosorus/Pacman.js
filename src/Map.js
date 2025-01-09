@@ -6,6 +6,7 @@ export default class Map
 	{
 		this.game = new Game()
 		this.sizes = this.game.sizes
+		this.sprites = this.game.sprites
 
 
 		// Setup
@@ -22,6 +23,9 @@ export default class Map
 		this.dotColor = "#caa2db"
 
 		this.dotsCollected = 0
+		this.fruitCollected = true
+		this.numberFruitCollected = 0
+
 
 		this.dots = []
 
@@ -156,10 +160,6 @@ export default class Map
 								true)
 							this.game.canvasContext.fill();
 						}
-						else if (this.map[y][x] === 5 && (this.dotsCollected === 70 || this.dotsCollected === 170))
-						{
-							
-						}
 						else
 						{
 							this.game.canvasContext.fillStyle = this.dotColor
@@ -171,6 +171,20 @@ export default class Map
 							)
 						}
 					}
+					else if (this.fruitCollected === false && this.map[y][x] === 5)
+					{
+						this.game.canvasContext.drawImage(
+							this.sprites.img[2],
+							this.game.level * this.blocksize,
+							0,
+							this.blocksize,
+							this.blocksize,
+							x * this.blocksize,
+							y * this.blocksize,
+							this.blocksize,
+							this.blocksize
+						)
+					}
 				}
 			}
 		}
@@ -178,6 +192,11 @@ export default class Map
 
 	update()
 	{
+		if (((this.numberFruitCollected === 0 && this.dotsCollected === 5)|| (this.numberFruitCollected === 1 && this.dotsCollected === 10))) // 50 and 120
+		{
+			this.fruitCollected = false
+		}
+
 		this.drawMap()
 	}
 }
