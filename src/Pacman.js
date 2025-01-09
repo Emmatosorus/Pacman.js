@@ -43,7 +43,7 @@ export default class Pacman
 	}
 
 	drawPacman(frameCount, animationTime, animate)
-	{
+	{		
 		this.game.canvasContext.save();
         this.game.canvasContext.translate(
             this.x + this.map.blocksize / 2,
@@ -62,11 +62,17 @@ export default class Pacman
 			const progress = this.time.deltaTimeSeconds / animationTime
 			this.currentFrame += progress;
 		}
-		
 
+		if (this.currentFrame >= frameCount)
+		{
+			this.currentFrame = 0;
+			if (frameCount === this.sprites.animationFrameCount)
+				this.win = true
+		}
+				
         this.game.canvasContext.drawImage(
             this.sprites.img[this.currentImage],
-            (Math.floor(this.game.inputManager.direction === this.game.inputManager.DIRECTION_NONE ? 0 : this.currentFrame)) * this.map.blocksize,
+            Math.floor(this.game.inputManager.direction === this.game.inputManager.DIRECTION_NONE ? 0 : this.currentFrame) * this.map.blocksize,
             0,
             this.map.blocksize,
             this.map.blocksize,
@@ -77,13 +83,6 @@ export default class Pacman
         );
 
         this.game.canvasContext.restore();
-
-		if (this.currentFrame >= frameCount)
-		{
-			this.currentFrame = 0;
-			if (frameCount === this.sprites.animationFrameCount)
-				this.win = true
-		}
 	}
 
 	eat()
