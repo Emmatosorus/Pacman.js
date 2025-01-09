@@ -19,9 +19,11 @@ export default class Map
 
 		this.wallColor = "#342DCA"
 		this.pathColor = "black"
-		this.coinColor = "#caa2db"
+		this.dotColor = "#caa2db"
 
-		this.coins = []
+		this.dotsCollected = 0
+
+		this.dots = []
 
 		this.map = [
 			[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
@@ -37,7 +39,7 @@ export default class Map
 			[0, 0, 0, 0, 0, 2, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2, 0, 0, 0, 0, 0],
 			[1, 1, 1, 1, 1, 2, 1, 0, 1, 0, 0, 0, 1, 0, 1, 2, 1, 1, 1, 1, 1],
 			[0, 0, 0, 0, 1, 2, 1, 0, 1, 1, 1, 1, 1, 0, 1, 2, 1, 0, 0, 0, 0],
-			[0, 0, 0, 0, 1, 2, 1, 0, 0, 0, 0, 0, 0, 0, 1, 2, 1, 0, 0, 0, 0],
+			[0, 0, 0, 0, 1, 2, 1, 0, 0, 0, 5, 0, 0, 0, 1, 2, 1, 0, 0, 0, 0],
 			[1, 1, 1, 1, 1, 2, 1, 0, 1, 1, 1, 1, 1, 0, 1, 2, 1, 1, 1, 1, 1],
 			[1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1],
 			[1, 2, 1, 1, 1, 2, 1, 1, 1, 2, 1, 2, 1, 1, 1, 2, 1, 1, 1, 2, 1],
@@ -49,20 +51,20 @@ export default class Map
 			[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
 		];
 
-		this.saveCoins()
+		this.savedots()
 
 	}
 
-	saveCoins()
+	savedots()
 	{
 		for (let i = 0; i < this.map.length; i++)
 		{
 			for (let j = 0; j < this.map[0].length; j++)
 			{
 				if (this.map[i][j] === 2)
-					this.coins.push({x: j, y: i, display: true, big: false})
+					this.dots.push({x: j, y: i, display: true, big: false})
 				if (this.map[i][j] === 3)
-					this.coins.push({x: j, y: i, display: true, big: true})
+					this.dots.push({x: j, y: i, display: true, big: true})
 			}
 		}
 	}
@@ -138,12 +140,12 @@ export default class Map
 						this.blocksize,
 						this.blocksize
 					)
-					let found = this.coins.find((element) => element.x === x && element.y === y)
+					let found = this.dots.find((element) => element.x === x && element.y === y)
 					if (found != null && found.display === true)
 					{
 						if (found.big)
 						{
-							this.game.canvasContext.fillStyle = this.coinColor
+							this.game.canvasContext.fillStyle = this.dotColor
 							this.game.canvasContext.beginPath();
 							this.game.canvasContext.arc(
 								x * this.blocksize + (this.blocksize * 0.5),
@@ -154,9 +156,13 @@ export default class Map
 								true)
 							this.game.canvasContext.fill();
 						}
+						else if (this.map[y][x] === 5 && (this.dotsCollected === 70 || this.dotsCollected === 170))
+						{
+							
+						}
 						else
 						{
-							this.game.canvasContext.fillStyle = this.coinColor
+							this.game.canvasContext.fillStyle = this.dotColor
 							this.game.canvasContext.fillRect(
 								(x * this.blocksize) + (this.blocksize - (this.blocksize * 0.125)) * 0.5,
 								(y * this.blocksize) + (this.blocksize - (this.blocksize * 0.125)) * 0.5,

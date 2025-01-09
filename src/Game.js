@@ -1,7 +1,9 @@
 import Map from "./Map.js"
 import Pacman from "./Pacman.js"
+import inputManager from "./inputManager"
 import Sizes from "./Utils/Sizes.js"
 import Time from "./Utils/Time.js"
+import Sprites from "./Sprites.js"
 
 let singletone = null
 
@@ -17,23 +19,24 @@ export default class Game
 		
 		this.sizes = new Sizes()
 		this.time = new Time()
+		this.sprites = new Sprites()
 		this.map = new Map()
 		this.pacman = new Pacman()
+		this.inputManager = new inputManager()
 
+		this.level = 0
 		this.isPlaying = true
 		this.score = 0
 
-		this.inputManager()
+        this.inputManager.setupKeybindings()
 
-		this.pacman.img[1].onload = () =>
+		this.sprites.img[this.sprites.imgNumber].onload = () =>
 		{
 		}
 		
 		this.time.on('tick', () => {
 			this.update()
 		})
-
-		
 
 	}
 
@@ -51,33 +54,10 @@ export default class Game
 		this.canvasContext.fillText("Score: " + this.score, 700, 100)
 	}
 
-	inputManager()
-	{
-		window.addEventListener('keydown', (KeyboardEvent) =>
-		{
-			if (KeyboardEvent.key === 'w' || KeyboardEvent.key === 'ArrowUp')
-			{
-				this.pacman.nextDirection = this.pacman.DIRECTION_UP				
-			}
-			if (KeyboardEvent.key === 's' || KeyboardEvent.key === 'ArrowDown')
-			{
-				this.pacman.nextDirection = this.pacman.DIRECTION_DOWN
-			}
-			if (KeyboardEvent.key === 'a' || KeyboardEvent.key === 'ArrowLeft')
-			{
-				this.pacman.nextDirection = this.pacman.DIRECTION_LEFT
-			}
-			if (KeyboardEvent.key === 'd' || KeyboardEvent.key === 'ArrowRight')
-			{
-				this.pacman.nextDirection = this.pacman.DIRECTION_RIGHT
-			}
-		})
-	}
-
 	update()
 	{
-		// if (this.isPlaying === true)
-		if (this.score < 50)
+		if (this.isPlaying === true)
+		// if (this.score < 50)
 		{
 			this.canvasContext.fillStyle='black'
 			this.canvasContext.fillRect(0, 0, this.canvas.width, this.canvas.height)
