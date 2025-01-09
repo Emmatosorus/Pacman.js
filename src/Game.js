@@ -25,7 +25,7 @@ export default class Game
 
 		this.inputManager()
 
-		this.pacman.img[5].onload = () =>
+		this.pacman.img[1].onload = () =>
 		{
 		}
 		
@@ -76,7 +76,8 @@ export default class Game
 
 	update()
 	{
-		if (this.isPlaying === true)
+		// if (this.isPlaying === true)
+		if (this.score < 50)
 		{
 			this.canvasContext.fillStyle='black'
 			this.canvasContext.fillRect(0, 0, this.canvas.width, this.canvas.height)
@@ -88,7 +89,7 @@ export default class Game
 		else
 		{
 			this.map.update()
-			this.pacman.winAnimation()
+			this.pacman.dieAnimation()
 			if (this.pacman.win === true)
 				this.time.off('tick')
 		}
