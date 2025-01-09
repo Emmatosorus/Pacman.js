@@ -175,7 +175,7 @@ export default class Map
 					{
 						this.game.canvasContext.drawImage(
 							this.sprites.img[2],
-							this.game.level * this.blocksize,
+							(this.game.level % this.sprites.fruitFrameCount) * this.blocksize,
 							0,
 							this.blocksize,
 							this.blocksize,
@@ -192,7 +192,10 @@ export default class Map
 
 	update()
 	{
-		if (((this.numberFruitCollected === 0 && this.dotsCollected === 5)|| (this.numberFruitCollected === 1 && this.dotsCollected === 10))) // 50 and 120
+		if (((this.numberFruitCollected === 0 &&
+			this.dotsCollected === 50) || // 50
+			(this.numberFruitCollected === 1 &&
+			this.dotsCollected === 120))) // 120
 		{
 			this.fruitCollected = false
 		}

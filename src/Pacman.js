@@ -23,6 +23,7 @@ export default class Pacman
 
         this.currentFrame = 0;
         this.currentImage = 0;
+		this.dieAnimationStart = null
 	}
 
 	getStartingPosition()
@@ -96,7 +97,7 @@ export default class Pacman
 			if (this.map.map[y][x] === 5 && this.map.fruitCollected === false)
 			{
 				this.map.fruitCollected = true
-				this.game.score += this.game.fruitScores[this.game.level]	
+				this.game.score += this.game.fruitScores[this.game.level % this.sprites.fruitFrameCount]	
 				this.game.map.numberFruitCollected++			
 			}
 			return
@@ -124,7 +125,7 @@ export default class Pacman
 
 		this.currentImage = 1
 
-		if (!this.dieAnimationStart)
+		if (this.dieAnimationStart === null)
 			this.dieAnimationStart = this.time.currentTime
 
 		if (this.time.currentTime < this.dieAnimationStart + 1000)

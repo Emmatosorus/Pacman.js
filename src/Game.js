@@ -72,7 +72,25 @@ export default class Game
 			this.map.update()
 			this.pacman.dieAnimation()
 			if (this.pacman.die === true)
-				this.time.off('tick')
+			{
+				this.level++;
+
+				this.isPlaying = true
+				this.map.dotsCollected = 0
+				this.map.numberFruitCollected = 0
+				this.map.fruitCollected = true
+				this.pacman.die = false
+				this.pacman.currentFrame = 0;
+        		this.pacman.currentImage = 0;
+				this.pacman.dieAnimationStart = null
+				this.pacman.getStartingPosition()
+
+				this.inputManager.direction = this.inputManager.DIRECTION_NONE
+				this.inputManager.nextDirection = this.inputManager.DIRECTION_NONE
+
+				for (let i = 0; i < this.map.dots.length; i++)
+					this.map.dots[i].display = true
+			}
 		}
 
 	}

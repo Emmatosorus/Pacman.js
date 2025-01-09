@@ -17,7 +17,7 @@ export default class inputManager
 		this.direction = this.DIRECTION_NONE
 		this.nextDirection = this.DIRECTION_NONE
 		
-		this.speed = 2
+		this.speed = 4
 
     }
 
