@@ -7,6 +7,7 @@ export default class Map
 		this.game = new Game()
 		this.sizes = this.game.sizes
 		this.sprites = this.game.sprites
+		this.time = this.game.time
 
 
 		// Setup
@@ -25,6 +26,7 @@ export default class Map
 		this.dotsCollected = 0
 		this.fruitCollected = true
 		this.numberFruitCollected = 0
+		this.fruitSpawnTime = 0
 
 
 		this.dots = []
@@ -190,16 +192,28 @@ export default class Map
 		}
 	}
 
-	update()
+	handleFruit()
 	{
 		if (((this.numberFruitCollected === 0 &&
 			this.dotsCollected === 50) || // 50
 			(this.numberFruitCollected === 1 &&
 			this.dotsCollected === 120))) // 120
 		{
+			console.log("Fruit");
+			
+			this.fruitSpawnTime = this.time.currentTimeSeconds
 			this.fruitCollected = false
 		}
+		if (this.fruitCollected === false && this.fruitSpawnTime + 9 < this.time.currentTimeSeconds)
+		{
+			this.fruitCollected = true
+			this.numberFruitCollected = 1
+		}
+	}
 
+	update()
+	{
+		this.handleFruit()
 		this.drawMap()
 	}
 }
