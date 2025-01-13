@@ -86,6 +86,12 @@ export default class Game
 
 	winReset()
 	{
+		this.canvasContext.clearRect(0,
+			0,
+			this.canvas.width,
+			this.canvas.height
+		)
+
 		this.level++;
 		this.isPlaying = true
 		this.win = false
@@ -115,6 +121,12 @@ export default class Game
 
 	loseReset()
 	{
+		this.canvasContext.clearRect(0,
+			0,
+			this.canvas.width,
+			this.canvas.height
+		)
+
 		this.level = 0
 		this.score = 0
 		this.isPlaying = true
@@ -168,9 +180,7 @@ export default class Game
 			this.map.update()
 			this.pacman.dieAnimation()
 			if (this.pacman.dieAnimationEnd === true)
-			{
 				this.loseReset()
-			}
 		}
 
 	}
