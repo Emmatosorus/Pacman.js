@@ -24,6 +24,10 @@ export default class Pacman
         this.currentFrame = 0;
         this.currentImage = 0;
 		this.dieAnimationStart = null
+		this.dieAnimationEnd = false
+
+		this.winAnimationStart = null
+		this.winAnimationEnd = false
 	}
 
 	getStartingPosition()
@@ -61,20 +65,22 @@ export default class Pacman
 
 		if (animate ===  true)
 		{
-			const progress = this.time.deltaTimeSeconds / animationTime
-			this.currentFrame += progress;
+			const progress = this.time.deltaTime * animationTime
+			this.currentFrame += progress;			
 		}
 
 		if (this.currentFrame >= maxFrame)
 		{			
+
 			this.currentFrame = 0;
 			if (maxFrame === this.sprites.animationFrameCount)
-				this.die = true
+				this.dieAnimationEnd = true
+			
 		}
 				
         this.game.canvasContext.drawImage(
             this.sprites.img[this.currentImage],
-            Math.floor(this.game.inputManager.direction === this.game.inputManager.DIRECTION_NONE ? 0 : this.currentFrame) * this.map.blocksize,
+            Math.floor(this.game.inputManager.direction === this.game.inputManager.DIRECTION_NONE && maxFrame !== this.sprites.animationFrameCount ? 0 : this.currentFrame) * this.map.blocksize,
             0,
             this.map.blocksize,
             this.map.blocksize,
@@ -99,7 +105,10 @@ export default class Pacman
 			{
 				this.map.fruitCollected = true
 				this.game.score += this.game.fruitScores[this.map.currentFruit]	
-				this.game.map.numberFruitCollected++			
+				this.game.map.numberFruitCollected++
+				// To test dying animation	
+				// this.die = true
+				// this.game.isPlaying = false		
 			}
 			return
 		}
@@ -120,11 +129,22 @@ export default class Pacman
 		}
 	}
 
+	winAnimation()
+	{
+		this.currentImage = 1
+		this.currentFrame = 0
+
+		if (this.winAnimationStart === null)
+			this.winAnimationStart = this.time.currentTimeSeconds
+
+		if (this.time.currentTimeSeconds < this.winAnimationStart + 3)
+			this.drawPacman(this.sprites.animationFrameCount, 0.01, false)
+		else
+			this.winAnimationEnd = true
+	}
+
 	dieAnimation()
 	{
-		if (this.die === true)
-			return
-
 		this.currentImage = 1
 
 		if (this.dieAnimationStart === null)
@@ -132,18 +152,18 @@ export default class Pacman
 
 		if (this.time.currentTimeSeconds < this.dieAnimationStart + 1)
 		{
-			this.drawPacman(this.sprites.animationFrameCount, 0.10, false)
+			this.drawPacman(this.sprites.animationFrameCount, 0.01, false)
 			return
 		}
 
-		this.drawPacman(this.sprites.animationFrameCount, 0.10, true)
+		this.drawPacman(this.sprites.animationFrameCount, 0.01, true)
 	}
 
 	update()
 	{
 		this.game.inputManager.movePacman()
 		this.eat()
-		this.drawPacman(this.sprites.pacmanFrameCount, 0.125, true)
+		this.drawPacman(this.sprites.pacmanFrameCount, 0.01, true)
 	}
 
 }

@@ -31,7 +31,8 @@ export default class Map
 
 		this.normalWallColor = "#342DCA"
 		this.winWallColor = "#caa2db"
-		this.winAnimationStart = null
+		this.currentColor = 0
+		this.winAnimationTime = 0.0048
 
 		this.dots = []
 
@@ -198,11 +199,14 @@ export default class Map
 
 	winAnimation()
 	{
-		if (!this.winAnimationStart)
-		{
-			this.winAnimationStart = this.time.currentTimeSeconds
-		}
-		(this.time.currentTimeSeconds - this.winAnimationStart) % 2 ? this.wallColor = this.winWallColor : this.wallColor = this.normalWallColor		
+		const progress = this.time.deltaTime * this.winAnimationTime
+				
+		this.currentColor += progress
+
+		this.currentColor < 1 ? this.wallColor = this.winWallColor : this.wallColor = this.normalWallColor		
+
+		if (this.currentColor >= 2)
+			this.currentColor = 0
 
 		this.drawMap()
 	}
@@ -223,10 +227,9 @@ export default class Map
 				this.currentFruit = (this.game.level - 7) % this.sprites.fruitFrameCount
 			else
 				this.currentFruit = this.game.level % this.sprites.fruitFrameCount
-			console.log(this.currentFruit);
 			
 		}
-		if (this.fruitCollected === false && this.fruitSpawnTime + 9 < this.time.currentTimeSeconds)
+		if (this.fruitCollected === false && this.fruitSpawnTime + 7 < this.time.currentTimeSeconds)
 		{
 			this.fruitCollected = true
 			this.numberFruitCollected = 1

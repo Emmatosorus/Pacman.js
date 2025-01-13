@@ -28,9 +28,9 @@ export default class Game
 		
 		this.fruitScores = [100, 300, 500, 700, 1000, 2000, 3000, 5000]
 		
-		this.isPlaying = false //true
+		this.isPlaying = true //true
 		this.score = 0
-		this.win = true //false
+		this.win = false //false
 
         this.inputManager.setupKeybindings()
 
@@ -58,6 +58,33 @@ export default class Game
 		this.canvasContext.fillText("Score: " + this.score, 700, 100)
 	}
 
+	reset()
+	{
+		this.level++;
+		this.isPlaying = true
+		this.win = false
+
+		this.map.dotsCollected = 0
+		this.map.numberFruitCollected = 0
+		this.map.fruitCollected = true
+		this.map.currentFruit = 0
+
+		this.pacman.die = false
+		this.pacman.currentFrame = 0;
+		this.pacman.currentImage = 0;
+		this.pacman.dieAnimationStart = null
+		this.pacman.dieAnimationEnd = false
+		this.pacman.winAnimationStart = null
+		this.pacman.winAnimationEnd = false
+		this.pacman.getStartingPosition()
+
+
+		this.inputManager.direction = this.inputManager.DIRECTION_NONE
+		this.inputManager.nextDirection = this.inputManager.DIRECTION_NONE
+
+		for (let i = 0; i < this.map.dots.length; i++)
+			this.map.dots[i].display = true
+	}
 
 
 	update()
@@ -75,37 +102,17 @@ export default class Game
 		else if (this.win === true)
 		{
 			this.map.winAnimation()
-			// this.canvasContext.fillStyle='black'
-			// this.canvasContext.fillRect(0, 0, this.canvas.width, this.canvas.height)
-			// this.canvasContext.fillStyle='white'
-			// this.canvasContext.font = "bold 20px Emulogic"
-			// this.canvasContext.fillText("You win", 350, 300)
-			// this.canvasContext.fillText("Score: " + this.score, 350, 350)
+			this.pacman.winAnimation()
+			if (this.pacman.winAnimationEnd === true)
+				this.reset()
 		}
 		else if (this.pacman.die === true)
 		{
 			this.map.update()
 			this.pacman.dieAnimation()
-			if (this.pacman.die === true)
+			if (this.pacman.dieAnimationEnd === true)
 			{
-				this.level++;
-
-				this.isPlaying = true
-				this.map.dotsCollected = 0
-				this.map.numberFruitCollected = 0
-				this.map.fruitCollected = true
-				this.map.currentFruit = 0
-				this.pacman.die = false
-				this.pacman.currentFrame = 0;
-        		this.pacman.currentImage = 0;
-				this.pacman.dieAnimationStart = null
-				this.pacman.getStartingPosition()
-
-				this.inputManager.direction = this.inputManager.DIRECTION_NONE
-				this.inputManager.nextDirection = this.inputManager.DIRECTION_NONE
-
-				for (let i = 0; i < this.map.dots.length; i++)
-					this.map.dots[i].display = true
+				this.reset()
 			}
 		}
 

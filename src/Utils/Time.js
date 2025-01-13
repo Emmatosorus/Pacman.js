@@ -20,7 +20,6 @@ export default class Time extends EventEmitter
     {
         const newCurrentTime = Date.now()
         this.deltaTime = newCurrentTime - this.currentTime
-        this.deltaTimeSeconds = Math.floor(this.deltaTime * 0.001)
 
         this.currentTime = newCurrentTime
         this.currentTimeSeconds = Math.floor(this.currentTime * 0.001)
