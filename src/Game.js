@@ -58,9 +58,39 @@ export default class Game
 		this.canvasContext.fillText("Score: " + this.score, 700, 100)
 	}
 
-	reset()
+	winReset()
 	{
 		this.level++;
+		this.isPlaying = true
+		this.win = false
+
+		this.map.dotsCollected = 0
+		this.map.numberFruitCollected = 0
+		this.map.fruitCollected = true
+		this.map.currentFruit = 0
+		this.map.wallColor = "#342DCA"
+
+		this.pacman.die = false
+		this.pacman.currentFrame = 0;
+		this.pacman.currentImage = 0;
+		this.pacman.dieAnimationStart = null
+		this.pacman.dieAnimationEnd = false
+		this.pacman.winAnimationStart = null
+		this.pacman.winAnimationEnd = false
+		this.pacman.getStartingPosition()
+
+
+		this.inputManager.direction = this.inputManager.DIRECTION_NONE
+		this.inputManager.nextDirection = this.inputManager.DIRECTION_NONE
+
+		for (let i = 0; i < this.map.dots.length; i++)
+			this.map.dots[i].display = true
+	}
+
+	loseReset()
+	{
+		this.level = 0
+		this.score = 0
 		this.isPlaying = true
 		this.win = false
 
@@ -105,7 +135,7 @@ export default class Game
 			this.map.winAnimation()
 			this.pacman.winAnimation()
 			if (this.pacman.winAnimationEnd === true)
-				this.reset()
+				this.winReset()
 		}
 		else if (this.pacman.die === true)
 		{
@@ -113,7 +143,7 @@ export default class Game
 			this.pacman.dieAnimation()
 			if (this.pacman.dieAnimationEnd === true)
 			{
-				this.reset()
+				this.loseReset()
 			}
 		}
 
