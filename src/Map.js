@@ -163,6 +163,54 @@ export default class Map
 		)
 	}
 
+	drawDot(x, y)
+	{
+		let found = this.dots.find((element) => element.x === x && element.y === y)
+		if (found == null || found.display !== true)
+			return
+		if (found.big)
+		{
+			this.game.canvasContext.fillStyle = this.dotColor
+			this.game.canvasContext.beginPath();
+			this.game.canvasContext.arc(
+				x * this.blocksize + (this.blocksize * 0.5) + this.game.headerSpaceX,
+				y * this.blocksize + (this.blocksize * 0.5) + this.game.headerSpaceY,
+				10,
+				0,
+				Math.PI * 2,
+				true)
+			this.game.canvasContext.fill();
+		}
+		else
+		{
+			this.game.canvasContext.fillStyle = this.dotColor
+			this.game.canvasContext.fillRect(
+				(x * this.blocksize) + (this.blocksize - (this.blocksize * 0.125)) * 0.5 + this.game.headerSpaceX,
+				(y * this.blocksize) + (this.blocksize - (this.blocksize * 0.125)) * 0.5 + this.game.headerSpaceY,
+				this.blocksize * 0.125,
+				this.blocksize * 0.125
+			)
+		}
+	}
+
+	drawFruit(x, y)
+	{
+		if (this.fruitCollected !== false || this.map[y][x] !== 5)
+			return
+		
+		this.game.canvasContext.drawImage(
+			this.sprites.img[2],
+			(this.currentFruit) * this.blocksize,
+			0,
+			this.blocksize,
+			this.blocksize,
+			x * this.blocksize + this.game.headerSpaceX,
+			y * this.blocksize + this.game.headerSpaceY,
+			this.blocksize,
+			this.blocksize
+		)
+	}
+
 	drawMap()
 	{
 		for (let y = 0; y < this.map.length; y++)
@@ -183,47 +231,8 @@ export default class Map
 						this.blocksize - this.wallBorder,
 						this.blocksize - this.wallBorder
 					)
-					let found = this.dots.find((element) => element.x === x && element.y === y)
-					if (found != null && found.display === true)
-					{
-						if (found.big)
-						{
-							this.game.canvasContext.fillStyle = this.dotColor
-							this.game.canvasContext.beginPath();
-							this.game.canvasContext.arc(
-								x * this.blocksize + (this.blocksize * 0.5) + this.game.headerSpaceX,
-								y * this.blocksize + (this.blocksize * 0.5) + this.game.headerSpaceY,
-								10,
-								0,
-								Math.PI * 2,
-								true)
-							this.game.canvasContext.fill();
-						}
-						else
-						{
-							this.game.canvasContext.fillStyle = this.dotColor
-							this.game.canvasContext.fillRect(
-								(x * this.blocksize) + (this.blocksize - (this.blocksize * 0.125)) * 0.5 + this.game.headerSpaceX,
-								(y * this.blocksize) + (this.blocksize - (this.blocksize * 0.125)) * 0.5 + this.game.headerSpaceY,
-								this.blocksize * 0.125,
-								this.blocksize * 0.125
-							)
-						}
-					}
-					else if (this.fruitCollected === false && this.map[y][x] === 5)
-					{
-						this.game.canvasContext.drawImage(
-							this.sprites.img[2],
-							(this.game.level % this.sprites.fruitFrameCount) * this.blocksize,
-							0,
-							this.blocksize,
-							this.blocksize,
-							x * this.blocksize + this.game.headerSpaceX,
-							y * this.blocksize + this.game.headerSpaceY,
-							this.blocksize,
-							this.blocksize
-						)
-					}
+					this.drawDot(x, y)
+					this.drawFruit(x, y)
 				}
 			}
 		}
