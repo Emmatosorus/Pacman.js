@@ -14,8 +14,9 @@ export default class Map
 		this.width = this.game.sizes.width
 		this.heigth = this.game.sizes.height
 		this.blocksize = 32
-		this.wallSpaceWidth = this.blocksize * 0.8;
-		this.wallOffset = (this.blocksize - this.wallSpaceWidth) / 2;
+		this.wallBorder = 8
+		this.wallOffset = this.blocksize * 0.5;
+		this.cornerRads = 6
 		this.x = 0
 		this.y = 0
 
@@ -82,54 +83,84 @@ export default class Map
 
 	drawWall(x, y)
 	{
+		const corner = [0, 0, 0, 0]
+
+		if (y > 0 && this.map[y - 1][x] !== 1 && x > 0 && this.map[y][x - 1] !== 1)
+			corner[0] = this.cornerRads
+		if (y > 0 && this.map[y - 1][x] !== 1 && x < this.map[0].length - 1 && this.map[y][x + 1] !== 1)
+			corner[1] = this.cornerRads
+		if (y < this.map.length - 1 && this.map[y + 1][x] !== 1 && x < this.map[0].length - 1 && this.map[y][x + 1] !== 1)
+			corner[2] = this.cornerRads
+		if (y < this.map.length - 1 && this.map[y + 1][x] !== 1 && x > 0 && this.map[y][x - 1] !== 1 )
+			corner[3] = this.cornerRads
+
+		this.game.canvasContext.strokeStyle = this.wallColor
 		this.game.canvasContext.fillStyle = this.wallColor
-		this.game.canvasContext.fillRect(
-			x * this.blocksize,
-			y * this.blocksize + this.game.headerSpace,
+		this.game.canvasContext.lineWidth = 4
+		this.game.canvasContext.beginPath();
+		this.game.canvasContext.roundRect(
+			x * this.blocksize + this.game.headerSpaceX,
+			y * this.blocksize + this.game.headerSpaceY,
 			this.blocksize,
-			this.blocksize
+			this.blocksize,
+			corner
 		)
+		this.game.canvasContext.stroke()
+
 
 		this.game.canvasContext.fillStyle = this.pathColor
+		
 		if (x > 0 && this.map[y][x - 1] == 1)
 		{
 			this.game.canvasContext.fillRect(
-				x * this.blocksize,
-				y * this.blocksize + this.wallOffset + this.game.headerSpace,
-				this.wallSpaceWidth + this.wallOffset,
-				this.wallSpaceWidth
-			)
-		}
-
-		if (x < this.map[0].length - 1 && this.map[y][x + 1] == 1)
-		{
-			this.game.canvasContext.fillRect(
-				x * this.blocksize + this.wallOffset,
-				y * this.blocksize + this.wallOffset + this.game.headerSpace,
-				this.wallSpaceWidth + this.wallOffset,
-				this.wallSpaceWidth
-			)
-		}
-
-		if (y < this.map.length - 1 && this.map[y + 1][x] == 1)
-		{
-			this.game.canvasContext.fillRect(
-				x * this.blocksize + this.wallOffset,
-				y * this.blocksize + this.wallOffset + this.game.headerSpace,
-				this.wallSpaceWidth,
-				this.wallSpaceWidth + this.wallOffset
+				x * this.blocksize + this.game.headerSpaceX - this.wallBorder,
+				y * this.blocksize + this.game.headerSpaceY + (this.wallBorder * 0.5 - 2),
+				this.blocksize - (this.wallBorder),
+				this.blocksize - (this.wallBorder * 0.5)
 			)
 		}
 
 		if (y > 0 && this.map[y - 1][x] == 1)
 		{
 			this.game.canvasContext.fillRect(
-				x * this.blocksize + this.wallOffset,
-				y * this.blocksize + this.game.headerSpace,
-				this.wallSpaceWidth,
-				this.wallSpaceWidth + this.wallOffset
+				x * this.blocksize + this.game.headerSpaceX + (this.wallBorder * 0.5 - 2),
+				y * this.blocksize + this.game.headerSpaceY - this.wallBorder,
+				this.blocksize - (this.wallBorder * 0.5),
+				this.blocksize - this.wallBorder
 			)
 		}
+	}
+
+	hideTunnel()
+	{
+		this.game.canvasContext.fillStyle = this.pathColor
+		this.game.canvasContext.fillRect(
+			0,
+			(this.blocksize * 12) + this.wallBorder - 2,
+			this.wallBorder * 2,
+			this.blocksize - this.wallBorder * 0.5
+		)
+
+		this.game.canvasContext.fillRect(
+			0,
+			(this.blocksize * 14) + this.wallBorder - 2,
+			this.wallBorder * 2,
+			this.blocksize - this.wallBorder * 0.5
+		)
+
+		this.game.canvasContext.fillRect(
+			this.blocksize * (this.map[0].length),
+			(this.blocksize * 12) + this.wallBorder - 2,
+			this.wallBorder * 2,
+			this.blocksize - this.wallBorder * 0.5
+		)
+
+		this.game.canvasContext.fillRect(
+			this.blocksize * (this.map[0].length),
+			(this.blocksize * 14) + this.wallBorder - 2,
+			this.wallBorder * 2,
+			this.blocksize - this.wallBorder * 0.5
+		)
 	}
 
 	drawMap()
@@ -141,15 +172,16 @@ export default class Map
 				if (this.map[y][x] === 1)
 				{
 					this.drawWall(x, y)
+					this.game.canvasContext.lineWidth = 1
 				}
 				else
 				{
 					this.game.canvasContext.fillStyle = this.pathColor
 					this.game.canvasContext.fillRect(
-						x * this.blocksize,
-						y * this.blocksize + this.game.headerSpace,
-						this.blocksize,
-						this.blocksize
+						x * this.blocksize + this.game.headerSpaceX + this.wallBorder,
+						y * this.blocksize + this.game.headerSpaceY + this.wallBorder,
+						this.blocksize - this.wallBorder,
+						this.blocksize - this.wallBorder
 					)
 					let found = this.dots.find((element) => element.x === x && element.y === y)
 					if (found != null && found.display === true)
@@ -159,8 +191,8 @@ export default class Map
 							this.game.canvasContext.fillStyle = this.dotColor
 							this.game.canvasContext.beginPath();
 							this.game.canvasContext.arc(
-								x * this.blocksize + (this.blocksize * 0.5),
-								y * this.blocksize + (this.blocksize * 0.5) + this.game.headerSpace,
+								x * this.blocksize + (this.blocksize * 0.5) + this.game.headerSpaceX,
+								y * this.blocksize + (this.blocksize * 0.5) + this.game.headerSpaceY,
 								10,
 								0,
 								Math.PI * 2,
@@ -171,8 +203,8 @@ export default class Map
 						{
 							this.game.canvasContext.fillStyle = this.dotColor
 							this.game.canvasContext.fillRect(
-								(x * this.blocksize) + (this.blocksize - (this.blocksize * 0.125)) * 0.5,
-								(y * this.blocksize) + (this.blocksize - (this.blocksize * 0.125)) * 0.5 + this.game.headerSpace,
+								(x * this.blocksize) + (this.blocksize - (this.blocksize * 0.125)) * 0.5 + this.game.headerSpaceX,
+								(y * this.blocksize) + (this.blocksize - (this.blocksize * 0.125)) * 0.5 + this.game.headerSpaceY,
 								this.blocksize * 0.125,
 								this.blocksize * 0.125
 							)
@@ -186,8 +218,8 @@ export default class Map
 							0,
 							this.blocksize,
 							this.blocksize,
-							x * this.blocksize,
-							y * this.blocksize + this.game.headerSpace,
+							x * this.blocksize + this.game.headerSpaceX,
+							y * this.blocksize + this.game.headerSpaceY,
 							this.blocksize,
 							this.blocksize
 						)
@@ -195,6 +227,7 @@ export default class Map
 				}
 			}
 		}
+		this.hideTunnel()
 	}
 
 	winAnimation()

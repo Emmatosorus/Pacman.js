@@ -52,15 +52,15 @@ export default class Pacman
 		
 		this.game.canvasContext.save();
         this.game.canvasContext.translate(
-            this.x + this.map.blocksize / 2,
-            (this.y + this.game.headerSpace) + this.map.blocksize / 2
+            (this.x + this.game.headerSpaceX) + this.map.blocksize / 2,
+            (this.y + this.game.headerSpaceY) + this.map.blocksize / 2
         );
 
         this.game.canvasContext.rotate((Math.PI * 2) * this.game.InputManager.direction / 4);
 		
 		this.game.canvasContext.translate(
-            -this.x - this.map.blocksize / 2,
-            -(this.y + this.game.headerSpace) - this.map.blocksize / 2
+            -(this.x + this.game.headerSpaceX) - this.map.blocksize / 2,
+            -(this.y + this.game.headerSpaceY) - this.map.blocksize / 2
         );
 
 		if (animate ===  true)
@@ -84,8 +84,8 @@ export default class Pacman
             0,
             this.map.blocksize,
             this.map.blocksize,
-            this.x,
-            this.y + this.game.headerSpace,
+            this.x + this.game.headerSpaceX,
+            this.y + this.game.headerSpaceY,
             this.width,
             this.height
         );

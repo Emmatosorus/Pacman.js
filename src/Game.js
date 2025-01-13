@@ -17,7 +17,8 @@ export default class Game
 
 		this.setupCanvas()
 		
-		this.headerSpace = 100
+		this.headerSpaceY = 100
+		this.headerSpaceX = 10
 
 		this.sizes = new Sizes()
 		this.time = new Time()
