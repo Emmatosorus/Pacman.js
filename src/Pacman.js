@@ -38,8 +38,8 @@ export default class Pacman
 			{
 				if (this.map.map[i][j] === 4)
 				{
-					this.x = j * this.map.blocksize
-					this.y = i * this.map.blocksize										
+					this.x = (j * this.map.blocksize)
+					this.y = (i * this.map.blocksize)		
 					return
 
 				}
@@ -53,14 +53,14 @@ export default class Pacman
 		this.game.canvasContext.save();
         this.game.canvasContext.translate(
             this.x + this.map.blocksize / 2,
-            this.y + this.map.blocksize / 2
+            (this.y + this.game.headerSpace) + this.map.blocksize / 2
         );
 
-        this.game.canvasContext.rotate((Math.PI * 2) * this.game.inputManager.direction / 4);
+        this.game.canvasContext.rotate((Math.PI * 2) * this.game.InputManager.direction / 4);
 		
 		this.game.canvasContext.translate(
             -this.x - this.map.blocksize / 2,
-            -this.y - this.map.blocksize / 2
+            -(this.y + this.game.headerSpace) - this.map.blocksize / 2
         );
 
 		if (animate ===  true)
@@ -80,12 +80,12 @@ export default class Pacman
 				
         this.game.canvasContext.drawImage(
             this.sprites.img[this.currentImage],
-            Math.floor(this.game.inputManager.direction === this.game.inputManager.DIRECTION_NONE && maxFrame !== this.sprites.animationFrameCount ? 0 : this.currentFrame) * this.map.blocksize,
+            Math.floor(this.game.InputManager.direction === this.game.InputManager.DIRECTION_NONE && maxFrame !== this.sprites.animationFrameCount ? 0 : this.currentFrame) * this.map.blocksize,
             0,
             this.map.blocksize,
             this.map.blocksize,
             this.x,
-            this.y,
+            this.y + this.game.headerSpace,
             this.width,
             this.height
         );
@@ -100,7 +100,7 @@ export default class Pacman
 
 		let dot = this.map.dots.find((element) => element.x === x && element.y === y)
 		if (dot == null)
-		{
+		{			
 			if (this.map.map[y][x] === 5 && this.map.fruitCollected === false)
 			{
 				this.map.fruitCollected = true
@@ -161,7 +161,7 @@ export default class Pacman
 
 	update()
 	{
-		this.game.inputManager.movePacman()
+		this.game.InputManager.movePacman()
 		this.eat()
 		this.drawPacman(this.sprites.pacmanFrameCount, 0.01, true)
 	}

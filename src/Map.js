@@ -85,7 +85,7 @@ export default class Map
 		this.game.canvasContext.fillStyle = this.wallColor
 		this.game.canvasContext.fillRect(
 			x * this.blocksize,
-			y * this.blocksize,
+			y * this.blocksize + this.game.headerSpace,
 			this.blocksize,
 			this.blocksize
 		)
@@ -95,7 +95,7 @@ export default class Map
 		{
 			this.game.canvasContext.fillRect(
 				x * this.blocksize,
-				y * this.blocksize + this.wallOffset,
+				y * this.blocksize + this.wallOffset + this.game.headerSpace,
 				this.wallSpaceWidth + this.wallOffset,
 				this.wallSpaceWidth
 			)
@@ -105,7 +105,7 @@ export default class Map
 		{
 			this.game.canvasContext.fillRect(
 				x * this.blocksize + this.wallOffset,
-				y * this.blocksize + this.wallOffset,
+				y * this.blocksize + this.wallOffset + this.game.headerSpace,
 				this.wallSpaceWidth + this.wallOffset,
 				this.wallSpaceWidth
 			)
@@ -115,7 +115,7 @@ export default class Map
 		{
 			this.game.canvasContext.fillRect(
 				x * this.blocksize + this.wallOffset,
-				y * this.blocksize + this.wallOffset,
+				y * this.blocksize + this.wallOffset + this.game.headerSpace,
 				this.wallSpaceWidth,
 				this.wallSpaceWidth + this.wallOffset
 			)
@@ -125,7 +125,7 @@ export default class Map
 		{
 			this.game.canvasContext.fillRect(
 				x * this.blocksize + this.wallOffset,
-				y * this.blocksize,
+				y * this.blocksize + this.game.headerSpace,
 				this.wallSpaceWidth,
 				this.wallSpaceWidth + this.wallOffset
 			)
@@ -147,7 +147,7 @@ export default class Map
 					this.game.canvasContext.fillStyle = this.pathColor
 					this.game.canvasContext.fillRect(
 						x * this.blocksize,
-						y * this.blocksize,
+						y * this.blocksize + this.game.headerSpace,
 						this.blocksize,
 						this.blocksize
 					)
@@ -160,7 +160,7 @@ export default class Map
 							this.game.canvasContext.beginPath();
 							this.game.canvasContext.arc(
 								x * this.blocksize + (this.blocksize * 0.5),
-								y * this.blocksize + (this.blocksize * 0.5),
+								y * this.blocksize + (this.blocksize * 0.5) + this.game.headerSpace,
 								10,
 								0,
 								Math.PI * 2,
@@ -172,7 +172,7 @@ export default class Map
 							this.game.canvasContext.fillStyle = this.dotColor
 							this.game.canvasContext.fillRect(
 								(x * this.blocksize) + (this.blocksize - (this.blocksize * 0.125)) * 0.5,
-								(y * this.blocksize) + (this.blocksize - (this.blocksize * 0.125)) * 0.5,
+								(y * this.blocksize) + (this.blocksize - (this.blocksize * 0.125)) * 0.5 + this.game.headerSpace,
 								this.blocksize * 0.125,
 								this.blocksize * 0.125
 							)
@@ -187,7 +187,7 @@ export default class Map
 							this.blocksize,
 							this.blocksize,
 							x * this.blocksize,
-							y * this.blocksize,
+							y * this.blocksize + this.game.headerSpace,
 							this.blocksize,
 							this.blocksize
 						)

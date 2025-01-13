@@ -1,6 +1,6 @@
 import Game from "./Game"
 
-export default class inputManager
+export default class InputManager
 {
     constructor()
     {

@@ -1,6 +1,6 @@
 import Map from "./Map.js"
 import Pacman from "./Pacman.js"
-import inputManager from "./inputManager"
+import InputManager from "./InputManager.js"
 import Sizes from "./Utils/Sizes.js"
 import Time from "./Utils/Time.js"
 import Sprites from "./Sprites.js"
@@ -17,12 +17,14 @@ export default class Game
 
 		this.setupCanvas()
 		
+		this.headerSpace = 100
+
 		this.sizes = new Sizes()
 		this.time = new Time()
 		this.sprites = new Sprites()
 		this.map = new Map()
 		this.pacman = new Pacman()
-		this.inputManager = new inputManager()
+		this.InputManager = new InputManager()
 
 		this.level = 0
 		
@@ -32,7 +34,8 @@ export default class Game
 		this.score = 0
 		this.win = false //false
 
-        this.inputManager.setupKeybindings()
+
+        this.InputManager.setupKeybindings()
 
 		this.sprites.img[this.sprites.imgNumber].onload = () =>
 		{
@@ -48,6 +51,8 @@ export default class Game
 	{
 		this.canvas = document.getElementById("Screen")		
 		this.canvasContext = this.canvas.getContext("2d")
+		this.canvas.width = 1080
+		this.canvas.height = 1350
 	}
 
 	drawScore()
@@ -55,7 +60,7 @@ export default class Game
 		this.canvasContext.fillStyle='black'
 		this.canvasContext.font = "bold 20px Emulogic"
 		this.canvasContext.fillStyle='white'
-		this.canvasContext.fillText("Score: " + this.score, 700, 100)
+		this.canvasContext.fillText("Highscore: " + this.score, 175, 50)
 	}
 
 	winReset()
@@ -80,8 +85,8 @@ export default class Game
 		this.pacman.getStartingPosition()
 
 
-		this.inputManager.direction = this.inputManager.DIRECTION_NONE
-		this.inputManager.nextDirection = this.inputManager.DIRECTION_NONE
+		this.InputManager.direction = this.InputManager.DIRECTION_NONE
+		this.InputManager.nextDirection = this.InputManager.DIRECTION_NONE
 
 		for (let i = 0; i < this.map.dots.length; i++)
 			this.map.dots[i].display = true
@@ -110,8 +115,8 @@ export default class Game
 		this.pacman.getStartingPosition()
 
 
-		this.inputManager.direction = this.inputManager.DIRECTION_NONE
-		this.inputManager.nextDirection = this.inputManager.DIRECTION_NONE
+		this.InputManager.direction = this.InputManager.DIRECTION_NONE
+		this.InputManager.nextDirection = this.InputManager.DIRECTION_NONE
 
 		for (let i = 0; i < this.map.dots.length; i++)
 			this.map.dots[i].display = true
