@@ -68,6 +68,7 @@ export default class Game
 		this.map.numberFruitCollected = 0
 		this.map.fruitCollected = true
 		this.map.currentFruit = 0
+		this.map.wallColor = "#342DCA"
 
 		this.pacman.die = false
 		this.pacman.currentFrame = 0;
