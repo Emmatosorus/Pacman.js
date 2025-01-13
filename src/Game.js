@@ -32,8 +32,10 @@ export default class Game
 		this.fruitScores = [100, 300, 500, 700, 1000, 2000, 3000, 5000]
 		
 		this.isPlaying = true //true
-		this.score = 0
 		this.win = false //false
+
+		this.score = 0
+		this.show1UP = 0
 
 
         this.InputManager.setupKeybindings()
@@ -59,9 +61,27 @@ export default class Game
 	drawScore()
 	{
 		this.canvasContext.fillStyle='black'
-		this.canvasContext.font = "bold 20px Emulogic"
+		this.canvasContext.font = "bold 24px Emulogic"
 		this.canvasContext.fillStyle='white'
-		this.canvasContext.fillText("Highscore: " + this.score, 175, 50)
+
+		const progress = this.time.deltaTime * 0.004
+				
+		this.show1UP += progress
+
+		if (this.show1UP < 1)
+		{
+			this.canvasContext.fillText("1UP", 80, 40)
+		}	
+
+		if (this.show1UP >= 2)
+			this.show1UP = 0
+		
+		this.canvasContext.fillText("Highscore", 240, 40)
+
+		this.canvasContext.textAlign = 'right'
+		this.canvasContext.fillText(this.score, this.canvas.width - 930, 70)
+		this.canvasContext.fillText(this.score, this.canvas.width - 670, 70)
+		this.canvasContext.textAlign = 'left'
 	}
 
 	winReset()
