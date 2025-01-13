@@ -45,6 +45,7 @@ export default class Pacman
 
 	drawPacman(maxFrame, animationTime, animate)
 	{		
+		
 		this.game.canvasContext.save();
         this.game.canvasContext.translate(
             this.x + this.map.blocksize / 2,
@@ -97,7 +98,7 @@ export default class Pacman
 			if (this.map.map[y][x] === 5 && this.map.fruitCollected === false)
 			{
 				this.map.fruitCollected = true
-				this.game.score += this.game.fruitScores[this.game.level % this.sprites.fruitFrameCount]	
+				this.game.score += this.game.fruitScores[this.map.currentFruit]	
 				this.game.map.numberFruitCollected++			
 			}
 			return
@@ -115,6 +116,7 @@ export default class Pacman
 		if (dot == null)
 		{
 			this.game.isPlaying = false
+			this.game.win = true
 		}
 	}
 
@@ -126,9 +128,9 @@ export default class Pacman
 		this.currentImage = 1
 
 		if (this.dieAnimationStart === null)
-			this.dieAnimationStart = this.time.currentTime
+			this.dieAnimationStart = this.time.currentTimeSeconds
 
-		if (this.time.currentTime < this.dieAnimationStart + 1000)
+		if (this.time.currentTimeSeconds < this.dieAnimationStart + 1)
 		{
 			this.drawPacman(this.sprites.animationFrameCount, 0.10, false)
 			return

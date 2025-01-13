@@ -25,9 +25,12 @@ export default class Game
 		this.inputManager = new inputManager()
 
 		this.level = 0
+		
 		this.fruitScores = [100, 300, 500, 700, 1000, 2000, 3000, 5000]
-		this.isPlaying = true
+		
+		this.isPlaying = false //true
 		this.score = 0
+		this.win = true //false
 
         this.inputManager.setupKeybindings()
 
@@ -55,6 +58,8 @@ export default class Game
 		this.canvasContext.fillText("Score: " + this.score, 700, 100)
 	}
 
+
+
 	update()
 	{
 		if (this.isPlaying === true)
@@ -67,7 +72,17 @@ export default class Game
 			this.pacman.update()
 			this.drawScore()
 		}
-		else
+		else if (this.win === true)
+		{
+			this.map.winAnimation()
+			// this.canvasContext.fillStyle='black'
+			// this.canvasContext.fillRect(0, 0, this.canvas.width, this.canvas.height)
+			// this.canvasContext.fillStyle='white'
+			// this.canvasContext.font = "bold 20px Emulogic"
+			// this.canvasContext.fillText("You win", 350, 300)
+			// this.canvasContext.fillText("Score: " + this.score, 350, 350)
+		}
+		else if (this.pacman.die === true)
 		{
 			this.map.update()
 			this.pacman.dieAnimation()
@@ -79,6 +94,7 @@ export default class Game
 				this.map.dotsCollected = 0
 				this.map.numberFruitCollected = 0
 				this.map.fruitCollected = true
+				this.map.currentFruit = 0
 				this.pacman.die = false
 				this.pacman.currentFrame = 0;
         		this.pacman.currentImage = 0;
