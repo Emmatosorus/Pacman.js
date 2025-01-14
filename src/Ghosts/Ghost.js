@@ -30,7 +30,7 @@ export default class Ghost
         this.x = 0
         this.y = 0
 
-        this.speed = 2
+        this.speed = 4
 
         this.getPosition()
         this.lastPosition = [this.x, this.y]
@@ -132,8 +132,17 @@ export default class Ghost
     {
         if (this.checkMoves() === "newMoves")
         {
+            const prevDir = this.direction
             this.lastPosition = [this.x, this.y]
             this.direction = this.possibleDirections[Math.floor(Math.random() * this.possibleDirections.length)]
+
+            if (this.direction === this.DIRECTION_DOWN && this.map.map[Math.floor((this.y + this.map.blocksize * 0.5) / this.map.blocksize)]
+                [Math.floor((this.x + this.map.blocksize * 0.5) / this.map.blocksize)] === this.map.BLINKY)
+            {
+                this.direction = prevDir;
+                console.log("yey")
+            }
+
         }
         if (this.direction === this.DIRECTION_UP && this.canMove(this.DIRECTION_UP))
         {

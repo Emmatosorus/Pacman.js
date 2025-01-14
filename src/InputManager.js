@@ -95,7 +95,9 @@ export default class InputManager
 		{
 			this.direction = this.DIRECTION_UP
 		}
-		if (this.nextDirection === this.DIRECTION_DOWN && this.canMove(this.nextDirection))
+		if (this.nextDirection === this.DIRECTION_DOWN && this.canMove(this.nextDirection) &&
+			this.map.map[Math.floor((this.pacman.y + this.map.blocksize * 0.5) / this.map.blocksize)]
+			[Math.floor((this.pacman.x + this.map.blocksize * 0.5) / this.map.blocksize)] !== this.map.BLINKY)
 		{
 			this.direction = this.DIRECTION_DOWN
 		}
