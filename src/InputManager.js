@@ -57,9 +57,8 @@ export default class InputManager
 			bigX = Math.floor((this.pacman.x + (this.map.blocksize - 1)) / this.map.blocksize)
 			smallY = Math.ceil(this.pacman.y / this.map.blocksize) - 1
 			
-			if (this.map.map[smallY][smallX] === this.map.WALL || this.map.map[smallY][bigX] === this.map.WALL)
-				return false
-			return true
+			return !(this.map.map[smallY][smallX] === this.map.WALL || this.map.map[smallY][bigX] === this.map.WALL);
+
 		}
 		if (dir === this.DIRECTION_DOWN)
 		{
@@ -67,9 +66,8 @@ export default class InputManager
 			bigX = Math.floor((this.pacman.x + (this.map.blocksize - 1)) / this.map.blocksize)
 			smallY = Math.floor(this.pacman.y / this.map.blocksize) + 1
 			
-			if (this.map.map[smallY][smallX] === this.map.WALL || this.map.map[smallY][bigX] === this.map.WALL)
-				return false
-			return true
+			return !(this.map.map[smallY][smallX] === this.map.WALL || this.map.map[smallY][bigX] === this.map.WALL);
+
 		}
 		if (dir === this.DIRECTION_LEFT)
 		{
@@ -77,9 +75,8 @@ export default class InputManager
 			smallY = Math.floor((this.pacman.y + 1) / this.map.blocksize)
 			bigY = Math.floor((this.pacman.y + (this.map.blocksize - 1)) / this.map.blocksize)
 
-			if (this.map.map[smallY][smallX] === this.map.WALL || this.map.map[bigY][smallX] === this.map.WALL)
-				return false
-			return true
+			return !(this.map.map[smallY][smallX] === this.map.WALL || this.map.map[bigY][smallX] === this.map.WALL);
+
 		}
 		if (dir === this.DIRECTION_RIGHT)
 		{
@@ -87,9 +84,8 @@ export default class InputManager
 			smallY = Math.floor((this.pacman.y + 1) / this.map.blocksize)
 			bigY = Math.floor((this.pacman.y + (this.map.blocksize - 1)) / this.map.blocksize)
 
-			if (this.map.map[smallY][smallX] === this.map.WALL || this.map.map[bigY][smallX] === this.map.WALL)
-				return false
-			return true
+			return !(this.map.map[smallY][smallX] === this.map.WALL || this.map.map[bigY][smallX] === this.map.WALL);
+
 		}
 	}
 
