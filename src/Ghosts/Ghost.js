@@ -128,6 +128,19 @@ export default class Ghost
         }
     }
 
+    forbiddenUp()
+    {
+        let x = Math.floor((this.x + this.map.blocksize * 0.5) / this.map.blocksize)
+        let y = Math.floor((this.y + this.map.blocksize * 0.5) / this.map.blocksize)
+
+        for (let i = 0; i < this.map.upForbidden.length; i++)
+        {
+            if (compArray(this.map.upForbidden[i], [y, x]) === true)
+                return false
+        }
+        return true
+    }
+
     move()
     {
         if (this.checkMoves() === "newMoves")
@@ -139,8 +152,11 @@ export default class Ghost
             if (this.direction === this.DIRECTION_DOWN && this.map.map[Math.floor((this.y + this.map.blocksize * 0.5) / this.map.blocksize)]
                 [Math.floor((this.x + this.map.blocksize * 0.5) / this.map.blocksize)] === this.map.BLINKY)
             {
-                this.direction = prevDir;
-                console.log("yey")
+                this.direction = prevDir
+            }
+            if (this.direction === this.DIRECTION_UP && this.forbiddenUp() === false)
+            {
+                this.direction = prevDir
             }
 
         }
@@ -204,6 +220,8 @@ Ghost minds
                 1. they are right above the ghost house
                 2. they are at pacman spawn
             (3 tiles wide perimeters)
+
+            Inky + Clyde : To leave ghost house target blinky spawn position
 
         Scatter :
             if in chase or frightened turn around
