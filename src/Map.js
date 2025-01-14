@@ -23,7 +23,7 @@ export default class Map
 
 		this.wallColor = "#342DCA"
 		this.pathColor = "black"
-		this.dotColor = "#caa2db"
+		this.dotColor = "#ffbaad"
 
 		this.dotsCollected = 0
 		this.fruitCollected = true
@@ -196,12 +196,15 @@ export default class Map
 		else
 		{
 			this.game.canvasContext.fillStyle = this.dotColor
-			this.game.canvasContext.fillRect(
+			this.game.canvasContext.beginPath();
+			this.game.canvasContext.roundRect(
 				(x * this.blocksize) + (this.blocksize - (this.blocksize * 0.125)) * 0.5 + this.game.headerSpaceX,
 				(y * this.blocksize) + (this.blocksize - (this.blocksize * 0.125)) * 0.5 + this.game.headerSpaceY,
-				this.blocksize * 0.125,
-				this.blocksize * 0.125
+				this.blocksize * 0.150,
+				this.blocksize * 0.150,
+				[2, 2, 2, 2]
 			)
+			this.game.canvasContext.fill()
 		}
 	}
 
