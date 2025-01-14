@@ -57,7 +57,7 @@ export default class InputManager
 			bigX = Math.floor((this.pacman.x + (this.map.blocksize - 1)) / this.map.blocksize)
 			smallY = Math.ceil(this.pacman.y / this.map.blocksize) - 1
 			
-			if (this.map.map[smallY][smallX] == 1 || this.map.map[smallY][bigX] == 1)
+			if (this.map.map[smallY][smallX] === this.map.WALL || this.map.map[smallY][bigX] === this.map.WALL)
 				return false
 			return true
 		}
@@ -67,7 +67,7 @@ export default class InputManager
 			bigX = Math.floor((this.pacman.x + (this.map.blocksize - 1)) / this.map.blocksize)
 			smallY = Math.floor(this.pacman.y / this.map.blocksize) + 1
 			
-			if (this.map.map[smallY][smallX] == 1 || this.map.map[smallY][bigX] == 1)
+			if (this.map.map[smallY][smallX] === this.map.WALL || this.map.map[smallY][bigX] === this.map.WALL)
 				return false
 			return true
 		}
@@ -77,7 +77,7 @@ export default class InputManager
 			smallY = Math.floor((this.pacman.y + 1) / this.map.blocksize)
 			bigY = Math.floor((this.pacman.y + (this.map.blocksize - 1)) / this.map.blocksize)
 
-			if (this.map.map[smallY][smallX] == 1 || this.map.map[bigY][smallX] == 1)
+			if (this.map.map[smallY][smallX] === this.map.WALL || this.map.map[bigY][smallX] === this.map.WALL)
 				return false
 			return true
 		}
@@ -87,7 +87,7 @@ export default class InputManager
 			smallY = Math.floor((this.pacman.y + 1) / this.map.blocksize)
 			bigY = Math.floor((this.pacman.y + (this.map.blocksize - 1)) / this.map.blocksize)
 
-			if (this.map.map[smallY][smallX] == 1 || this.map.map[bigY][smallX] == 1)
+			if (this.map.map[smallY][smallX] === this.map.WALL || this.map.map[bigY][smallX] === this.map.WALL)
 				return false
 			return true
 		}

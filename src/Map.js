@@ -38,6 +38,17 @@ export default class Map
 
 		this.dots = []
 
+		this.PATH = 0
+		this.WALL = 1
+		this.DOT = 2
+		this.POWER_PELLET = 3
+		this.PACMAN = 4
+		this.FRUIT = 5
+		this.BLINKY = 6
+		this.PINKY = 7
+		this.INKY = 8
+		this.CLYDE = 9
+
 		this.map = [
 			[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
 			[1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1],
@@ -47,10 +58,10 @@ export default class Map
 			[1, 2, 1, 1, 1, 2, 1, 2, 1, 1, 1, 1, 1, 2, 1, 2, 1, 1, 1, 2, 1],
 			[1, 2, 2, 2, 2, 2, 1, 2, 2, 2, 1, 2, 2, 2, 1, 2, 2, 2, 2, 2, 1],
 			[1, 1, 1, 1, 1, 2, 1, 1, 1, 0, 1, 0, 1, 1, 1, 2, 1, 1, 1, 1, 1],
-			[0, 0, 0, 0, 1, 2, 1, 0, 0, 0, 0, 0, 0, 0, 1, 2, 1, 0, 0, 0, 0],
+			[0, 0, 0, 0, 1, 2, 1, 0, 0, 0, 6, 0, 0, 0, 1, 2, 1, 0, 0, 0, 0],
 			[1, 1, 1, 1, 1, 2, 1, 0, 1, 1, 0, 1, 1, 0, 1, 2, 1, 1, 1, 1, 1],
 			[0, 0, 0, 0, 0, 2, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2, 0, 0, 0, 0, 0],
-			[1, 1, 1, 1, 1, 2, 1, 0, 1, 0, 0, 0, 1, 0, 1, 2, 1, 1, 1, 1, 1],
+			[1, 1, 1, 1, 1, 2, 1, 0, 1, 7, 8, 9, 1, 0, 1, 2, 1, 1, 1, 1, 1],
 			[0, 0, 0, 0, 1, 2, 1, 0, 1, 1, 1, 1, 1, 0, 1, 2, 1, 0, 0, 0, 0],
 			[0, 0, 0, 0, 1, 2, 1, 0, 0, 0, 5, 0, 0, 0, 1, 2, 1, 0, 0, 0, 0],
 			[1, 1, 1, 1, 1, 2, 1, 0, 1, 1, 1, 1, 1, 0, 1, 2, 1, 1, 1, 1, 1],
@@ -74,9 +85,9 @@ export default class Map
 		{
 			for (let j = 0; j < this.map[0].length; j++)
 			{
-				if (this.map[i][j] === 2)
+				if (this.map[i][j] === this.DOT)
 					this.dots.push({x: j, y: i, display: true, big: false})
-				if (this.map[i][j] === 3)
+				if (this.map[i][j] === this.POWER_PELLET)
 					this.dots.push({x: j, y: i, display: true, big: true})
 			}
 		}
@@ -86,13 +97,13 @@ export default class Map
 	{
 		const corner = [0, 0, 0, 0]
 
-		if (y > 0 && this.map[y - 1][x] !== 1 && x > 0 && this.map[y][x - 1] !== 1)
+		if (y > 0 && this.map[y - 1][x] !== this.WALL && x > 0 && this.map[y][x - 1] !== this.WALL)
 			corner[0] = this.cornerRads
-		if (y > 0 && this.map[y - 1][x] !== 1 && x < this.map[0].length - 1 && this.map[y][x + 1] !== 1)
+		if (y > 0 && this.map[y - 1][x] !== this.WALL && x < this.map[0].length - 1 && this.map[y][x + 1] !== this.WALL)
 			corner[1] = this.cornerRads
-		if (y < this.map.length - 1 && this.map[y + 1][x] !== 1 && x < this.map[0].length - 1 && this.map[y][x + 1] !== 1)
+		if (y < this.map.length - 1 && this.map[y + 1][x] !== this.WALL && x < this.map[0].length - 1 && this.map[y][x + 1] !== this.WALL)
 			corner[2] = this.cornerRads
-		if (y < this.map.length - 1 && this.map[y + 1][x] !== 1 && x > 0 && this.map[y][x - 1] !== 1 )
+		if (y < this.map.length - 1 && this.map[y + 1][x] !== this.WALL && x > 0 && this.map[y][x - 1] !== this.WALL )
 			corner[3] = this.cornerRads
 
 		this.game.canvasContext.strokeStyle = this.wallColor
@@ -111,7 +122,7 @@ export default class Map
 
 		this.game.canvasContext.fillStyle = this.pathColor
 
-		if (x > 0 && this.map[y][x - 1] === 1)
+		if (x > 0 && this.map[y][x - 1] === this.WALL)
 		{
 			this.game.canvasContext.fillRect(
 				x * this.blocksize + this.game.headerSpaceX - this.wallBorder,
@@ -121,7 +132,7 @@ export default class Map
 			)
 		}
 
-		if (y > 0 && this.map[y - 1][x] === 1)
+		if (y > 0 && this.map[y - 1][x] === this.WALL)
 		{
 			this.game.canvasContext.fillRect(
 				x * this.blocksize + this.game.headerSpaceX + (this.wallBorder * 0.5 - 3),
@@ -135,7 +146,6 @@ export default class Map
 	hideTunnel()
 	{
 		this.game.canvasContext.fillStyle = this.pathColor
-		// this.game.canvasContext.fillStyle = "white"
 		this.game.canvasContext.fillRect(
 			0,
 			(this.blocksize * 12) + this.wallBorder - 3,
@@ -197,7 +207,7 @@ export default class Map
 
 	drawFruit(x, y)
 	{
-		if (this.fruitCollected !== false || this.map[y][x] !== 5)
+		if (this.fruitCollected !== false || this.map[y][x] !== this.FRUIT)
 			return
 		
 		this.game.canvasContext.drawImage(
@@ -219,7 +229,7 @@ export default class Map
 		{
 			for (let x = 0; x < this.map[0].length; x++)
 			{
-				if (this.map[y][x] === 1)
+				if (this.map[y][x] === this.WALL)
 				{
 					this.drawWall(x, y)
 					this.game.canvasContext.lineWidth = 1

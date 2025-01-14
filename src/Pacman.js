@@ -36,7 +36,7 @@ export default class Pacman
 		{
 			for (let j = 0; j < this.map.map[0].length; j++)
 			{
-				if (this.map.map[i][j] === 4)
+				if (this.map.map[i][j] === this.map.PACMAN)
 				{
 					this.x = (j * this.map.blocksize)
 					this.y = (i * this.map.blocksize)		
@@ -101,7 +101,7 @@ export default class Pacman
 		let dot = this.map.dots.find((element) => element.x === x && element.y === y)
 		if (dot == null)
 		{			
-			if (this.map.map[y][x] === 5 && this.map.fruitCollected === false)
+			if (this.map.map[y][x] === this.map.FRUIT && this.map.fruitCollected === false)
 			{
 				this.map.fruitCollected = true
 				this.game.score += this.game.fruitScores[this.map.currentFruit]	
