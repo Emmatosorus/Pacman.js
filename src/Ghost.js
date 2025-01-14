@@ -10,6 +10,20 @@ export default class Ghost
         this.map = this.game.map
         this.sprites = this.game.sprites
         this.pacman = this.game.pacman
+
+        this.img = this.sprites.img[3]
+        this.imgLine = 0
+        this.imgColumn = 0
+
+        this.DIRECTION_RIGHT = 0
+        this.DIRECTION_DOWN = 1
+        this.DIRECTION_LEFT = 2
+        this.DIRECTION_UP = 3
+        this.DIRECTION_NONE = 4
+        this.direction = this.DIRECTION_NONE
+
+        this.x = 0
+        this.y = 0
     }
 }
 

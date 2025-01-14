@@ -3,7 +3,7 @@ import Pacman from "./Pacman.js"
 import InputManager from "./InputManager.js"
 import Sizes from "./Utils/Sizes.js"
 import Time from "./Utils/Time.js"
-import Sprites from "./Sprites.js"
+import Sprites from "./Utils/Sprites.js"
 
 let singletone = null
 

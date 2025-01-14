@@ -1,5 +1,3 @@
-import Game from "./Game"
-
 export default class Sprites
 {
     constructor()
@@ -19,5 +17,8 @@ export default class Sprites
         this.img[2] = new Image()
 		this.img[2].src ="./static/sprites/fruit.png"
         this.fruitFrameCount = 8;
+
+        this.img[3] = new Image()
+        this.img[3].src ="./static/sprites/ghosts.png"
     }
 }
