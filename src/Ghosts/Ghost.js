@@ -62,7 +62,6 @@ export default class Ghost
             this.width,
             this.height
         )
-        // console.log("draw")
     }
 
     update()
