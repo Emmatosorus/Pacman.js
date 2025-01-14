@@ -15,6 +15,7 @@ export default class Map
 		this.heigth = this.game.sizes.height
 		this.blocksize = 32
 		this.wallBorder = 8
+		this.wallWidth = 2
 		this.wallOffset = this.blocksize * 0.5;
 		this.cornerRads = 6
 		this.x = 0
@@ -96,7 +97,7 @@ export default class Map
 
 		this.game.canvasContext.strokeStyle = this.wallColor
 		this.game.canvasContext.fillStyle = this.wallColor
-		this.game.canvasContext.lineWidth = 4
+		this.game.canvasContext.lineWidth = this.wallWidth
 		this.game.canvasContext.beginPath();
 		this.game.canvasContext.roundRect(
 			x * this.blocksize + this.game.headerSpaceX,
@@ -109,24 +110,24 @@ export default class Map
 
 
 		this.game.canvasContext.fillStyle = this.pathColor
-		
-		if (x > 0 && this.map[y][x - 1] == 1)
+
+		if (x > 0 && this.map[y][x - 1] === 1)
 		{
 			this.game.canvasContext.fillRect(
 				x * this.blocksize + this.game.headerSpaceX - this.wallBorder,
-				y * this.blocksize + this.game.headerSpaceY + (this.wallBorder * 0.5 - 2),
-				this.blocksize - (this.wallBorder),
-				this.blocksize - (this.wallBorder * 0.5)
+				y * this.blocksize + this.game.headerSpaceY + (this.wallBorder * 0.5 - 3),
+				this.blocksize - (this.wallBorder) + 1,
+				this.blocksize - (this.wallBorder * 0.5) + 2
 			)
 		}
 
-		if (y > 0 && this.map[y - 1][x] == 1)
+		if (y > 0 && this.map[y - 1][x] === 1)
 		{
 			this.game.canvasContext.fillRect(
-				x * this.blocksize + this.game.headerSpaceX + (this.wallBorder * 0.5 - 2),
+				x * this.blocksize + this.game.headerSpaceX + (this.wallBorder * 0.5 - 3),
 				y * this.blocksize + this.game.headerSpaceY - this.wallBorder,
-				this.blocksize - (this.wallBorder * 0.5),
-				this.blocksize - this.wallBorder
+				this.blocksize - (this.wallBorder * 0.5) + 2,
+				this.blocksize - this.wallBorder + 1
 			)
 		}
 	}
@@ -134,32 +135,33 @@ export default class Map
 	hideTunnel()
 	{
 		this.game.canvasContext.fillStyle = this.pathColor
+		// this.game.canvasContext.fillStyle = "white"
 		this.game.canvasContext.fillRect(
 			0,
-			(this.blocksize * 12) + this.wallBorder - 2,
+			(this.blocksize * 12) + this.wallBorder - 3,
 			this.wallBorder * 2,
-			this.blocksize - this.wallBorder * 0.5
+			this.blocksize - this.wallBorder * 0.5 + 2
 		)
 
 		this.game.canvasContext.fillRect(
 			0,
-			(this.blocksize * 14) + this.wallBorder - 2,
+			(this.blocksize * 14) + this.wallBorder - 3,
 			this.wallBorder * 2,
-			this.blocksize - this.wallBorder * 0.5
+			this.blocksize - this.wallBorder * 0.5 + 2
 		)
 
 		this.game.canvasContext.fillRect(
 			this.blocksize * (this.map[0].length),
-			(this.blocksize * 12) + this.wallBorder - 2,
+			(this.blocksize * 12) + this.wallBorder - 3,
 			this.wallBorder * 2,
-			this.blocksize - this.wallBorder * 0.5
+			this.blocksize - this.wallBorder * 0.5 + 2
 		)
 
 		this.game.canvasContext.fillRect(
 			this.blocksize * (this.map[0].length),
-			(this.blocksize * 14) + this.wallBorder - 2,
+			(this.blocksize * 14) + this.wallBorder - 3,
 			this.wallBorder * 2,
-			this.blocksize - this.wallBorder * 0.5
+			this.blocksize - this.wallBorder * 0.5 + 2
 		)
 	}
 
