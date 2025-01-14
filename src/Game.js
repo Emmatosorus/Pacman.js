@@ -4,6 +4,10 @@ import InputManager from "./InputManager.js"
 import Sizes from "./Utils/Sizes.js"
 import Time from "./Utils/Time.js"
 import Sprites from "./Utils/Sprites.js"
+import Blinky from "./Ghosts/Blinky.js"
+import Pinky from "./Ghosts/Pinky.js"
+import Inky from "./Ghosts/Inky.js"
+import Clyde from "./Ghosts/Clyde.js"
 
 let singletone = null
 
@@ -26,6 +30,12 @@ export default class Game
 		this.map = new Map()
 		this.pacman = new Pacman()
 		this.InputManager = new InputManager()
+
+		this.ghosts = []
+		this.ghosts.push(new Blinky(this.map.BLINKY))
+		this.ghosts.push(new Pinky(this.map.PINKY))
+		this.ghosts.push(new Inky(this.map.INKY))
+		this.ghosts.push(new Clyde(this.map.CLYDE))
 
 		this.level = 0
 		
@@ -166,7 +176,12 @@ export default class Game
 
 			this.map.update()
 			this.pacman.update()
+			this.ghosts[0].update()
+			this.ghosts[1].update()
+			this.ghosts[2].update()
+			this.ghosts[3].update()
 			this.drawScore()
+
 		}
 		else if (this.win === true)
 		{

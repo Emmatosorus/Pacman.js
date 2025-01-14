@@ -1,8 +1,8 @@
-import Game from './Game'
+import Game from '../Game'
 
 export default class Ghost
 {
-    constructor()
+    constructor(mapCode)
     {
         this.game = new Game()
         this.sizes = this.game.sizes
@@ -22,8 +22,52 @@ export default class Ghost
         this.DIRECTION_NONE = 4
         this.direction = this.DIRECTION_NONE
 
+        this.width = 32
+        this.height = 32
+        this.mapCode = mapCode
+
         this.x = 0
         this.y = 0
+
+        this.getPosition()
+
+    }
+
+    getPosition()
+    {
+        for (let i = 0; i < this.map.map.length; i++)
+        {
+            for (let j = 0; j < this.map.map[0].length; j++)
+            {
+                if (this.map.map[i][j] === this.mapCode)
+                {
+                    this.x = (j * this.map.blocksize)
+                    this.y = (i * this.map.blocksize)
+                    return
+                }
+            }
+        }
+    }
+
+    draw()
+    {
+        this.game.canvasContext.drawImage(
+            this.img,
+            this.imgColumn * this.map.blocksize,
+            this.imgLine * this.map.blocksize,
+            this.map.blocksize,
+            this.map.blocksize,
+            this.x + this.game.headerSpaceX,
+            this.y + this.game.headerSpaceY,
+            this.width,
+            this.height
+        )
+        // console.log("draw")
+    }
+
+    update()
+    {
+        this.draw()
     }
 }
 

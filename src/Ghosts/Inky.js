@@ -1,0 +1,13 @@
+import Ghost from "./Ghost"
+
+export default class Inky extends Ghost
+{
+    constructor(mapCode)
+    {
+        super(mapCode)
+
+        this.imgColumn = 2
+        this.imgLine = 0
+    }
+
+}
