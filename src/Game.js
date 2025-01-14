@@ -168,12 +168,11 @@ export default class Game
 
 	update()
 	{
+		this.canvasContext.fillStyle='black'
+		this.canvasContext.fillRect(0, 0, this.canvas.width, this.canvas.height)
 		if (this.isPlaying === true)
 		// if (this.score < 50)
 		{
-			this.canvasContext.fillStyle='black'
-			this.canvasContext.fillRect(0, 0, this.canvas.width, this.canvas.height)
-
 			this.map.update()
 			this.pacman.update()
 			this.ghosts[0].update()
@@ -187,6 +186,10 @@ export default class Game
 		{
 			this.map.winAnimation()
 			this.pacman.winAnimation()
+			this.ghosts[0].update()
+			this.ghosts[1].update()
+			this.ghosts[2].update()
+			this.ghosts[3].update()
 			if (this.pacman.winAnimationEnd === true)
 				this.winReset()
 		}
