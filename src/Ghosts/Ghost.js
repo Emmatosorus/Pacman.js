@@ -222,6 +222,8 @@ Ghost minds
             (3 tiles wide perimeters)
 
             Inky + Clyde : To leave ghost house target blinky spawn position
+            For leaving the ghost house go to "Home Sweet Home" :
+                https://www.gamedeveloper.com/design/the-pac-man-dossier
 
         Scatter :
             if in chase or frightened turn around
