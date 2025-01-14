@@ -124,8 +124,7 @@ export default class Pacman
 		dot = this.map.dots.find((element) => element.display === true)
 		if (dot == null)
 		{
-			this.game.isPlaying = false
-			this.game.win = true
+			this.game.state = "win"
 		}
 	}
 

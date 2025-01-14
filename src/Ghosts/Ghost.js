@@ -30,7 +30,7 @@ export default class Ghost
         this.x = 0
         this.y = 0
 
-        this.speed = 4
+        this.speed = 2
 
         this.getPosition()
         this.lastPosition = [this.x, this.y]
@@ -174,7 +174,8 @@ export default class Ghost
 
     update()
     {
-        this.move()
+        if (this.game.state === "playing")
+            this.move()
         this.draw()
     }
 }

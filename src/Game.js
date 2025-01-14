@@ -41,12 +41,10 @@ export default class Game
 		
 		this.fruitScores = [100, 300, 500, 700, 1000, 2000, 3000, 5000]
 		
-		this.isPlaying = true //true
-		this.win = false //false
+		this.state = "playing"
 
 		this.score = 0
 		this.show1UP = 0
-
 
         this.InputManager.setupKeybindings()
 
@@ -103,8 +101,7 @@ export default class Game
 		)
 
 		this.level++;
-		this.isPlaying = true
-		this.win = false
+		this.state = "playing"
 
 		this.map.dotsCollected = 0
 		this.map.numberFruitCollected = 0
@@ -141,8 +138,7 @@ export default class Game
 
 		this.level = 0
 		this.score = 0
-		this.isPlaying = true
-		this.win = false
+		this.state = "playing"
 
 		this.map.dotsCollected = 0
 		this.map.numberFruitCollected = 0
@@ -173,7 +169,7 @@ export default class Game
 	{
 		this.canvasContext.fillStyle='black'
 		this.canvasContext.fillRect(0, 0, this.canvas.width, this.canvas.height)
-		if (this.isPlaying === true)
+		if (this.state === "playing")
 		// if (this.score < 50)
 		{
 			this.map.update()
@@ -185,7 +181,7 @@ export default class Game
 			this.drawScore()
 
 		}
-		else if (this.win === true)
+		else if (this.state === "win")
 		{
 			this.map.winAnimation()
 			this.pacman.winAnimation()
@@ -196,7 +192,7 @@ export default class Game
 			if (this.pacman.winAnimationEnd === true)
 				this.winReset()
 		}
-		else if (this.pacman.die === true)
+		else if (this.state === "lose")
 		{
 			this.map.update()
 			this.pacman.dieAnimation()
