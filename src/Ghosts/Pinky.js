@@ -9,6 +9,9 @@ export default class Pinky extends Ghost
         this.imgColumn = 1
         this.imgLine = 0
 
+        this.direction = this.DIRECTION_UP
+
+
     }
 
 }

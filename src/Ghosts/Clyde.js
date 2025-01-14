@@ -9,5 +9,7 @@ export default class Clyde extends Ghost
         this.imgColumn = 3
         this.imgLine = 0
 
+        this.direction = this.DIRECTION_UP
+
     }
 }

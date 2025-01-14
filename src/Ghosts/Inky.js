@@ -8,6 +8,9 @@ export default class Inky extends Ghost
 
         this.imgColumn = 2
         this.imgLine = 0
+
+        this.direction = this.DIRECTION_UP
+
     }
 
 }

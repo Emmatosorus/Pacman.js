@@ -121,6 +121,8 @@ export default class Game
 		this.pacman.winAnimationEnd = false
 		this.pacman.getStartingPosition()
 
+		for (let i = 0; i < this.ghosts.length - 1; i++)
+			this.ghosts[i].getPosition()
 
 		this.InputManager.direction = this.InputManager.DIRECTION_NONE
 		this.InputManager.nextDirection = this.InputManager.DIRECTION_NONE
@@ -157,6 +159,8 @@ export default class Game
 		this.pacman.winAnimationEnd = false
 		this.pacman.getStartingPosition()
 
+		for (let i = 0; i < this.ghosts.length; i++)
+			this.ghosts[i].getPosition()
 
 		this.InputManager.direction = this.InputManager.DIRECTION_NONE
 		this.InputManager.nextDirection = this.InputManager.DIRECTION_NONE
@@ -164,7 +168,6 @@ export default class Game
 		for (let i = 0; i < this.map.dots.length; i++)
 			this.map.dots[i].display = true
 	}
-
 
 	update()
 	{

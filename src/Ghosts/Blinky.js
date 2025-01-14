@@ -9,6 +9,8 @@ export default class Blinky extends Ghost
         this.imgColumn = 0
         this.imgLine = 0
 
+        this.direction = this.DIRECTION_LEFT
+
     }
 
 }

@@ -1,4 +1,5 @@
 import Game from '../Game'
+import { compArray } from "../Utils/Utils"
 
 export default class Ghost
 {
@@ -29,7 +30,13 @@ export default class Ghost
         this.x = 0
         this.y = 0
 
+        this.speed = 4
+
         this.getPosition()
+        this.lastPosition = [this.x, this.y]
+
+        this.possibleDirections = []
+        this.checkMoves()
 
     }
 
@@ -49,6 +56,107 @@ export default class Ghost
         }
     }
 
+    checkMoves()
+    {
+        let newMoves = []
+
+        if (this.direction !== this.DIRECTION_UP && this.canMove(this.DIRECTION_DOWN))
+        {
+            newMoves.push(this.DIRECTION_DOWN)
+        }
+        if (this.direction !== this.DIRECTION_LEFT && this.canMove(this.DIRECTION_RIGHT))
+        {
+            newMoves.push(this.DIRECTION_RIGHT)
+        }
+        if (this.direction !== this.DIRECTION_DOWN && this.canMove(this.DIRECTION_UP))
+        {
+            newMoves.push(this.DIRECTION_UP)
+        }
+        if (this.direction !== this.DIRECTION_RIGHT && this.canMove(this.DIRECTION_LEFT))
+        {
+            newMoves.push(this.DIRECTION_LEFT)
+        }
+        if (newMoves.length !== 0 && compArray(newMoves, this.possibleDirections) === false)
+        {
+            this.possibleDirections = newMoves
+            return "newMoves"
+        }
+        return "noNewMoves"
+    }
+
+    canMove(dir)
+    {
+        let smallX
+        let smallY
+        let bigX
+        let bigY
+
+        if (dir === this.DIRECTION_UP)
+        {
+            smallX = Math.floor((this.x + 1) / this.map.blocksize)
+            bigX = Math.floor((this.x + (this.map.blocksize - 1)) / this.map.blocksize)
+            smallY = Math.ceil(this.y / this.map.blocksize) - 1
+
+            return !(this.map.map[smallY][smallX] === this.map.WALL || this.map.map[smallY][bigX] === this.map.WALL);
+
+        }
+        if (dir === this.DIRECTION_DOWN)
+        {
+            smallX = Math.floor((this.x + 1) / this.map.blocksize)
+            bigX = Math.floor((this.x + (this.map.blocksize - 1)) / this.map.blocksize)
+            smallY = Math.floor(this.y / this.map.blocksize) + 1
+
+            return !(this.map.map[smallY][smallX] === this.map.WALL || this.map.map[smallY][bigX] === this.map.WALL);
+
+        }
+        if (dir === this.DIRECTION_LEFT)
+        {
+            smallX = Math.ceil(this.x / this.map.blocksize) - 1
+            smallY = Math.floor((this.y + 1) / this.map.blocksize)
+            bigY = Math.floor((this.y + (this.map.blocksize - 1)) / this.map.blocksize)
+
+            return !(this.map.map[smallY][smallX] === this.map.WALL || this.map.map[bigY][smallX] === this.map.WALL);
+
+        }
+        if (dir === this.DIRECTION_RIGHT)
+        {
+            smallX = Math.floor(this.x / this.map.blocksize) + 1
+            smallY = Math.floor((this.y + 1) / this.map.blocksize)
+            bigY = Math.floor((this.y + (this.map.blocksize - 1)) / this.map.blocksize)
+
+            return !(this.map.map[smallY][smallX] === this.map.WALL || this.map.map[bigY][smallX] === this.map.WALL);
+        }
+    }
+
+    move()
+    {
+        if (this.checkMoves() === "newMoves")
+        {
+            this.lastPosition = [this.x, this.y]
+            this.direction = this.possibleDirections[Math.floor(Math.random() * this.possibleDirections.length)]
+        }
+        if (this.direction === this.DIRECTION_UP && this.canMove(this.DIRECTION_UP))
+        {
+            this.y -= this.speed
+        }
+        if (this.direction === this.DIRECTION_DOWN && this.canMove(this.DIRECTION_DOWN))
+        {
+            this.y += this.speed
+        }
+        if (this.direction === this.DIRECTION_LEFT && this.canMove(this.DIRECTION_LEFT))
+        {
+            this.x -= this.speed
+        }
+        if (this.direction === this.DIRECTION_RIGHT && this.canMove(this.DIRECTION_RIGHT))
+        {
+            this.x += this.speed
+        }
+        if (this.x < 0)
+            this.x = (this.map.map[0].length - 1) * this.map.blocksize
+        else if (this.x > (this.map.map[0].length - 1) * this.map.blocksize)
+            this.x = 0
+    }
+
     draw()
     {
         this.game.canvasContext.drawImage(
@@ -66,6 +174,7 @@ export default class Ghost
 
     update()
     {
+        this.move()
         this.draw()
     }
 }
