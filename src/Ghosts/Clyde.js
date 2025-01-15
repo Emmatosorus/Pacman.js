@@ -1,9 +1,7 @@
 import Ghost from "./Ghost"
 
-export default class Clyde extends Ghost
-{
-    constructor(mapCode)
-    {
+export default class Clyde extends Ghost {
+    constructor(mapCode) {
         super(mapCode)
 
         this.imgColumn = 3
@@ -13,8 +11,8 @@ export default class Clyde extends Ghost
 
     }
 
-    reset()
-    {
+    reset() {
+        this.possibleDirections = []
         this.direction = this.DIRECTION_LEFT
         this.getPosition()
     }

@@ -2,8 +2,7 @@ import Ghost from "./Ghost"
 
 export default class Blinky extends Ghost
 {
-    constructor(mapCode)
-    {
+    constructor(mapCode) {
         super(mapCode)
 
         this.imgColumn = 0
@@ -13,8 +12,8 @@ export default class Blinky extends Ghost
 
     }
 
-    reset()
-    {
+    reset() {
+        this.possibleDirections = []
         this.direction = this.DIRECTION_LEFT
         this.getPosition()
     }

@@ -1,9 +1,7 @@
 import Game from "./Game.js"
 
-export default class Map
-{
-	constructor()
-	{
+export default class Map {
+	constructor() {
 		this.game = new Game()
 		this.sizes = this.game.sizes
 		this.sprites = this.game.sprites
@@ -87,32 +85,34 @@ export default class Map
 
 	}
 
-	savedots()
-	{
-		for (let i = 0; i < this.map.length; i++)
-		{
-			for (let j = 0; j < this.map[0].length; j++)
-			{
-				if (this.map[i][j] === this.DOT)
+	savedots() {
+		for (let i = 0; i < this.map.length; i++) {
+			for (let j = 0; j < this.map[0].length; j++) {
+				if (this.map[i][j] === this.DOT) {
 					this.dots.push({x: j, y: i, display: true, big: false})
-				if (this.map[i][j] === this.POWER_PELLET)
+				}
+				if (this.map[i][j] === this.POWER_PELLET) {
 					this.dots.push({x: j, y: i, display: true, big: true})
+				}
 			}
 		}
 	}
 
-	drawWall(x, y)
-	{
+	drawWall(x, y) {
 		const corner = [0, 0, 0, 0]
 
-		if (y > 0 && this.map[y - 1][x] !== this.WALL && x > 0 && this.map[y][x - 1] !== this.WALL)
+		if (y > 0 && this.map[y - 1][x] !== this.WALL && x > 0 && this.map[y][x - 1] !== this.WALL) {
 			corner[0] = this.cornerRads
-		if (y > 0 && this.map[y - 1][x] !== this.WALL && x < this.map[0].length - 1 && this.map[y][x + 1] !== this.WALL)
+		}
+		if (y > 0 && this.map[y - 1][x] !== this.WALL && x < this.map[0].length - 1 && this.map[y][x + 1] !== this.WALL) {
 			corner[1] = this.cornerRads
-		if (y < this.map.length - 1 && this.map[y + 1][x] !== this.WALL && x < this.map[0].length - 1 && this.map[y][x + 1] !== this.WALL)
+		}
+		if (y < this.map.length - 1 && this.map[y + 1][x] !== this.WALL && x < this.map[0].length - 1 && this.map[y][x + 1] !== this.WALL) {
 			corner[2] = this.cornerRads
-		if (y < this.map.length - 1 && this.map[y + 1][x] !== this.WALL && x > 0 && this.map[y][x - 1] !== this.WALL )
+		}
+		if (y < this.map.length - 1 && this.map[y + 1][x] !== this.WALL && x > 0 && this.map[y][x - 1] !== this.WALL ) {
 			corner[3] = this.cornerRads
+		}
 
 		this.game.canvasContext.strokeStyle = this.wallColor
 		this.game.canvasContext.fillStyle = this.wallColor
@@ -130,8 +130,7 @@ export default class Map
 
 		this.game.canvasContext.fillStyle = this.pathColor
 
-		if (x > 0 && this.map[y][x - 1] === this.WALL)
-		{
+		if (x > 0 && this.map[y][x - 1] === this.WALL) {
 			this.game.canvasContext.fillRect(
 				x * this.blocksize + this.game.headerSpaceX - this.wallBorder,
 				y * this.blocksize + this.game.headerSpaceY + (this.wallBorder * 0.5 - 3),
@@ -140,8 +139,7 @@ export default class Map
 			)
 		}
 
-		if (y > 0 && this.map[y - 1][x] === this.WALL)
-		{
+		if (y > 0 && this.map[y - 1][x] === this.WALL) {
 			this.game.canvasContext.fillRect(
 				x * this.blocksize + this.game.headerSpaceX + (this.wallBorder * 0.5 - 3),
 				y * this.blocksize + this.game.headerSpaceY - this.wallBorder,
@@ -151,8 +149,7 @@ export default class Map
 		}
 	}
 
-	hideTunnel()
-	{
+	hideTunnel() {
 		this.game.canvasContext.fillStyle = this.pathColor
 		this.game.canvasContext.fillRect(
 			0,
@@ -183,13 +180,12 @@ export default class Map
 		)
 	}
 
-	drawDot(x, y)
-	{
+	drawDot(x, y) {
 		let found = this.dots.find((element) => element.x === x && element.y === y)
-		if (found == null || found.display !== true)
+		if (found == null || found.display !== true) {
 			return
-		if (found.big)
-		{
+		}
+		if (found.big) {
 			this.game.canvasContext.fillStyle = this.dotColor
 			this.game.canvasContext.beginPath();
 			this.game.canvasContext.arc(
@@ -201,8 +197,7 @@ export default class Map
 				true)
 			this.game.canvasContext.fill();
 		}
-		else
-		{
+		else {
 			this.game.canvasContext.fillStyle = this.dotColor
 			this.game.canvasContext.beginPath();
 			this.game.canvasContext.roundRect(
@@ -216,11 +211,11 @@ export default class Map
 		}
 	}
 
-	drawFruit(x, y)
-	{
-		if (this.fruitCollected !== false || this.map[y][x] !== this.FRUIT)
+	drawFruit(x, y) {
+		if (this.fruitCollected !== false || this.map[y][x] !== this.FRUIT) {
 			return
-		
+		}
+
 		this.game.canvasContext.drawImage(
 			this.sprites.img[2],
 			(this.currentFruit) * this.blocksize,
@@ -234,19 +229,14 @@ export default class Map
 		)
 	}
 
-	drawMap()
-	{
-		for (let y = 0; y < this.map.length; y++)
-		{
-			for (let x = 0; x < this.map[0].length; x++)
-			{
-				if (this.map[y][x] === this.WALL)
-				{
+	drawMap() {
+		for (let y = 0; y < this.map.length; y++) {
+			for (let x = 0; x < this.map[0].length; x++) {
+				if (this.map[y][x] === this.WALL) {
 					this.drawWall(x, y)
 					this.game.canvasContext.lineWidth = 1
 				}
-				else
-				{
+				else {
 					this.game.canvasContext.fillStyle = this.pathColor
 					this.game.canvasContext.fillRect(
 						x * this.blocksize + this.game.headerSpaceX + this.wallBorder,
@@ -262,40 +252,38 @@ export default class Map
 		this.hideTunnel()
 	}
 
-	winAnimation()
-	{
+	winAnimation() {
 		const progress = this.time.deltaTime * this.winAnimationTime
 				
 		this.currentColor += progress
 
 		this.currentColor < 1 ? this.wallColor = this.winWallColor : this.wallColor = this.normalWallColor		
 
-		if (this.currentColor >= 2)
+		if (this.currentColor >= 2) {
 			this.currentColor = 0
+		}
 
 		this.drawMap()
 	}
 
-	handleFruit()
-	{
-		if (((this.numberFruitCollected === 0 &&
-			this.dotsCollected === 50) || // 50
-			(this.numberFruitCollected === 1 &&
-			this.dotsCollected === 120))) // 120
-		{			
+	handleFruit() {
+		if (((this.numberFruitCollected === 0 && this.dotsCollected === 50) || // 50
+			(this.numberFruitCollected === 1 && this.dotsCollected === 120))) { // 120
 			this.fruitSpawnTime = this.time.currentTimeSeconds
 			this.fruitCollected = false
 
-			if (this.game.level >= 15)
+			if (this.game.level >= 15) {
 				this.currentFruit = this.sprites.fruitFrameCount - 1
-			else if (this.game.level >= 8 && this.game.level <= 14)
+			}
+			else if (this.game.level >= 8 && this.game.level <= 14) {
 				this.currentFruit = (this.game.level - 7) % this.sprites.fruitFrameCount
-			else
+			}
+			else {
 				this.currentFruit = this.game.level % this.sprites.fruitFrameCount
-			
+			}
+
 		}
-		if (this.fruitCollected === false && this.fruitSpawnTime + 7 < this.time.currentTimeSeconds)
-		{
+		if (this.fruitCollected === false && this.fruitSpawnTime + 7 < this.time.currentTimeSeconds) {
 			this.fruitCollected = true
 			this.numberFruitCollected = 1
 		}

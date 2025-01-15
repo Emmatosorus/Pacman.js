@@ -2,10 +2,8 @@ import Game from '../Game.js'
 import EventEmitter from './EventEmitter.js'
 
 
-export default class Sizes extends EventEmitter
-{
-	constructor()
-	{
+export default class Sizes extends EventEmitter {
+	constructor() {
 		super()
 
 		this.game = new Game()

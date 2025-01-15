@@ -1,9 +1,7 @@
 import EventEmitter from './EventEmitter.js'
 
-export default class Time extends EventEmitter
-{
-    constructor()
-    {
+export default class Time extends EventEmitter {
+    constructor() {
         super()
 
         this.startTime = Date.now()
@@ -16,8 +14,7 @@ export default class Time extends EventEmitter
         this.tick()
     }
 
-    tick()
-    {
+    tick() {
         const newCurrentTime = Date.now()
         this.deltaTime = newCurrentTime - this.currentTime
 

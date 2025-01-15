@@ -11,12 +11,11 @@ import Clyde from "./Ghosts/Clyde.js"
 
 let singletone = null
 
-export default class Game
-{
-	constructor()
-	{
-		if (singletone !== null)
+export default class Game {
+	constructor() {
+		if (singletone !== null) {
 			return (singletone)
+		}
 		singletone = this
 
 		this.setupCanvas()
@@ -49,8 +48,7 @@ export default class Game
 
         this.InputManager.setupKeybindings()
 
-		this.sprites.img[this.sprites.imgNumber].onload = () =>
-		{
+		this.sprites.img[this.sprites.imgNumber].onload = () => {
 		}
 		
 		this.time.on('tick', () => {
@@ -59,16 +57,14 @@ export default class Game
 
 	}
 
-	setupCanvas()
-	{
+	setupCanvas() {
 		this.canvas = document.getElementById("Screen")		
 		this.canvasContext = this.canvas.getContext("2d")
 		this.canvas.width = 1080
 		this.canvas.height = 1350
 	}
 
-	drawScore()
-	{
+	drawScore() {
 		this.canvasContext.fillStyle='black'
 		this.canvasContext.font = "bold 24px Emulogic"
 		this.canvasContext.fillStyle='white'
@@ -77,14 +73,14 @@ export default class Game
 				
 		this.show1UP += progress
 
-		if (this.show1UP < 1)
-		{
+		if (this.show1UP < 1) {
 			this.canvasContext.fillText("1UP", 80, 40)
 		}	
 
-		if (this.show1UP >= 2)
+		if (this.show1UP >= 2) {
 			this.show1UP = 0
-		
+		}
+
 		this.canvasContext.fillText("Highscore", 240, 40)
 
 		this.canvasContext.textAlign = 'right'
@@ -93,8 +89,7 @@ export default class Game
 		this.canvasContext.textAlign = 'left'
 	}
 
-	winReset()
-	{
+	winReset() {
 		this.canvasContext.clearRect(0,
 			0,
 			this.canvas.width,
@@ -119,18 +114,19 @@ export default class Game
 		this.pacman.winAnimationEnd = false
 		this.pacman.getStartingPosition()
 
-		for (let i = 0; i < this.ghosts.length; i++)
+		for (let i = 0; i < this.ghosts.length; i++) {
 			this.ghosts[i].reset()
+		}
 
 		this.InputManager.direction = this.InputManager.DIRECTION_NONE
 		this.InputManager.nextDirection = this.InputManager.DIRECTION_NONE
 
-		for (let i = 0; i < this.map.dots.length; i++)
+		for (let i = 0; i < this.map.dots.length; i++) {
 			this.map.dots[i].display = true
+		}
 	}
 
-	loseReset()
-	{
+	loseReset() {
 		this.canvasContext.clearRect(0,
 			0,
 			this.canvas.width,
@@ -170,17 +166,15 @@ export default class Game
 		this.InputManager.direction = this.InputManager.DIRECTION_NONE
 		this.InputManager.nextDirection = this.InputManager.DIRECTION_NONE
 
-		for (let i = 0; i < this.map.dots.length; i++)
+		for (let i = 0; i < this.map.dots.length; i++) {
 			this.map.dots[i].display = true
+		}
 	}
 
-	update()
-	{
+	update() {
 		this.canvasContext.fillStyle='black'
 		this.canvasContext.fillRect(0, 0, this.canvas.width, this.canvas.height)
-		if (this.state === "playing")
-		// if (this.score < 50)
-		{
+		if (this.state === "playing") {
 			this.map.update()
 			this.pacman.update()
 			for (let i = 0; i < this.ghosts.length; i++)
@@ -190,23 +184,22 @@ export default class Game
 			this.drawScore()
 
 		}
-		else if (this.state === "win")
-		{
+		else if (this.state === "win") {
 			this.map.winAnimation()
 			this.pacman.winAnimation()
-			for (let i = 0; i < this.ghosts.length; i++)
-			{
+			for (let i = 0; i < this.ghosts.length; i++) {
 				this.ghosts[i].update()
 			}
-			if (this.pacman.winAnimationEnd === true)
+			if (this.pacman.winAnimationEnd === true) {
 				this.winReset()
+			}
 		}
-		else if (this.state === "lose")
-		{
+		else if (this.state === "lose") {
 			this.map.update()
 			this.pacman.dieAnimation()
-			if (this.pacman.dieAnimationEnd === true)
+			if (this.pacman.dieAnimationEnd === true) {
 				this.loseReset()
+			}
 		}
 
 	}

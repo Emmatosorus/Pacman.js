@@ -1,15 +1,12 @@
 import Game from "./Game"
 
-export default class Pacman
-{
-	constructor()
-	{
+export default class Pacman {
+	constructor() {
 		this.game = new Game()
 		this.time = this.game.time
 		this.map = this.game.map
 		this.sprites = this.game.sprites
 		this.ghosts = this.game.ghosts
-
 
 		this.x = 0
 		this.y = 0
@@ -30,23 +27,18 @@ export default class Pacman
 
 	getStartingPosition()
 	{
-		for (let i = 0; i < this.map.map.length; i++)
-		{
-			for (let j = 0; j < this.map.map[0].length; j++)
-			{
-				if (this.map.map[i][j] === this.map.PACMAN)
-				{
+		for (let i = 0; i < this.map.map.length; i++) {
+			for (let j = 0; j < this.map.map[0].length; j++) {
+				if (this.map.map[i][j] === this.map.PACMAN) {
 					this.x = (j * this.map.blocksize)
 					this.y = (i * this.map.blocksize)		
 					return
-
 				}
 			}
 		}
 	}
 
-	drawPacman(maxFrame, animationTime, animate)
-	{		
+	drawPacman(maxFrame, animationTime, animate) {
 		
 		this.game.canvasContext.save();
         this.game.canvasContext.translate(
@@ -61,19 +53,18 @@ export default class Pacman
             -(this.y + this.game.headerSpaceY) - this.map.blocksize / 2
         );
 
-		if (animate ===  true)
-		{
+		if (animate ===  true) {
 			const progress = this.time.deltaTime * animationTime
 			this.currentFrame += progress;			
 		}
 
-		if (this.currentFrame >= maxFrame)
-		{			
+		if (this.currentFrame >= maxFrame) {
 
 			this.currentFrame = 0;
-			if (maxFrame === this.sprites.animationFrameCount)
+			if (maxFrame === this.sprites.animationFrameCount) {
 				this.dieAnimationEnd = true
-			
+			}
+
 		}
 				
         this.game.canvasContext.drawImage(
@@ -91,13 +82,11 @@ export default class Pacman
         this.game.canvasContext.restore();
 	}
 
-	checkGhostCollision()
-	{
+	checkGhostCollision() {
 		const x = Math.floor((this.x + this.map.blocksize * 0.5) / this.map.blocksize)
 		const y = Math.floor((this.y + this.map.blocksize * 0.5) / this.map.blocksize)
 
-		for (let i = 0; i < this.ghosts.length; i++)
-		{
+		for (let i = 0; i < this.ghosts.length; i++) {
 			let ghostX = Math.floor((this.ghosts[i].x + this.map.blocksize * 0.5) / this.map.blocksize)
 			let ghostY = Math.floor((this.ghosts[i].y + this.map.blocksize * 0.5) / this.map.blocksize)
 			if (ghostX === x && ghostY === y) {
@@ -106,64 +95,62 @@ export default class Pacman
 		}
 	}
 
-	eat()
-	{
+	eat() {
 		let x = Math.floor((this.x + this.map.blocksize * 0.5) / this.map.blocksize)
 		let y = Math.floor((this.y + this.map.blocksize * 0.5) / this.map.blocksize)
 
 		let dot = this.map.dots.find((element) => element.x === x && element.y === y)
-		if (dot == null)
-		{			
-			if (this.map.map[y][x] === this.map.FRUIT && this.map.fruitCollected === false)
-			{
+		if (dot == null) {
+			if (this.map.map[y][x] === this.map.FRUIT && this.map.fruitCollected === false) {
 				this.map.fruitCollected = true
-				this.game.score += this.game.fruitScores[this.map.currentFruit]	
+				this.game.score += this.game.fruitScores[this.map.currentFruit]
 				this.game.map.numberFruitCollected++
 			}
 			return
 		}
-		if (dot.display)
-		{
+		if (dot.display) {
 			dot.display = false
-			if (dot.big)
+			if (dot.big) {
 				this.game.score += 50
-			else
+			}
+			else {
 				this.game.score += 10
+			}
 			this.map.dotsCollected++
 		}
 		dot = this.map.dots.find((element) => element.display === true)
-		if (dot == null)
-		{
+		if (dot == null) {
 			this.game.state = "win"
 		}
 	}
 
-	winAnimation()
-	{
+	winAnimation() {
 		this.currentImage = 1
 		this.currentFrame = 0
 
-		if (this.winAnimationStart === null)
+		if (this.winAnimationStart === null) {
 			this.winAnimationStart = this.time.currentTimeSeconds
+		}
 
-		if (this.time.currentTimeSeconds < this.winAnimationStart + 3)
+		if (this.time.currentTimeSeconds < this.winAnimationStart + 3) {
 			this.drawPacman(this.sprites.animationFrameCount, 0.01, false)
-		else
+		}
+		else {
 			this.winAnimationEnd = true
+		}
 	}
 
 	dieAnimation()
 	{
 		this.currentImage = 1
 
-		if (this.dieAnimationStart === null)
+		if (this.dieAnimationStart === null) {
 			this.dieAnimationStart = this.time.currentTimeSeconds
+		}
 
-		if (this.time.currentTimeSeconds < this.dieAnimationStart + 2)
-		{
+		if (this.time.currentTimeSeconds < this.dieAnimationStart + 2) {
 			this.drawPacman(this.sprites.animationFrameCount, 0.01, false)
-			for (let i = 0; i < this.ghosts.length; i++)
-			{
+			for (let i = 0; i < this.ghosts.length; i++) {
 				this.ghosts[i].draw()
 			}
 			return

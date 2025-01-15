@@ -1,10 +1,8 @@
 import Game from '../Game'
 import { compArray } from "../Utils/Utils"
 
-export default class Ghost
-{
-    constructor(mapCode)
-    {
+export default class Ghost {
+    constructor(mapCode) {
         this.game = new Game()
         this.sizes = this.game.sizes
         this.time = this.game.time
@@ -43,14 +41,10 @@ export default class Ghost
 
     }
 
-    getPosition()
-    {
-        for (let i = 0; i < this.map.map.length; i++)
-        {
-            for (let j = 0; j < this.map.map[0].length; j++)
-            {
-                if (this.map.map[i][j] === this.mapCode)
-                {
+    getPosition() {
+        for (let i = 0; i < this.map.map.length; i++) {
+            for (let j = 0; j < this.map.map[0].length; j++) {
+                if (this.map.map[i][j] === this.mapCode) {
                     this.x = (j * this.map.blocksize)
                     this.y = (i * this.map.blocksize)
                     return
@@ -59,43 +53,35 @@ export default class Ghost
         }
     }
 
-    checkMoves()
-    {
+    checkMoves() {
         let newMoves = []
 
-        if (this.direction !== this.DIRECTION_UP && this.canMove(this.DIRECTION_DOWN))
-        {
+        if (this.direction !== this.DIRECTION_UP && this.canMove(this.DIRECTION_DOWN)) {
             newMoves.push(this.DIRECTION_DOWN)
         }
-        if (this.direction !== this.DIRECTION_LEFT && this.canMove(this.DIRECTION_RIGHT))
-        {
+        if (this.direction !== this.DIRECTION_LEFT && this.canMove(this.DIRECTION_RIGHT)) {
             newMoves.push(this.DIRECTION_RIGHT)
         }
-        if (this.direction !== this.DIRECTION_DOWN && this.canMove(this.DIRECTION_UP))
-        {
+        if (this.direction !== this.DIRECTION_DOWN && this.canMove(this.DIRECTION_UP)) {
             newMoves.push(this.DIRECTION_UP)
         }
-        if (this.direction !== this.DIRECTION_RIGHT && this.canMove(this.DIRECTION_LEFT))
-        {
+        if (this.direction !== this.DIRECTION_RIGHT && this.canMove(this.DIRECTION_LEFT)) {
             newMoves.push(this.DIRECTION_LEFT)
         }
-        if (newMoves.length !== 0 && compArray(newMoves, this.possibleDirections) === false)
-        {
+        if (newMoves.length !== 0 && compArray(newMoves, this.possibleDirections) === false) {
             this.possibleDirections = newMoves
             return "newMoves"
         }
         return "noNewMoves"
     }
 
-    ghostHouse()
-    {
+    ghostHouse() {
         let newMove = null
 
         let x = Math.floor((this.x + this.map.blocksize * 0.5) / this.map.blocksize)
         let y = Math.floor((this.y + this.map.blocksize * 0.5) / this.map.blocksize)
 
-        for (let i = 0; i < this.map.ghostHouse.length; i++)
-        {
+        for (let i = 0; i < this.map.ghostHouse.length; i++) {
             if (compArray(this.map.ghostHouse[i], [y, x]) === true) {
                 if ((y === 10 || y === 9) && x === 10 && this.canMove(this.DIRECTION_UP)) {
                     newMove = this.DIRECTION_UP
@@ -115,15 +101,13 @@ export default class Ghost
         return newMove
     }
 
-    canMove(dir)
-    {
+    canMove(dir) {
         let smallX
         let smallY
         let bigX
         let bigY
 
-        if (dir === this.DIRECTION_UP)
-        {
+        if (dir === this.DIRECTION_UP) {
             smallX = Math.floor((this.x + 1) / this.map.blocksize)
             bigX = Math.floor((this.x + (this.map.blocksize - 1)) / this.map.blocksize)
             smallY = Math.ceil(this.y / this.map.blocksize) - 1
@@ -131,8 +115,7 @@ export default class Ghost
             return !(this.map.map[smallY][smallX] === this.map.WALL || this.map.map[smallY][bigX] === this.map.WALL);
 
         }
-        if (dir === this.DIRECTION_DOWN)
-        {
+        if (dir === this.DIRECTION_DOWN) {
             smallX = Math.floor((this.x + 1) / this.map.blocksize)
             bigX = Math.floor((this.x + (this.map.blocksize - 1)) / this.map.blocksize)
             smallY = Math.floor(this.y / this.map.blocksize) + 1
@@ -140,8 +123,7 @@ export default class Ghost
             return !(this.map.map[smallY][smallX] === this.map.WALL || this.map.map[smallY][bigX] === this.map.WALL);
 
         }
-        if (dir === this.DIRECTION_LEFT)
-        {
+        if (dir === this.DIRECTION_LEFT) {
             smallX = Math.ceil(this.x / this.map.blocksize) - 1
             smallY = Math.floor((this.y + 1) / this.map.blocksize)
             bigY = Math.floor((this.y + (this.map.blocksize - 1)) / this.map.blocksize)
@@ -149,8 +131,7 @@ export default class Ghost
             return !(this.map.map[smallY][smallX] === this.map.WALL || this.map.map[bigY][smallX] === this.map.WALL);
 
         }
-        if (dir === this.DIRECTION_RIGHT)
-        {
+        if (dir === this.DIRECTION_RIGHT) {
             smallX = Math.floor(this.x / this.map.blocksize) + 1
             smallY = Math.floor((this.y + 1) / this.map.blocksize)
             bigY = Math.floor((this.y + (this.map.blocksize - 1)) / this.map.blocksize)
@@ -159,66 +140,59 @@ export default class Ghost
         }
     }
 
-    forbiddenUp()
-    {
+    forbiddenUp() {
         let x = Math.floor((this.x + this.map.blocksize * 0.5) / this.map.blocksize)
         let y = Math.floor((this.y + this.map.blocksize * 0.5) / this.map.blocksize)
 
-        for (let i = 0; i < this.map.upForbidden.length; i++)
-        {
-            if (compArray(this.map.upForbidden[i], [y, x]) === true)
+        for (let i = 0; i < this.map.upForbidden.length; i++) {
+            if (compArray(this.map.upForbidden[i], [y, x]) === true) {
                 return true
+            }
         }
         return false
     }
 
-    slowZone()
-    {
-        {
-            let x
+    slowZone() {
+        let x
 
-            if (this.direction === this.DIRECTION_LEFT)
-                x = Math.floor((this.x + (this.map.blocksize - 1)) / this.map.blocksize)
-            else
-                x = Math.floor((this.x + this.map.blocksize * 0.5) / this.map.blocksize)
-
-            let y = Math.floor((this.y + this.map.blocksize * 0.5) / this.map.blocksize)
-
-            for (let i = 0; i < this.map.slowZone.length; i++)
-            {
-                if (compArray(this.map.slowZone[i], [y, x]) === true)
-                    return true
-            }
-            return false
+        if (this.direction === this.DIRECTION_LEFT) {
+            x = Math.floor((this.x + (this.map.blocksize - 1)) / this.map.blocksize)
         }
+        else {
+            x = Math.floor((this.x + this.map.blocksize * 0.5) / this.map.blocksize)
+        }
+
+        let y = Math.floor((this.y + this.map.blocksize * 0.5) / this.map.blocksize)
+
+        for (let i = 0; i < this.map.slowZone.length; i++) {
+            if (compArray(this.map.slowZone[i], [y, x]) === true) {
+                return true
+            }
+        }
+        return false
     }
 
-    chooseDirection()
-    {
+    chooseDirection() {
         let newMove = this.ghostHouse()
-        if (newMove !== null)
-        {
+
+        if (newMove !== null) {
             this.direction = newMove
         }
-        else if (this.checkMoves() === "newMoves")
-        {
+        else if (this.checkMoves() === "newMoves") {
             const prevDir = this.direction
             this.direction = this.possibleDirections[Math.floor(Math.random() * this.possibleDirections.length)]
 
             if (this.direction === this.DIRECTION_DOWN && this.map.map[Math.floor((this.y + this.map.blocksize * 0.5) / this.map.blocksize)]
-                [Math.floor((this.x + this.map.blocksize * 0.5) / this.map.blocksize)] === this.map.BLINKY)
-            {
+                [Math.floor((this.x + this.map.blocksize * 0.5) / this.map.blocksize)] === this.map.BLINKY) {
                 this.direction = prevDir
             }
-            if (this.direction === this.DIRECTION_UP && this.forbiddenUp() === true)
-            {
+            if (this.direction === this.DIRECTION_UP && this.forbiddenUp() === true) {
                 this.direction = prevDir
             }
         }
     }
 
-    move()
-    {
+    move() {
         this.moveDelay += this.game.time.deltaTime
         if (this.moveDelay < this.speedDelay) {
             return
@@ -227,44 +201,33 @@ export default class Ghost
 
         this.chooseDirection()
 
+        let speed = this.speed
+        if (this.slowZone() === true) {
+            speed *= 0.5
+        }
 
-        if (this.direction === this.DIRECTION_UP && this.canMove(this.DIRECTION_UP))
-        {
-            if (this.slowZone() === false)
-                this.y -= this.speed
-            else
-                this.y -= (this.speed * 0.5)
+        if (this.direction === this.DIRECTION_UP && this.canMove(this.DIRECTION_UP)) {
+            this.y -= speed
         }
-        if (this.direction === this.DIRECTION_DOWN && this.canMove(this.DIRECTION_DOWN))
-        {
-            if (this.slowZone() === false)
-                this.y += this.speed
-            else
-                this.y += (this.speed * 0.5)
+        if (this.direction === this.DIRECTION_DOWN && this.canMove(this.DIRECTION_DOWN)) {
+            this.y += speed
         }
-        if (this.direction === this.DIRECTION_LEFT && this.canMove(this.DIRECTION_LEFT))
-        {
-            if (this.slowZone() === false)
-                this.x -= this.speed
-            else
-                this.x -= (this.speed * 0.5)
+        if (this.direction === this.DIRECTION_LEFT && this.canMove(this.DIRECTION_LEFT)) {
+            this.x -= speed
         }
-        if (this.direction === this.DIRECTION_RIGHT && this.canMove(this.DIRECTION_RIGHT))
-        {
-            if (this.slowZone() === false)
-                this.x += this.speed
-            else
-                this.x += (this.speed * 0.5)
+        if (this.direction === this.DIRECTION_RIGHT && this.canMove(this.DIRECTION_RIGHT)) {
+            this.x += speed
         }
-        if (this.x < 0)
+        if (this.x < 0) {
             this.x = (this.map.map[0].length - 1) * this.map.blocksize
-        else if (this.x > (this.map.map[0].length - 1) * this.map.blocksize)
+        }
+        else if (this.x > (this.map.map[0].length - 1) * this.map.blocksize) {
             this.x = 0
+        }
 
     }
 
-    draw()
-    {
+    draw() {
         this.game.canvasContext.drawImage(
             this.img,
             this.imgColumn * this.map.blocksize,
@@ -278,10 +241,10 @@ export default class Ghost
         )
     }
 
-    update()
-    {
-        if (this.game.state === "playing")
+    update() {
+        if (this.game.state === "playing") {
             this.move()
+        }
         this.draw()
     }
 }

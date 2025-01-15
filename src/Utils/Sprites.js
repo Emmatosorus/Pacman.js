@@ -1,7 +1,5 @@
-export default class Sprites
-{
-    constructor()
-    {
+export default class Sprites {
+    constructor() {
         this.imgNumber = 2
         this.img = {}
 

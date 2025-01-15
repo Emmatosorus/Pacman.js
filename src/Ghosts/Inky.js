@@ -1,9 +1,7 @@
 import Ghost from "./Ghost"
 
-export default class Inky extends Ghost
-{
-    constructor(mapCode)
-    {
+export default class Inky extends Ghost {
+    constructor(mapCode) {
         super(mapCode)
 
         this.imgColumn = 2
@@ -13,8 +11,8 @@ export default class Inky extends Ghost
 
     }
 
-    reset()
-    {
+    reset() {
+        this.possibleDirections = []
         this.direction = this.DIRECTION_RIGHT
         this.getPosition()
     }
