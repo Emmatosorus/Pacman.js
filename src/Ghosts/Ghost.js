@@ -185,10 +185,6 @@ export default class Ghost {
 
     target()
     {
-        this.direction = this.possibleDirections[Math.floor(Math.random() * this.possibleDirections.length)]
-        if (this.mapCode !== this.map.BLINKY && this.mapCode !== this.map.PINKY) {
-            return
-        }
 
         let targetPos = this.findTarget()
         let ghostPos = new THREE.Vector2()
