@@ -13,4 +13,10 @@ export default class Blinky extends Ghost
 
     }
 
+    reset()
+    {
+        this.direction = this.DIRECTION_LEFT
+        this.getPosition()
+    }
+
 }

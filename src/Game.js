@@ -118,8 +118,8 @@ export default class Game
 		this.pacman.winAnimationEnd = false
 		this.pacman.getStartingPosition()
 
-		for (let i = 0; i < this.ghosts.length - 1; i++)
-			this.ghosts[i].getPosition()
+		for (let i = 0; i < this.ghosts.length; i++)
+			this.ghosts[i].reset()
 
 		this.InputManager.direction = this.InputManager.DIRECTION_NONE
 		this.InputManager.nextDirection = this.InputManager.DIRECTION_NONE
@@ -174,10 +174,10 @@ export default class Game
 		{
 			this.map.update()
 			this.pacman.update()
-			this.ghosts[0].update()
-			this.ghosts[1].update()
-			this.ghosts[2].update()
-			this.ghosts[3].update()
+			for (let i = 0; i < this.ghosts.length; i++)
+			{
+				this.ghosts[i].update()
+			}
 			this.drawScore()
 
 		}
@@ -185,10 +185,10 @@ export default class Game
 		{
 			this.map.winAnimation()
 			this.pacman.winAnimation()
-			this.ghosts[0].update()
-			this.ghosts[1].update()
-			this.ghosts[2].update()
-			this.ghosts[3].update()
+			for (let i = 0; i < this.ghosts.length; i++)
+			{
+				this.ghosts[i].update()
+			}
 			if (this.pacman.winAnimationEnd === true)
 				this.winReset()
 		}

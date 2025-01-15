@@ -13,4 +13,10 @@ export default class Inky extends Ghost
 
     }
 
+    reset()
+    {
+        this.direction = this.DIRECTION_RIGHT
+        this.getPosition()
+    }
+
 }

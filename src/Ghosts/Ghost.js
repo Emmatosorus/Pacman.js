@@ -83,6 +83,34 @@ export default class Ghost
         return "noNewMoves"
     }
 
+    ghostHouse()
+    {
+        let newMove = null
+
+        let x = Math.floor((this.x + this.map.blocksize * 0.5) / this.map.blocksize)
+        let y = Math.floor((this.y + this.map.blocksize * 0.5) / this.map.blocksize)
+
+        for (let i = 0; i < this.map.ghostHouse.length; i++)
+        {
+            if (compArray(this.map.ghostHouse[i], [y, x]) === true) {
+                if ((y === 10 || y === 9) && x === 10 && this.canMove(this.DIRECTION_UP)) {
+                    newMove = this.DIRECTION_UP
+                }
+                else if (y === 10 && x === 9 && this.canMove(this.DIRECTION_RIGHT)) {
+                    newMove = this.DIRECTION_RIGHT
+                }
+                else if (y === 10 && x === 11 && this.canMove(this.DIRECTION_LEFT)) {
+                    newMove = this.DIRECTION_LEFT
+                }
+                else {
+                    newMove = this.direction
+                }
+                return newMove
+            }
+        }
+        return newMove
+    }
+
     canMove(dir)
     {
         let smallX
@@ -161,9 +189,14 @@ export default class Ghost
         }
     }
 
-    move()
+    chooseDirection()
     {
-        if (this.checkMoves() === "newMoves")
+        let newMove = this.ghostHouse()
+        if (newMove !== null)
+        {
+            this.direction = newMove
+        }
+        else if (this.checkMoves() === "newMoves")
         {
             const prevDir = this.direction
             this.direction = this.possibleDirections[Math.floor(Math.random() * this.possibleDirections.length)]
@@ -177,8 +210,12 @@ export default class Ghost
             {
                 this.direction = prevDir
             }
-
         }
+    }
+
+    move()
+    {
+        this.chooseDirection()
         if (this.direction === this.DIRECTION_UP && this.canMove(this.DIRECTION_UP))
         {
             if (this.slowZone() === false)
@@ -211,6 +248,7 @@ export default class Ghost
             this.x = (this.map.map[0].length - 1) * this.map.blocksize
         else if (this.x > (this.map.map[0].length - 1) * this.map.blocksize)
             this.x = 0
+
     }
 
     draw()
@@ -252,7 +290,7 @@ Ghost minds
                 2. they are at pacman spawn
             (3 tiles wide perimeters)
 
-            Inky + Clyde : To leave ghost house target blinky spawn position
+            Inky + Clyde : To leave ghost house target Blinky spawn position
             For leaving the ghost house go to "Home Sweet Home" :
                 https://www.gamedeveloper.com/design/the-pac-man-dossier
 
@@ -269,9 +307,9 @@ Ghost minds
             Blinky : Target pacman
 
             Pinky :
-                Pacman left : Target 4 tiles to the left of pacman
-                Pacman right : Target 4 tiles to the right of pacman
-                Pacman down : Target 4 tiles below pacman
+                Pacman left : Target 4 tiles to the left of Pacman
+                Pacman right : Target 4 tiles to the right of Pacman
+                Pacman down : Target 4 tiles below Pacman
                 Pacman up : Target 4 tiles above and 4 tiles to the left
 
             Inky :

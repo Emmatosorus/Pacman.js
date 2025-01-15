@@ -80,6 +80,9 @@ export default class Map
 		this.slowZone = [[10, 0], [10, 1], [10, 2], [10, 3], [10, 4],
 						[10, 16], [10, 17], [10, 18], [10, 19], [10, 20]]
 
+		this.ghostHouse = [[9, 10],
+				 [10, 9], [10, 10], [10, 11]]
+
 		this.savedots()
 
 	}

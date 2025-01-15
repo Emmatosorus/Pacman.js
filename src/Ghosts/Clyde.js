@@ -12,4 +12,10 @@ export default class Clyde extends Ghost
         this.direction = this.DIRECTION_LEFT
 
     }
+
+    reset()
+    {
+        this.direction = this.DIRECTION_LEFT
+        this.getPosition()
+    }
 }
