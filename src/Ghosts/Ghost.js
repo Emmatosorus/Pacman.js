@@ -140,6 +140,27 @@ export default class Ghost
         return false
     }
 
+    slowZone()
+    {
+        {
+            let x
+
+            if (this.direction === this.DIRECTION_LEFT)
+                x = Math.floor((this.x + (this.map.blocksize - 1)) / this.map.blocksize)
+            else
+                x = Math.floor((this.x + this.map.blocksize * 0.5) / this.map.blocksize)
+
+            let y = Math.floor((this.y + this.map.blocksize * 0.5) / this.map.blocksize)
+
+            for (let i = 0; i < this.map.slowZone.length; i++)
+            {
+                if (compArray(this.map.slowZone[i], [y, x]) === true)
+                    return true
+            }
+            return false
+        }
+    }
+
     move()
     {
         if (this.checkMoves() === "newMoves")
@@ -160,19 +181,31 @@ export default class Ghost
         }
         if (this.direction === this.DIRECTION_UP && this.canMove(this.DIRECTION_UP))
         {
-            this.y -= this.speed
+            if (this.slowZone() === false)
+                this.y -= this.speed
+            else
+                this.y -= (this.speed * 0.5)
         }
         if (this.direction === this.DIRECTION_DOWN && this.canMove(this.DIRECTION_DOWN))
         {
-            this.y += this.speed
+            if (this.slowZone() === false)
+                this.y += this.speed
+            else
+                this.y += (this.speed * 0.5)
         }
         if (this.direction === this.DIRECTION_LEFT && this.canMove(this.DIRECTION_LEFT))
         {
-            this.x -= this.speed
+            if (this.slowZone() === false)
+                this.x -= this.speed
+            else
+                this.x -= (this.speed * 0.5)
         }
         if (this.direction === this.DIRECTION_RIGHT && this.canMove(this.DIRECTION_RIGHT))
         {
-            this.x += this.speed
+            if (this.slowZone() === false)
+                this.x += this.speed
+            else
+                this.x += (this.speed * 0.5)
         }
         if (this.x < 0)
             this.x = (this.map.map[0].length - 1) * this.map.blocksize
