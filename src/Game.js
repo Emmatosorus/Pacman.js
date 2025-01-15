@@ -27,6 +27,7 @@ export default class Game {
 		this.time = new Time()
 		this.sprites = new Sprites()
 		this.map = new Map()
+		this.pacman = new Pacman()
 
 		this.ghosts = []
 		this.ghosts.push(new Blinky(this.map.BLINKY))
@@ -34,7 +35,6 @@ export default class Game {
 		this.ghosts.push(new Inky(this.map.INKY))
 		this.ghosts.push(new Clyde(this.map.CLYDE))
 
-		this.pacman = new Pacman()
 		this.InputManager = new InputManager()
 
 		this.level = 0

@@ -1,3 +1,4 @@
+import * as THREE from "three"
 import Game from '../Game'
 import { compArray } from "../Utils/Utils"
 
@@ -177,9 +178,59 @@ export default class Ghost {
         return false
     }
 
-    target()
+    findTarget()
     {
 
+    }
+
+    target()
+    {
+        this.direction = this.possibleDirections[Math.floor(Math.random() * this.possibleDirections.length)]
+        if (this.mapCode !== this.map.BLINKY && this.mapCode !== this.map.PINKY) {
+            return
+        }
+
+        let targetPos = this.findTarget()
+        let ghostPos = new THREE.Vector2()
+        let distance = 2000
+        let tmp = 0
+
+        for (let i = 0; i < this.possibleDirections.length; i++) {
+            if (this.possibleDirections[i] === this.DIRECTION_UP) {
+                ghostPos.set(this.x, this.y - this.speed)
+                tmp = ghostPos.distanceTo(targetPos)
+                if (tmp < distance) {
+                    distance = tmp
+                    this.direction = this.DIRECTION_UP
+                }
+            }
+            if (this.possibleDirections[i] === this.DIRECTION_DOWN) {
+                ghostPos.set(this.x, this.y + this.speed)
+                tmp = ghostPos.distanceTo(targetPos)
+                if (tmp < distance) {
+                    distance = tmp
+                    this.direction = this.DIRECTION_DOWN
+                }
+            }
+            if (this.possibleDirections[i] === this.DIRECTION_LEFT) {
+                ghostPos.set(this.x - this.speed, this.y)
+                tmp = ghostPos.distanceTo(targetPos)
+                if (tmp < distance) {
+                    distance = tmp
+                    this.direction = this.DIRECTION_LEFT
+                }
+            }
+            if (this.possibleDirections[i] === this.DIRECTION_RIGHT) {
+                ghostPos.set(this.x + this.speed, this.y)
+                tmp = ghostPos.distanceTo(targetPos)
+                if (tmp < distance) {
+                    distance = tmp
+                    this.direction = this.DIRECTION_RIGHT
+                }
+            }
+        }
+
+        return this.direction
     }
 
     chooseDirection() {
@@ -189,12 +240,7 @@ export default class Ghost {
             this.direction = newMove
         }
         else if (this.checkMoves() === "newMoves") {
-            if (this.mapCode === this.map.BLINKY) {
-                this.target()
-            }
-            else {
-                this.direction = this.possibleDirections[Math.floor(Math.random() * this.possibleDirections.length)]
-            }
+            this.target()
         }
     }
 

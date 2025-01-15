@@ -6,7 +6,7 @@ export default class Pacman {
 		this.time = this.game.time
 		this.map = this.game.map
 		this.sprites = this.game.sprites
-		this.ghosts = this.game.ghosts
+		this.ghosts = null
 
 		this.x = 0
 		this.y = 0
@@ -83,6 +83,9 @@ export default class Pacman {
 	}
 
 	checkGhostCollision() {
+		if (this.ghosts === null)
+			this.ghosts = this.game.ghosts
+
 		const x = Math.floor((this.x + this.map.blocksize * 0.5) / this.map.blocksize)
 		const y = Math.floor((this.y + this.map.blocksize * 0.5) / this.map.blocksize)
 
@@ -162,7 +165,7 @@ export default class Pacman {
 	update()
 	{
 		this.game.InputManager.movePacman()
-		this.checkGhostCollision()
+		// this.checkGhostCollision()
 		this.eat()
 		this.drawPacman(this.sprites.pacmanFrameCount, 0.01, true)
 	}

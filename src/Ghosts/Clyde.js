@@ -1,3 +1,4 @@
+import * as THREE from "three"
 import Ghost from "./Ghost"
 
 export default class Clyde extends Ghost {
@@ -9,6 +10,11 @@ export default class Clyde extends Ghost {
 
         this.direction = this.DIRECTION_LEFT
 
+    }
+
+    findTarget()
+    {
+        return "hey"
     }
 
     reset() {
