@@ -62,7 +62,7 @@ export default class Ghost {
         if (this.direction !== this.DIRECTION_LEFT && this.canMove(this.DIRECTION_RIGHT)) {
             newMoves.push(this.DIRECTION_RIGHT)
         }
-        if (this.direction !== this.DIRECTION_DOWN && this.canMove(this.DIRECTION_UP)) {
+        if (this.direction !== this.DIRECTION_DOWN && this.canMove(this.DIRECTION_UP) && this.forbiddenUp() === false) {
             newMoves.push(this.DIRECTION_UP)
         }
         if (this.direction !== this.DIRECTION_RIGHT && this.canMove(this.DIRECTION_LEFT)) {
@@ -120,6 +120,11 @@ export default class Ghost {
             bigX = Math.floor((this.x + (this.map.blocksize - 1)) / this.map.blocksize)
             smallY = Math.floor(this.y / this.map.blocksize) + 1
 
+            if (this.map.map[Math.floor((this.y + this.map.blocksize * 0.5) / this.map.blocksize)]
+                [Math.floor((this.x + this.map.blocksize * 0.5) / this.map.blocksize)] === this.map.BLINKY) {
+                return false
+            }
+
             return !(this.map.map[smallY][smallX] === this.map.WALL || this.map.map[smallY][bigX] === this.map.WALL);
 
         }
@@ -173,22 +178,13 @@ export default class Ghost {
     }
 
     chooseDirection() {
-        let newMove = this.ghostHouse()
 
+        let newMove = this.ghostHouse()
         if (newMove !== null) {
             this.direction = newMove
         }
         else if (this.checkMoves() === "newMoves") {
-            const prevDir = this.direction
             this.direction = this.possibleDirections[Math.floor(Math.random() * this.possibleDirections.length)]
-
-            if (this.direction === this.DIRECTION_DOWN && this.map.map[Math.floor((this.y + this.map.blocksize * 0.5) / this.map.blocksize)]
-                [Math.floor((this.x + this.map.blocksize * 0.5) / this.map.blocksize)] === this.map.BLINKY) {
-                this.direction = prevDir
-            }
-            if (this.direction === this.DIRECTION_UP && this.forbiddenUp() === true) {
-                this.direction = prevDir
-            }
         }
     }
 
