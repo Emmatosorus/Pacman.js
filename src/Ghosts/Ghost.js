@@ -135,9 +135,9 @@ export default class Ghost
         for (let i = 0; i < this.map.upForbidden.length; i++)
         {
             if (compArray(this.map.upForbidden[i], [y, x]) === true)
-                return false
+                return true
         }
-        return true
+        return false
     }
 
     move()
@@ -152,7 +152,7 @@ export default class Ghost
             {
                 this.direction = prevDir
             }
-            if (this.direction === this.DIRECTION_UP && this.forbiddenUp() === false)
+            if (this.direction === this.DIRECTION_UP && this.forbiddenUp() === true)
             {
                 this.direction = prevDir
             }
