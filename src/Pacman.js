@@ -165,7 +165,7 @@ export default class Pacman {
 	update()
 	{
 		this.game.InputManager.movePacman()
-		// this.checkGhostCollision()
+		this.checkGhostCollision()
 		this.eat()
 		this.drawPacman(this.sprites.pacmanFrameCount, 0.01, true)
 	}

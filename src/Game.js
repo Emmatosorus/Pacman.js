@@ -82,9 +82,11 @@ export default class Game {
 		}
 
 		this.canvasContext.fillText("Highscore", 240, 40)
+		this.canvasContext.fillText("Level", 520, 40)
 
 		this.canvasContext.textAlign = 'right'
 		this.canvasContext.fillText(this.score, this.canvas.width - 930, 70)
+		this.canvasContext.fillText(this.level, this.canvas.width - 500, 70)
 		this.canvasContext.fillText(this.score, this.canvas.width - 670, 70)
 		this.canvasContext.textAlign = 'left'
 	}

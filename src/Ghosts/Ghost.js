@@ -22,6 +22,8 @@ export default class Ghost {
         this.DIRECTION_NONE = 4
         this.direction = this.DIRECTION_NONE
 
+        this.state = "chase"
+
         this.width = 32
         this.height = 32
         this.mapCode = mapCode
