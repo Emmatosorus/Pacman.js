@@ -5,10 +5,10 @@ export default class Pacman
 	constructor()
 	{
 		this.game = new Game()
-		this.sizes = this.game.sizes
 		this.time = this.game.time
 		this.map = this.game.map
 		this.sprites = this.game.sprites
+		this.ghosts = this.game.ghosts
 
 
 		this.x = 0
@@ -18,8 +18,6 @@ export default class Pacman
 
 		this.width = 32
 		this.height = 32
-
-		this.die = false
 
         this.currentFrame = 0;
         this.currentImage = 0;
@@ -93,6 +91,21 @@ export default class Pacman
         this.game.canvasContext.restore();
 	}
 
+	checkGhostCollision()
+	{
+		const x = Math.floor((this.x + this.map.blocksize * 0.5) / this.map.blocksize)
+		const y = Math.floor((this.y + this.map.blocksize * 0.5) / this.map.blocksize)
+
+		for (let i = 0; i < this.ghosts.length; i++)
+		{
+			let ghostX = Math.floor((this.ghosts[i].x + this.map.blocksize * 0.5) / this.map.blocksize)
+			let ghostY = Math.floor((this.ghosts[i].y + this.map.blocksize * 0.5) / this.map.blocksize)
+			if (ghostX === x && ghostY === y) {
+				this.game.state = "lose"
+			}
+		}
+	}
+
 	eat()
 	{
 		let x = Math.floor((this.x + this.map.blocksize * 0.5) / this.map.blocksize)
@@ -106,9 +119,6 @@ export default class Pacman
 				this.map.fruitCollected = true
 				this.game.score += this.game.fruitScores[this.map.currentFruit]	
 				this.game.map.numberFruitCollected++
-				// To test dying animation	
-				// this.die = true
-				// this.game.isPlaying = false		
 			}
 			return
 		}
@@ -161,6 +171,7 @@ export default class Pacman
 	update()
 	{
 		this.game.InputManager.movePacman()
+		this.checkGhostCollision()
 		this.eat()
 		this.drawPacman(this.sprites.pacmanFrameCount, 0.01, true)
 	}
