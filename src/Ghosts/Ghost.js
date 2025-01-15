@@ -31,6 +31,10 @@ export default class Ghost
         this.y = 0
 
         this.speed = 4
+        this.speedDelay = 20
+        this.moveDelay = 0
+
+
 
         this.getPosition()
 
@@ -215,7 +219,15 @@ export default class Ghost
 
     move()
     {
+        this.moveDelay += this.game.time.deltaTime
+        if (this.moveDelay < this.speedDelay) {
+            return
+        }
+        this.moveDelay = 0
+
         this.chooseDirection()
+
+
         if (this.direction === this.DIRECTION_UP && this.canMove(this.DIRECTION_UP))
         {
             if (this.slowZone() === false)

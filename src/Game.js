@@ -156,8 +156,16 @@ export default class Game
 		this.pacman.winAnimationEnd = false
 		this.pacman.getStartingPosition()
 
-		for (let i = 0; i < this.ghosts.length; i++)
+		for (let i = 0; i < this.ghosts.length; i++) {
+			if (this.level < 5) {
+				this.ghosts[i].speedDelay = 20
+			}
+			else {
+				this.ghosts[i].speedDelay = 10
+			}
+			this.ghosts[i].moveDelay = 0
 			this.ghosts[i].getPosition()
+		}
 
 		this.InputManager.direction = this.InputManager.DIRECTION_NONE
 		this.InputManager.nextDirection = this.InputManager.DIRECTION_NONE
