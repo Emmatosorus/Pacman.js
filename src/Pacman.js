@@ -162,6 +162,10 @@ export default class Pacman
 		if (this.time.currentTimeSeconds < this.dieAnimationStart + 2)
 		{
 			this.drawPacman(this.sprites.animationFrameCount, 0.01, false)
+			for (let i = 0; i < this.ghosts.length; i++)
+			{
+				this.ghosts[i].draw()
+			}
 			return
 		}
 
