@@ -259,3 +259,55 @@ Ghost minds
             Pacman has eaten a power pellet and HAS touched this ghost
             Target ghost house
 */
+
+/*
+    CHATGPT SUMMARY OF GHOST HOUSE MECHANICS
+
+### 1. **Ghost House Basics:**
+   - The ghost house is in the center of the maze and is the starting point for all the ghosts.
+   - After each level is completed or Pac-Man loses a life, the ghosts return to the ghost house, and they must leave to start chasing Pac-Man again.
+
+### 2. **Blinky’s Behavior:**
+   - Blinky is always positioned outside the ghost house after a level or when Pac-Man dies.
+   - The only way Blinky returns to the ghost house is if Pac-Man captures him, after which he turns around and leaves the house immediately.
+
+### 3. **The Dot Counters:**
+   - **Pinky, Inky, and Clyde** have "dot counters" that track how many dots Pac-Man has eaten. This determines when they leave the ghost house.
+   - These counters start at zero and can only be active when the ghosts are inside the house. However, only one ghost's dot counter can be active at any time.
+
+### 4. **Order of Dot Counters:**
+   - The ghosts have a priority order for which one gets to count dots first: **Pinky**, then **Inky**, then **Clyde**.
+   - Each ghost has a "dot limit" which tells them when to leave. For example:
+     - **Pinky** leaves immediately (dot limit = 0).
+     - **Inky** needs 30 dots before leaving on the first level.
+     - **Clyde** needs 60 dots before leaving on the first level.
+
+### 5. **Dot Limit Changes:**
+   - On **level 2**, Inky’s limit changes to 0 (so he leaves immediately, like Pinky), and Clyde's limit changes to 50.
+   - From **level 3** onward, all ghosts have a dot limit of 0 and leave the ghost house as soon as a new level starts.
+
+### 6. **What Happens When Pac-Man Dies:**
+   - When Pac-Man loses a life, the game switches to a **global dot counter**, which tracks dots Pac-Man eats after losing a life. This replaces the individual dot counters.
+   - **Pinky** will leave when the global counter reaches 7, **Inky** when it reaches 17, and **Clyde** when it hits 32.
+   - If **Clyde** is still inside when the global counter hits 32, the counter is reset to 0, and the normal dot counters are re-enabled.
+
+### 7. **Timer Control:**
+   - There’s also a **timer** that tracks how long Pac-Man goes without eating a dot. This timer forces ghosts to leave the house if it runs out of time.
+   - This timer starts at 4 seconds but shortens to 3 seconds from **level 5** onwards.
+   - The timer is used to ensure the ghosts leave even if Pac-Man isn’t eating many dots. If Pac-Man avoids eating for too long, the most-preferred ghost (based on the priority order: Pinky, Inky, then Clyde) will be forced to leave.
+
+### 8. **How to Trap Ghosts in the House:**
+   - There’s a way to keep the ghosts inside the house longer by manipulating the system with the dot counters and timer. Specifically:
+     - If you eat dots slowly after losing a life, you can trick the game into keeping the ghosts inside the house by ensuring the global counter never reaches 32 before Clyde exits.
+     - Once Clyde exits, you can make sure the ghosts stay inside by carefully managing the timing of your dot consumption.
+
+### 9. **Movement Direction After Exiting:**
+   - Ghosts usually move **left** after exiting the ghost house.
+   - However, if the system changes modes while a ghost is inside, that ghost may move **right** instead when it leaves.
+
+### Summary:
+- The ghosts' behavior in *Pac-Man* revolves around their dot counters and how the game switches between individual and global counters when Pac-Man dies.
+- The ghosts’ release from the house is controlled by both these counters and a timer that forces them out if Pac-Man avoids eating dots for too long.
+- By managing these systems, you can manipulate how long the ghosts stay in the house or even trap them for longer periods.
+
+ */
