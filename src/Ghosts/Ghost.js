@@ -33,7 +33,6 @@ export default class Ghost
         this.speed = 4
 
         this.getPosition()
-        this.lastPosition = [this.x, this.y]
 
         this.possibleDirections = []
         this.checkMoves()
@@ -146,7 +145,6 @@ export default class Ghost
         if (this.checkMoves() === "newMoves")
         {
             const prevDir = this.direction
-            this.lastPosition = [this.x, this.y]
             this.direction = this.possibleDirections[Math.floor(Math.random() * this.possibleDirections.length)]
 
             if (this.direction === this.DIRECTION_DOWN && this.map.map[Math.floor((this.y + this.map.blocksize * 0.5) / this.map.blocksize)]
