@@ -177,6 +177,11 @@ export default class Ghost {
         return false
     }
 
+    target()
+    {
+
+    }
+
     chooseDirection() {
 
         let newMove = this.ghostHouse()
@@ -184,7 +189,12 @@ export default class Ghost {
             this.direction = newMove
         }
         else if (this.checkMoves() === "newMoves") {
-            this.direction = this.possibleDirections[Math.floor(Math.random() * this.possibleDirections.length)]
+            if (this.mapCode === this.map.BLINKY) {
+                this.target()
+            }
+            else {
+                this.direction = this.possibleDirections[Math.floor(Math.random() * this.possibleDirections.length)]
+            }
         }
     }
 

@@ -95,6 +95,7 @@ export default class InputManager {
 
 	movePacman()
 	{
+
 		this.getDirection()
 		if (this.direction === this.DIRECTION_UP && this.canMove(this.direction)) {
 			this.pacman.y -= this.speed
