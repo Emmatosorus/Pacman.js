@@ -19,4 +19,10 @@ export default class Sprites {
         this.img[3] = new Image()
         this.img[3].src ="./static/sprites/ghosts.png"
     }
+
+    cleanup() {
+        for (const key of Object.keys(this)) {
+            this[key] = null
+        }
+    }
 }

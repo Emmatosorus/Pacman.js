@@ -46,7 +46,7 @@ export default class Pacman {
             (this.y + this.game.headerSpaceY) + this.map.blocksize / 2
         );
 
-        this.game.canvasContext.rotate((Math.PI * 2) * this.game.InputManager.direction / 4);
+        this.game.canvasContext.rotate((Math.PI * 2) * this.game.inputManager.direction / 4);
 		
 		this.game.canvasContext.translate(
             -(this.x + this.game.headerSpaceX) - this.map.blocksize / 2,
@@ -69,7 +69,7 @@ export default class Pacman {
 				
         this.game.canvasContext.drawImage(
             this.sprites.img[this.currentImage],
-            Math.floor(this.game.InputManager.direction === this.game.InputManager.DIRECTION_NONE && maxFrame !== this.sprites.animationFrameCount ? 0 : this.currentFrame) * this.map.blocksize,
+            Math.floor(this.game.inputManager.direction === this.game.inputManager.DIRECTION_NONE && maxFrame !== this.sprites.animationFrameCount ? 0 : this.currentFrame) * this.map.blocksize,
             0,
             this.map.blocksize,
             this.map.blocksize,
@@ -164,10 +164,16 @@ export default class Pacman {
 
 	update()
 	{
-		this.game.InputManager.movePacman()
+		this.game.inputManager.movePacman()
 		this.checkGhostCollision()
 		this.eat()
 		this.drawPacman(this.sprites.pacmanFrameCount, 0.01, true)
+	}
+
+	cleanup() {
+		for (const key of Object.keys(this)) {
+			this[key] = null
+		}
 	}
 
 }

@@ -19,21 +19,19 @@ export default class InputManager {
 
     }
 
-    setupKeybindings() {
-		window.addEventListener('keydown', (KeyboardEvent) => {
-			if (KeyboardEvent.key === 'w' || KeyboardEvent.key === 'ArrowUp') {
-				this.nextDirection = this.DIRECTION_UP	
-			}
-			if (KeyboardEvent.key === 's' || KeyboardEvent.key === 'ArrowDown') {
-				this.nextDirection = this.DIRECTION_DOWN
-			}
-			if (KeyboardEvent.key === 'a' || KeyboardEvent.key === 'ArrowLeft') {
-				this.nextDirection = this.DIRECTION_LEFT
-			}
-			if (KeyboardEvent.key === 'd' || KeyboardEvent.key === 'ArrowRight') {
-				this.nextDirection = this.DIRECTION_RIGHT
-			}
-		})
+    setupKeybindings(KeyboardEvent) {
+		if (KeyboardEvent.code === 'KeyW' || KeyboardEvent.code === 'ArrowUp') {
+			this.nextDirection = this.DIRECTION_UP
+		}
+		if (KeyboardEvent.code === 'KeyS' || KeyboardEvent.code === 'ArrowDown') {
+			this.nextDirection = this.DIRECTION_DOWN
+		}
+		if (KeyboardEvent.code === 'KeyA' || KeyboardEvent.code === 'ArrowLeft') {
+			this.nextDirection = this.DIRECTION_LEFT
+		}
+		if (KeyboardEvent.code === 'KeyD' || KeyboardEvent.code === 'ArrowRight') {
+			this.nextDirection = this.DIRECTION_RIGHT
+		}
 	}
 
     canMove(dir) {
@@ -95,7 +93,6 @@ export default class InputManager {
 
 	movePacman()
 	{
-
 		this.getDirection()
 		if (this.direction === this.DIRECTION_UP && this.canMove(this.direction)) {
 			this.pacman.y -= this.speed
@@ -115,6 +112,11 @@ export default class InputManager {
 		else if (this.pacman.x > (this.map.map[0].length - 1) * this.map.blocksize) {
 			this.pacman.x = 0
 		}
+	}
 
+	cleanup() {
+		for (const key of Object.keys(this)) {
+			this[key] = null
+		}
 	}
 }

@@ -26,8 +26,16 @@ export default class Time extends EventEmitter {
 
         this.trigger('tick')
 
-        window.requestAnimationFrame(() => {
+        this.request = window.requestAnimationFrame(() => {
             this.tick()
         })
+    }
+
+    cleanup() {
+       this.off('tick')
+
+        for (const key of Object.keys(this)) {
+            this[key] = null
+        }
     }
 }

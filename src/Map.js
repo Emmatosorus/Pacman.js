@@ -294,4 +294,10 @@ export default class Map {
 		this.handleFruit()
 		this.drawMap()
 	}
+
+	cleanup() {
+		for (const key of Object.keys(this)) {
+			this[key] = null
+		}
+	}
 }

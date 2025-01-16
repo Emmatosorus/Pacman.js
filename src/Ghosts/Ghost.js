@@ -297,6 +297,12 @@ export default class Ghost {
         }
         this.draw()
     }
+
+    cleanup() {
+        for (const key of Object.keys(this)) {
+            this[key] = null
+        }
+    }
 }
 
 /*

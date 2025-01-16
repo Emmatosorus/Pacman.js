@@ -35,7 +35,7 @@ export default class Game {
 		this.ghosts.push(new Inky(this.map.INKY))
 		this.ghosts.push(new Clyde(this.map.CLYDE))
 
-		this.InputManager = new InputManager()
+		this.inputManager = new InputManager()
 
 		this.level = 0
 		
@@ -46,10 +46,14 @@ export default class Game {
 		this.score = 0
 		this.show1UP = 0
 
-        this.InputManager.setupKeybindings()
+		this.setupKeybindingsBind = this.inputManager.setupKeybindings.bind(this.inputManager)
+		window.addEventListener('keydown', this.setupKeybindingsBind)
 
 		this.sprites.img[this.sprites.imgNumber].onload = () => {
 		}
+
+		this.cleanupBind = this.cleanup.bind(this)
+		window.addEventListener('beforeunload', this.cleanupBind)
 		
 		this.time.on('tick', () => {
 			this.update()
@@ -120,8 +124,8 @@ export default class Game {
 			this.ghosts[i].reset()
 		}
 
-		this.InputManager.direction = this.InputManager.DIRECTION_NONE
-		this.InputManager.nextDirection = this.InputManager.DIRECTION_NONE
+		this.inputManager.direction = this.inputManager.DIRECTION_NONE
+		this.inputManager.nextDirection = this.inputManager.DIRECTION_NONE
 
 		for (let i = 0; i < this.map.dots.length; i++) {
 			this.map.dots[i].display = true
@@ -165,8 +169,8 @@ export default class Game {
 			this.ghosts[i].getPosition()
 		}
 
-		this.InputManager.direction = this.InputManager.DIRECTION_NONE
-		this.InputManager.nextDirection = this.InputManager.DIRECTION_NONE
+		this.inputManager.direction = this.inputManager.DIRECTION_NONE
+		this.inputManager.nextDirection = this.inputManager.DIRECTION_NONE
 
 		for (let i = 0; i < this.map.dots.length; i++) {
 			this.map.dots[i].display = true
@@ -203,6 +207,21 @@ export default class Game {
 				this.loseReset()
 			}
 		}
+	}
 
+	cleanup() {
+		window.removeEventListener('beforeunload', this.cleanupBind)
+		cancelAnimationFrame(this.time.request)
+
+		this.time.cleanup()
+		this.inputManager.cleanup()
+
+		for (let i = 0; i < this.ghosts.length; i++) {
+			this.ghosts[i].cleanup()
+		}
+
+		for (const key of Object.keys(this)) {
+			this[key] = null
+		}
 	}
 }

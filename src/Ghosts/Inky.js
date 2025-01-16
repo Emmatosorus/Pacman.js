@@ -14,7 +14,7 @@ export default class Inky extends Ghost {
 
     findTarget()
     {
-        let pacmanDir = this.game.InputManager.direction
+        let pacmanDir = this.game.inputManager.direction
 
         let blinkyPos = new THREE.Vector2(this.game.ghosts[0].x, this.game.ghosts[0].y)
         let targetPos

@@ -15,7 +15,7 @@ export default class Pinky extends Ghost {
 
     findTarget()
     {
-        let pacmanDir = this.game.InputManager.direction
+        let pacmanDir = this.game.inputManager.direction
 
         if (pacmanDir === this.DIRECTION_DOWN) {
             return new THREE.Vector2(this.pacman.x, this.pacman.y + (4 * this.map.blocksize))
