@@ -28,6 +28,7 @@ export default class Pacman {
 		this.lives = 3
 
 		this.powerup = false
+		this.nbGhostsEaten = 0
 	}
 
 	getStartingPosition()
@@ -100,7 +101,8 @@ export default class Pacman {
 			if (ghostX === x && ghostY === y) {
 				if (this.ghosts[i].state === "frightened") {
 					this.ghosts[i].state = "eaten"
-					this.ghosts[i].changeState = true
+					this.nbGhostsEaten++
+					this.game.score += 200 * this.nbGhostsEaten
 				}
 				else if (this.ghosts[i].state === "eaten") {
 					continue

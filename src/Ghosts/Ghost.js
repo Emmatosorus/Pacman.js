@@ -105,7 +105,7 @@ export default class Ghost {
                     newMove = this.direction
                 }
                 if (this.state === "eaten" && y === 10 && x === 10) {
-                    this.state = this.game.currentGhostState
+                    this.state = "chase"
                 }
                 return newMove
             }
@@ -270,11 +270,6 @@ export default class Ghost {
             else if (this.direction === this.DIRECTION_RIGHT) {
                 this.direction = this.DIRECTION_LEFT
             }
-
-            if (this.state === "eaten") {
-                return
-            }
-
 
             if (this.state === "chase") {
                 this.state = "scatter"

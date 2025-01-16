@@ -163,6 +163,7 @@ export default class Game {
 				}
 				this.pacman.powerup = false
 				this.ghostStateTimer = 0
+				this.pacman.nbGhostsEaten = 0
 			}
 		}
 	}
