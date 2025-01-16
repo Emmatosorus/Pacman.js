@@ -41,7 +41,7 @@ export default class Game {
 		
 		this.fruitScores = [100, 300, 500, 700, 1000, 2000, 3000, 5000]
 		
-		this.state = "playing"
+		this.state = "pause"
 
 		this.score = 0
 		this.show1UP = 0
@@ -72,7 +72,6 @@ export default class Game {
 	}
 
 	drawScore() {
-		this.canvasContext.fillStyle='black'
 		this.canvasContext.font = "bold 24px Emulogic"
 		this.canvasContext.fillStyle='white'
 
@@ -98,6 +97,48 @@ export default class Game {
 		this.canvasContext.textAlign = 'left'
 	}
 
+	drawPauseText() {
+		this.canvasContext.font = "bold 19px Emulogic"
+		if (this.pacman.lives === 3) {
+			this.canvasContext.fillStyle='cyan'
+			this.canvasContext.fillText("Player One", 262, 380)
+		}
+		this.canvasContext.fillStyle='yellow'
+		this.canvasContext.fillText("READY!", 305, 507)
+	}
+
+	drawPacmanLives()
+	{
+		this.canvasContext.save();
+		this.canvasContext.translate(
+			(this.headerSpaceX + this.map.blocksize) + this.map.blocksize / 2,
+			(this.headerSpaceY + ((this.map.map.length + 0.5) * this.map.blocksize)) + this.map.blocksize / 2
+		);
+
+		this.canvasContext.rotate(Math.PI);
+
+		this.canvasContext.translate(
+			-(this.headerSpaceX + this.map.blocksize) - this.map.blocksize / 2,
+			-(this.headerSpaceY + ((this.map.map.length + 0.5) * this.map.blocksize)) - this.map.blocksize / 2
+		);
+
+		for (let i = 1; i < this.pacman.lives; i++) {
+			this.canvasContext.drawImage(
+				this.sprites.img[0],
+				this.map.blocksize,
+				0,
+				this.map.blocksize,
+				this.map.blocksize,
+				this.headerSpaceX - (i * this.map.blocksize),
+				this.headerSpaceY + ((this.map.map.length + 0.8) * this.map.blocksize),
+				this.map.blocksize,
+				this.map.blocksize
+			)
+		}
+
+		this.canvasContext.restore();
+	}
+
 	winReset() {
 		this.canvasContext.clearRect(0,
 			0,
@@ -106,7 +147,7 @@ export default class Game {
 		)
 
 		this.level++;
-		this.state = "playing"
+		this.state = "pause"
 
 		this.map.dotsCollected = 0
 		this.map.numberFruitCollected = 0
@@ -114,7 +155,6 @@ export default class Game {
 		this.map.currentFruit = 0
 		this.map.wallColor = "#342DCA"
 
-		this.pacman.die = false
 		this.pacman.currentFrame = 0;
 		this.pacman.currentImage = 0;
 		this.pacman.dieAnimationStart = null
@@ -142,17 +182,13 @@ export default class Game {
 			this.canvas.height
 		)
 
-		this.level = 0
-		this.score = 0
-		this.state = "playing"
-
+		this.state = "pause"
 		this.map.dotsCollected = 0
 		this.map.numberFruitCollected = 0
 		this.map.fruitCollected = true
 		this.map.currentFruit = 0
 		this.map.wallColor = "#342DCA"
 
-		this.pacman.die = false
 		this.pacman.currentFrame = 0;
 		this.pacman.currentImage = 0;
 		this.pacman.dieAnimationStart = null
@@ -175,6 +211,17 @@ export default class Game {
 		this.inputManager.direction = this.inputManager.DIRECTION_NONE
 		this.inputManager.nextDirection = this.inputManager.DIRECTION_NONE
 
+		this.pacman.lives--
+
+		if (this.pacman.lives > 0) {
+			return
+		}
+
+		this.level = 0
+		this.score = 0
+		this.pacman.lives = 4
+		this.pacman.addedLifelives = false
+
 		for (let i = 0; i < this.map.dots.length; i++) {
 			this.map.dots[i].display = true
 		}
@@ -183,15 +230,28 @@ export default class Game {
 	update() {
 		this.canvasContext.fillStyle='black'
 		this.canvasContext.fillRect(0, 0, this.canvas.width, this.canvas.height)
+
 		if (this.state === "playing") {
 			this.map.update()
 			this.pacman.update()
-			for (let i = 0; i < this.ghosts.length; i++)
-			{
+			for (let i = 0; i < this.ghosts.length; i++) {
 				this.ghosts[i].update()
 			}
 			this.drawScore()
+			this.drawPacmanLives()
 
+		}
+		else if (this.state === "pause") {
+			this.map.update()
+			this.pacman.update()
+			if (this.pacman.lives !== 3) {
+				for (let i = 0; i < this.ghosts.length; i++) {
+					this.ghosts[i].update()
+				}
+			}
+			this.drawScore()
+			this.drawPauseText()
+			this.drawPacmanLives()
 		}
 		else if (this.state === "win") {
 			this.map.winAnimation()
@@ -209,6 +269,7 @@ export default class Game {
 			if (this.pacman.dieAnimationEnd === true) {
 				this.loseReset()
 			}
+			this.drawPacmanLives()
 		}
 	}
 

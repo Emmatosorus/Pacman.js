@@ -23,6 +23,9 @@ export default class Pacman {
 
 		this.winAnimationStart = null
 		this.winAnimationEnd = false
+
+		this.addedLife = false
+		this.lives = 3
 	}
 
 	getStartingPosition()
@@ -164,9 +167,15 @@ export default class Pacman {
 
 	update()
 	{
-		this.game.inputManager.movePacman()
-		this.checkGhostCollision()
-		this.eat()
+		if (this.game.state === "playing") {
+			if (this.game.score > 7100 && this.addedLife === false) {
+				this.addedLife = true
+				this.lives++
+			}
+			this.game.inputManager.movePacman()
+			this.checkGhostCollision()
+			this.eat()
+		}
 		this.drawPacman(this.sprites.pacmanFrameCount, 0.01, true)
 	}
 

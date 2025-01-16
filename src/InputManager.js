@@ -32,6 +32,9 @@ export default class InputManager {
 		if (KeyboardEvent.code === 'KeyD' || KeyboardEvent.code === 'ArrowRight') {
 			this.nextDirection = this.DIRECTION_RIGHT
 		}
+		if (KeyboardEvent.code === 'Enter' && this.game.state === "pause") {
+			this.game.state = "playing"
+		}
 	}
 
     canMove(dir) {
