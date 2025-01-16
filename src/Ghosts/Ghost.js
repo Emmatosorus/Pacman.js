@@ -14,6 +14,7 @@ export default class Ghost {
         this.img = this.sprites.img[3]
         this.imgLine = 0
         this.imgColumn = 0
+        this.currentFrame = 0
 
         this.DIRECTION_RIGHT = 0
         this.DIRECTION_DOWN = 1
@@ -312,15 +313,19 @@ export default class Ghost {
 
         if (this.direction === this.DIRECTION_UP && this.canMove(this.DIRECTION_UP)) {
             this.y -= speed
+            this.imgLine = 2
         }
         if (this.direction === this.DIRECTION_DOWN && this.canMove(this.DIRECTION_DOWN)) {
             this.y += speed
+            this.imgLine = 6
         }
         if (this.direction === this.DIRECTION_LEFT && this.canMove(this.DIRECTION_LEFT)) {
             this.x -= speed
+            this.imgLine = 4
         }
         if (this.direction === this.DIRECTION_RIGHT && this.canMove(this.DIRECTION_RIGHT)) {
             this.x += speed
+            this.imgLine = 0
         }
         if (this.x < 0) {
             this.x = (this.map.map[0].length - 1) * this.map.blocksize
@@ -332,10 +337,16 @@ export default class Ghost {
     }
 
     draw() {
+        const progress = this.time.deltaTime * 0.004
+        this.currentFrame += progress
+        if (this.currentFrame > 2) {
+            this.currentFrame = 0
+        }
+
         if (this.state === "eaten") {
             this.game.canvasContext.drawImage(
                 this.img,
-                this.imgColumn * this.map.blocksize,
+                (this.imgLine / 2) * this.map.blocksize,
                 9 * this.map.blocksize,
                 this.map.blocksize,
                 this.map.blocksize,
@@ -348,7 +359,7 @@ export default class Ghost {
         else if (this.state === "frightened") {
             this.game.canvasContext.drawImage(
                 this.img,
-                this.imgColumn * this.map.blocksize,
+                Math.floor(this.currentFrame) * Math.floor(this.game.ghostCurrentBlink) * this.map.blocksize,
                 8 * this.map.blocksize,
                 this.map.blocksize,
                 this.map.blocksize,
@@ -362,7 +373,7 @@ export default class Ghost {
             this.game.canvasContext.drawImage(
                 this.img,
                 this.imgColumn * this.map.blocksize,
-                this.imgLine * this.map.blocksize,
+                (this.imgLine + Math.floor(this.currentFrame)) * this.map.blocksize,
                 this.map.blocksize,
                 this.map.blocksize,
                 this.x + this.game.headerSpaceX,

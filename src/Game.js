@@ -35,6 +35,7 @@ export default class Game {
 		this.ghosts.push(new Inky(this.map.INKY))
 		this.ghosts.push(new Clyde(this.map.CLYDE))
 		this.ghostStateTimer = 0
+		this.ghostCurrentBlink = 0
 		this.currentGhostState = "chase"
 
 		this.inputManager = new InputManager()
@@ -156,14 +157,22 @@ export default class Game {
 			}
 			this.ghostStateTimer = 0
 		}
-		if (this.currentGhostState === "frightened" && this.ghostStateTimer > 5000) {
+		if (this.currentGhostState === "frightened" && this.ghostStateTimer > 7000) {
 			for (let i = 0; i < this.ghosts.length; i++) {
 				if (this.ghosts[i].state === "frightened") {
 					this.ghosts[i].changeState = true
 				}
+				this.ghostCurrentBlink = 0
 				this.pacman.powerup = false
 				this.ghostStateTimer = 0
 				this.pacman.nbGhostsEaten = 0
+			}
+		}
+		else if (this.currentGhostState === "frightened" && this.ghostStateTimer > 4000) {
+			const progress = this.time.deltaTime * 0.004
+			this.ghostCurrentBlink += progress
+			if (this.ghostCurrentBlink > 3) {
+				this.ghostCurrentBlink = 1
 			}
 		}
 	}

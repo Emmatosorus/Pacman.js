@@ -135,8 +135,8 @@ export default class Pacman {
 				for (let i = 0; i < this.ghosts.length; i++) {
 					this.ghosts[i].state = "frightened"
 					this.ghosts[i].changeState = true
-					this.game.ghostStateTimer = 0
 				}
+				this.game.ghostStateTimer = 0
 				this.game.currentGhostState = "frightened"
 			}
 			else {
