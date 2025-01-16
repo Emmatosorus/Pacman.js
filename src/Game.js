@@ -21,7 +21,7 @@ export default class Game {
 		this.setupCanvas()
 		
 		this.headerSpaceY = 100
-		this.headerSpaceX = 10
+		this.headerSpaceX = 24
 
 		this.sizes = new Sizes()
 		this.time = new Time()
@@ -64,8 +64,11 @@ export default class Game {
 	setupCanvas() {
 		this.canvas = document.getElementById("Screen")		
 		this.canvasContext = this.canvas.getContext("2d")
-		this.canvas.width = 1080
-		this.canvas.height = 1350
+		this.canvas.style.position = 'absolute'
+		this.canvas.style.top = "10px"
+		this.canvas.style.left = "10px"
+		this.canvas.width = 720
+		this.canvas.height = 900
 	}
 
 	drawScore() {
@@ -89,9 +92,9 @@ export default class Game {
 		this.canvasContext.fillText("Level", 520, 40)
 
 		this.canvasContext.textAlign = 'right'
-		this.canvasContext.fillText(this.score, this.canvas.width - 930, 70)
-		this.canvasContext.fillText(this.level, this.canvas.width - 500, 70)
-		this.canvasContext.fillText(this.score, this.canvas.width - 670, 70)
+		this.canvasContext.fillText(this.score, this.canvas.width - 570, 70)
+		this.canvasContext.fillText(this.score, this.canvas.width - 310, 70)
+		this.canvasContext.fillText(this.level, this.canvas.width - 130, 70)
 		this.canvasContext.textAlign = 'left'
 	}
 

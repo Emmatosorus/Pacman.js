@@ -13,8 +13,8 @@ export default class Pacman {
 
 		this.getStartingPosition()
 
-		this.width = 32
-		this.height = 32
+		this.width = this.map.blocksize
+		this.height = this.map.blocksize
 
         this.currentFrame = 0;
         this.currentImage = 0;

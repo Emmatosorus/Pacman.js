@@ -24,8 +24,8 @@ export default class Ghost {
 
         this.state = "chase"
 
-        this.width = 32
-        this.height = 32
+        this.width = this.map.blocksize
+        this.height = this.map.blocksize
         this.mapCode = mapCode
 
         this.x = 0
