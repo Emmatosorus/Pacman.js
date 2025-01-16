@@ -1,4 +1,5 @@
 import Game from "./Game.js"
+import {Vector2} from "three";
 
 export default class Map {
 	constructor() {
@@ -80,6 +81,8 @@ export default class Map {
 
 		this.ghostHouse = [[9, 10],
 				 [10, 9], [10, 10], [10, 11]]
+
+		this.ghostRespawn = new Vector2(10 * this.blocksize, 10 * this.blocksize)
 
 		this.savedots()
 

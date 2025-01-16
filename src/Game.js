@@ -35,6 +35,7 @@ export default class Game {
 		this.ghosts.push(new Inky(this.map.INKY))
 		this.ghosts.push(new Clyde(this.map.CLYDE))
 		this.ghostStateTimer = 0
+		this.currentGhostState = "chase"
 
 		this.inputManager = new InputManager()
 
@@ -147,7 +148,6 @@ export default class Game {
 			for (let i = 0; i < this.ghosts.length; i++) {
 				this.ghosts[i].changeState = true
 			}
-			console.log("scatter")
 			this.ghostStateTimer = 0
 		}
 		else if (this.ghosts[0].state === "scatter" && this.ghostStateTimer > 7000) {
@@ -155,6 +155,15 @@ export default class Game {
 				this.ghosts[i].changeState = true
 			}
 			this.ghostStateTimer = 0
+		}
+		if (this.currentGhostState === "frightened" && this.ghostStateTimer > 5000) {
+			for (let i = 0; i < this.ghosts.length; i++) {
+				if (this.ghosts[i].state === "frightened") {
+					this.ghosts[i].changeState = true
+				}
+				this.pacman.powerup = false
+				this.ghostStateTimer = 0
+			}
 		}
 	}
 
@@ -261,7 +270,6 @@ export default class Game {
 			}
 			this.drawScore()
 			this.drawPacmanLives()
-
 		}
 		else if (this.state === "pause") {
 			this.map.update()

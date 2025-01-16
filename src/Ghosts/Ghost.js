@@ -92,7 +92,7 @@ export default class Ghost {
 
         for (let i = 0; i < this.map.ghostHouse.length; i++) {
             if (compArray(this.map.ghostHouse[i], [y, x]) === true) {
-                if ((y === 10 || y === 9) && x === 10 && this.canMove(this.DIRECTION_UP)) {
+                if (this.state !== "eaten" && (y === 10 || y === 9) && x === 10 && this.canMove(this.DIRECTION_UP)) {
                     newMove = this.DIRECTION_UP
                 }
                 else if (y === 10 && x === 9 && this.canMove(this.DIRECTION_RIGHT)) {
@@ -103,6 +103,9 @@ export default class Ghost {
                 }
                 else {
                     newMove = this.direction
+                }
+                if (this.state === "eaten" && y === 10 && x === 10) {
+                    this.state = this.game.currentGhostState
                 }
                 return newMove
             }
@@ -130,7 +133,8 @@ export default class Ghost {
             smallY = Math.floor(this.y / this.map.blocksize) + 1
 
             if (this.map.map[Math.floor((this.y + this.map.blocksize * 0.5) / this.map.blocksize)]
-                [Math.floor((this.x + this.map.blocksize * 0.5) / this.map.blocksize)] === this.map.BLINKY) {
+                [Math.floor((this.x + this.map.blocksize * 0.5) / this.map.blocksize)] === this.map.BLINKY &&
+                this.state !== "eaten") {
                 return false
             }
 
@@ -201,6 +205,13 @@ export default class Ghost {
         else if (this.state === "scatter") {
             targetPos = this.corner
         }
+        else if (this.state === "frightened") {
+            this.direction = this.possibleDirections[Math.floor(Math.random() * this.possibleDirections.length)]
+            return
+        }
+        else if (this.state === "eaten") {
+           targetPos = this.map.ghostRespawn
+        }
         let ghostPos = new Vector2()
         let distance = 2000
         let tmp = 0
@@ -246,12 +257,7 @@ export default class Ghost {
     chooseDirection() {
         if (this.changeState === true) {
             this.changeState = false
-            if (this.state === "chase") {
-                this.state = "scatter"
-            }
-            else if (this.state === "scatter") {
-                this.state = "chase"
-            }
+
             if (this.direction === this.DIRECTION_UP) {
                 this.direction = this.DIRECTION_DOWN
             }
@@ -264,6 +270,25 @@ export default class Ghost {
             else if (this.direction === this.DIRECTION_RIGHT) {
                 this.direction = this.DIRECTION_LEFT
             }
+
+            if (this.state === "eaten") {
+                return
+            }
+
+
+            if (this.state === "chase") {
+                this.state = "scatter"
+                this.game.currentGhostState = "scatter"
+            }
+            else if (this.state === "scatter") {
+                this.state = "chase"
+                this.game.currentGhostState = "chase"
+            }
+            else if (this.state === "frightened" && this.pacman.powerup === false) {
+                this.state = "chase"
+                this.game.currentGhostState = "chase"
+            }
+
             return
         }
 
@@ -278,7 +303,7 @@ export default class Ghost {
 
     move() {
         this.moveDelay += this.game.time.deltaTime
-        if (this.moveDelay < this.speedDelay) {
+        if (this.state !== "eaten" && this.moveDelay < this.speedDelay) {
             return
         }
         this.moveDelay = 0
@@ -312,17 +337,45 @@ export default class Ghost {
     }
 
     draw() {
-        this.game.canvasContext.drawImage(
-            this.img,
-            this.imgColumn * this.map.blocksize,
-            this.imgLine * this.map.blocksize,
-            this.map.blocksize,
-            this.map.blocksize,
-            this.x + this.game.headerSpaceX,
-            this.y + this.game.headerSpaceY,
-            this.width,
-            this.height
-        )
+        if (this.state === "eaten") {
+            this.game.canvasContext.drawImage(
+                this.img,
+                this.imgColumn * this.map.blocksize,
+                9 * this.map.blocksize,
+                this.map.blocksize,
+                this.map.blocksize,
+                this.x + this.game.headerSpaceX,
+                this.y + this.game.headerSpaceY,
+                this.width,
+                this.height
+            )
+        }
+        else if (this.state === "frightened") {
+            this.game.canvasContext.drawImage(
+                this.img,
+                this.imgColumn * this.map.blocksize,
+                8 * this.map.blocksize,
+                this.map.blocksize,
+                this.map.blocksize,
+                this.x + this.game.headerSpaceX,
+                this.y + this.game.headerSpaceY,
+                this.width,
+                this.height
+            )
+        }
+        else {
+            this.game.canvasContext.drawImage(
+                this.img,
+                this.imgColumn * this.map.blocksize,
+                this.imgLine * this.map.blocksize,
+                this.map.blocksize,
+                this.map.blocksize,
+                this.x + this.game.headerSpaceX,
+                this.y + this.game.headerSpaceY,
+                this.width,
+                this.height
+            )
+        }
     }
 
     update() {

@@ -26,6 +26,8 @@ export default class Pacman {
 
 		this.addedLife = false
 		this.lives = 3
+
+		this.powerup = false
 	}
 
 	getStartingPosition()
@@ -96,7 +98,16 @@ export default class Pacman {
 			let ghostX = Math.floor((this.ghosts[i].x + this.map.blocksize * 0.5) / this.map.blocksize)
 			let ghostY = Math.floor((this.ghosts[i].y + this.map.blocksize * 0.5) / this.map.blocksize)
 			if (ghostX === x && ghostY === y) {
-				this.game.state = "lose"
+				if (this.ghosts[i].state === "frightened") {
+					this.ghosts[i].state = "eaten"
+					this.ghosts[i].changeState = true
+				}
+				else if (this.ghosts[i].state === "eaten") {
+					continue
+				}
+				else {
+					this.game.state = "lose"
+				}
 			}
 		}
 	}
@@ -118,6 +129,13 @@ export default class Pacman {
 			dot.display = false
 			if (dot.big) {
 				this.game.score += 50
+				this.powerup = true
+				for (let i = 0; i < this.ghosts.length; i++) {
+					this.ghosts[i].state = "frightened"
+					this.ghosts[i].changeState = true
+					this.game.ghostStateTimer = 0
+				}
+				this.game.currentGhostState = "frightened"
 			}
 			else {
 				this.game.score += 10
