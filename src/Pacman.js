@@ -121,6 +121,12 @@ export default class Pacman {
 			}
 			else {
 				this.game.score += 10
+				if (this.ghosts[2].inHouse === true) {
+					this.ghosts[2].dotCounter++
+				}
+				else if (this.ghosts[3].inHouse === true) {
+					this.ghosts[3].dotCounter++
+				}
 			}
 			this.map.dotsCollected++
 		}

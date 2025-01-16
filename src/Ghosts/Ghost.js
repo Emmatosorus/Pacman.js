@@ -35,6 +35,10 @@ export default class Ghost {
         this.speedDelay = 20
         this.moveDelay = 0
 
+        this.leaveHouseDelay = 0
+        this.dotLimit = 0
+        this.dotCounter = 0
+        this.inHouse = false
 
         this.getStartingPosition()
 
@@ -292,7 +296,21 @@ export default class Ghost {
 
     update() {
         if (this.game.state === "playing") {
-            this.move()
+            if (this.inHouse === false) {
+                this.move()
+            }
+            else if (this.mapCode === this.map.INKY) {
+                this.leaveHouseDelay += this.time.deltaTimeSeconds
+                if (this.leaveHouseDelay > 4) {
+                    this.inHouse = false
+                }
+            }
+            else if (this.game.ghosts[2].inHouse === false && this.mapCode === this.map.CLYDE) {
+                this.leaveHouseDelay += this.time.deltaTimeSeconds
+                if (this.leaveHouseDelay > 4) {
+                    this.inHouse = false
+                }
+            }
         }
         this.draw()
     }

@@ -9,6 +9,9 @@ export default class Inky extends Ghost {
         this.imgLine = 0
 
         this.direction = this.DIRECTION_RIGHT
+        this.dotLimit = 21
+
+        this.inHouse = true
 
     }
 
@@ -39,6 +42,9 @@ export default class Inky extends Ghost {
 
     reset() {
         this.possibleDirections = []
+        this.inHouse = true
+        this.dotCounter = 0
+        this.leaveHouseDelay = 0
         this.direction = this.DIRECTION_RIGHT
         this.getStartingPosition()
     }

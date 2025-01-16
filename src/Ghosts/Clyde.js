@@ -10,6 +10,10 @@ export default class Clyde extends Ghost {
 
         this.direction = this.DIRECTION_LEFT
 
+        this.dotLimit = 42
+
+        this.inHouse = true
+
         this.corner = [this.map.blocksize, (this.map.map.length - 2) * this.map.blocksize]
     }
 
@@ -30,6 +34,9 @@ export default class Clyde extends Ghost {
 
     reset() {
         this.possibleDirections = []
+        this.inHouse = true
+        this.dotCounter = 0
+        this.leaveHouseDelay = 0
         this.direction = this.DIRECTION_LEFT
         this.getStartingPosition()
     }
