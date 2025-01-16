@@ -36,15 +36,14 @@ export default class Ghost {
         this.moveDelay = 0
 
 
-
-        this.getPosition()
+        this.getStartingPosition()
 
         this.possibleDirections = []
         this.checkMoves()
 
     }
 
-    getPosition() {
+    getStartingPosition() {
         for (let i = 0; i < this.map.map.length; i++) {
             for (let j = 0; j < this.map.map[0].length; j++) {
                 if (this.map.map[i][j] === this.mapCode) {

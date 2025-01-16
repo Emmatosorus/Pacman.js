@@ -10,7 +10,6 @@ export default class Pinky extends Ghost {
 
         this.direction = this.DIRECTION_UP
 
-
     }
 
     findTarget()
@@ -35,7 +34,7 @@ export default class Pinky extends Ghost {
     reset() {
         this.possibleDirections = []
         this.direction = this.DIRECTION_UP
-        this.getPosition()
+        this.getStartingPosition()
     }
 
 }

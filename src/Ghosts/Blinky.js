@@ -21,7 +21,7 @@ export default class Blinky extends Ghost
     reset() {
         this.possibleDirections = []
         this.direction = this.DIRECTION_LEFT
-        this.getPosition()
+        this.getStartingPosition()
     }
 
 }

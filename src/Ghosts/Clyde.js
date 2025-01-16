@@ -11,7 +11,6 @@ export default class Clyde extends Ghost {
         this.direction = this.DIRECTION_LEFT
 
         this.corner = [this.map.blocksize, (this.map.map.length - 2) * this.map.blocksize]
-
     }
 
     findTarget()
@@ -32,6 +31,6 @@ export default class Clyde extends Ghost {
     reset() {
         this.possibleDirections = []
         this.direction = this.DIRECTION_LEFT
-        this.getPosition()
+        this.getStartingPosition()
     }
 }

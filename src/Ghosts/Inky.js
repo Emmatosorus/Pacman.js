@@ -40,7 +40,7 @@ export default class Inky extends Ghost {
     reset() {
         this.possibleDirections = []
         this.direction = this.DIRECTION_RIGHT
-        this.getPosition()
+        this.getStartingPosition()
     }
 
 }

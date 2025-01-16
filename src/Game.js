@@ -205,7 +205,7 @@ export default class Game {
 				this.ghosts[i].speedDelay = 10
 			}
 			this.ghosts[i].moveDelay = 0
-			this.ghosts[i].getPosition()
+			this.ghosts[i].getStartingPosition()
 		}
 
 		this.inputManager.direction = this.inputManager.DIRECTION_NONE
@@ -219,7 +219,7 @@ export default class Game {
 
 		this.level = 0
 		this.score = 0
-		this.pacman.lives = 4
+		this.pacman.lives = 3
 		this.pacman.addedLifelives = false
 
 		for (let i = 0; i < this.map.dots.length; i++) {
