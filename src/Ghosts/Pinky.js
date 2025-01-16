@@ -1,5 +1,5 @@
-import * as THREE from "three"
 import Ghost from "./Ghost"
+import {Vector2} from "three";
 
 export default class Pinky extends Ghost {
     constructor(mapCode) {
@@ -10,6 +10,8 @@ export default class Pinky extends Ghost {
 
         this.direction = this.DIRECTION_UP
 
+        this.corner = new Vector2(this.game.headerSpaceX + this.map.blocksize, this.game.headerSpaceY + this.map.blocksize)
+
     }
 
     findTarget()
@@ -17,16 +19,16 @@ export default class Pinky extends Ghost {
         let pacmanDir = this.game.inputManager.direction
 
         if (pacmanDir === this.DIRECTION_DOWN) {
-            return new THREE.Vector2(this.pacman.x, this.pacman.y + (4 * this.map.blocksize))
+            return new Vector2(this.pacman.x, this.pacman.y + (4 * this.map.blocksize))
         }
         else if (pacmanDir === this.DIRECTION_LEFT) {
-            return new THREE.Vector2(this.pacman.x - (4 * this.map.blocksize), this.pacman.y)
+            return new Vector2(this.pacman.x - (4 * this.map.blocksize), this.pacman.y)
         }
         else if (pacmanDir === this.DIRECTION_RIGHT) {
-            return new THREE.Vector2(this.pacman.x + (4 * this.map.blocksize), this.pacman.y)
+            return new Vector2(this.pacman.x + (4 * this.map.blocksize), this.pacman.y)
         }
         else {
-            return new THREE.Vector2(this.pacman.x - (4 * this.map.blocksize), this.pacman.y - (4 * this.map.blocksize))
+            return new Vector2(this.pacman.x - (4 * this.map.blocksize), this.pacman.y - (4 * this.map.blocksize))
         }
 
     }
@@ -34,6 +36,7 @@ export default class Pinky extends Ghost {
     reset() {
         this.possibleDirections = []
         this.direction = this.DIRECTION_UP
+        this.state = "chase"
         this.getStartingPosition()
     }
 

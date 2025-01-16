@@ -1,5 +1,5 @@
-import * as THREE from "three"
 import Ghost from "./Ghost"
+import {Vector2} from "three";
 
 export default class Blinky extends Ghost
 {
@@ -11,16 +11,20 @@ export default class Blinky extends Ghost
 
         this.direction = this.DIRECTION_LEFT
 
+        this.corner = new Vector2(this.game.headerSpaceX + (this.map.map[0].length - 2) * this.map.blocksize, this.game.headerSpaceY + this.map.blocksize)
+
+
     }
 
     findTarget()
     {
-        return new THREE.Vector2(this.game.pacman.x, this.game.pacman.y)
+        return new Vector2(this.game.pacman.x, this.game.pacman.y)
     }
 
     reset() {
         this.possibleDirections = []
         this.direction = this.DIRECTION_LEFT
+        this.state = "chase"
         this.getStartingPosition()
     }
 

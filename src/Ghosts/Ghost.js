@@ -1,4 +1,4 @@
-import * as THREE from "three"
+import { Vector2 } from "three";
 import Game from '../Game'
 import { compArray } from "../Utils/Utils"
 
@@ -23,6 +23,7 @@ export default class Ghost {
         this.direction = this.DIRECTION_NONE
 
         this.state = "chase"
+        this.changeState = false
 
         this.width = this.map.blocksize
         this.height = this.map.blocksize
@@ -39,6 +40,8 @@ export default class Ghost {
         this.dotLimit = 0
         this.dotCounter = 0
         this.inHouse = false
+
+        this.corner = new Vector2(0, 0)
 
         this.getStartingPosition()
 
@@ -190,9 +193,15 @@ export default class Ghost {
 
     target()
     {
+        let targetPos = null
 
-        let targetPos = this.findTarget()
-        let ghostPos = new THREE.Vector2()
+        if (this.state === "chase") {
+            targetPos = this.findTarget()
+        }
+        else if (this.state === "scatter") {
+            targetPos = this.corner
+        }
+        let ghostPos = new Vector2()
         let distance = 2000
         let tmp = 0
 
@@ -235,6 +244,28 @@ export default class Ghost {
     }
 
     chooseDirection() {
+        if (this.changeState === true) {
+            this.changeState = false
+            if (this.state === "chase") {
+                this.state = "scatter"
+            }
+            else if (this.state === "scatter") {
+                this.state = "chase"
+            }
+            if (this.direction === this.DIRECTION_UP) {
+                this.direction = this.DIRECTION_DOWN
+            }
+            else if (this.direction === this.DIRECTION_DOWN) {
+                this.direction = this.DIRECTION_UP
+            }
+            else if (this.direction === this.DIRECTION_LEFT) {
+                this.direction = this.DIRECTION_RIGHT
+            }
+            else if (this.direction === this.DIRECTION_RIGHT) {
+                this.direction = this.DIRECTION_LEFT
+            }
+            return
+        }
 
         let newMove = this.ghostHouse()
         if (newMove !== null) {

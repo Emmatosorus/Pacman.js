@@ -1,5 +1,5 @@
-import * as THREE from "three"
 import Ghost from "./Ghost"
+import {Vector2} from "three";
 
 export default class Clyde extends Ghost {
     constructor(mapCode) {
@@ -14,13 +14,13 @@ export default class Clyde extends Ghost {
 
         this.inHouse = true
 
-        this.corner = [this.map.blocksize, (this.map.map.length - 2) * this.map.blocksize]
+        this.corner = new Vector2(this.game.headerSpaceX + this.map.blocksize, this.game.headerSpaceY + (this.map.map.length - 2) * this.map.blocksize)
     }
 
     findTarget()
     {
-        let pacmanPos = new THREE.Vector2(this.pacman.x, this.pacman.y)
-        let clydePos = new THREE.Vector2(this.x, this.y)
+        let pacmanPos = new Vector2(this.pacman.x, this.pacman.y)
+        let clydePos = new Vector2(this.x, this.y)
 
         let distance = clydePos.distanceTo(pacmanPos)
 
@@ -28,7 +28,7 @@ export default class Clyde extends Ghost {
             return pacmanPos
         }
         else {
-            return new THREE.Vector2(this.corner.x, this.corner.y)
+            return new Vector2(this.corner.x, this.corner.y)
         }
     }
 
@@ -38,6 +38,7 @@ export default class Clyde extends Ghost {
         this.dotCounter = 0
         this.leaveHouseDelay = 0
         this.direction = this.DIRECTION_LEFT
+        this.state = "chase"
         this.getStartingPosition()
     }
 }

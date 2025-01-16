@@ -34,6 +34,7 @@ export default class Game {
 		this.ghosts.push(new Pinky(this.map.PINKY))
 		this.ghosts.push(new Inky(this.map.INKY))
 		this.ghosts.push(new Clyde(this.map.CLYDE))
+		this.ghostStateTimer = 0
 
 		this.inputManager = new InputManager()
 
@@ -140,6 +141,23 @@ export default class Game {
 		this.canvasContext.restore();
 	}
 
+	changeGhostState() {
+		this.ghostStateTimer += this.time.deltaTime
+		if (this.ghosts[0].state === "chase" && this.ghostStateTimer > 20000) {
+			for (let i = 0; i < this.ghosts.length; i++) {
+				this.ghosts[i].changeState = true
+			}
+			console.log("scatter")
+			this.ghostStateTimer = 0
+		}
+		else if (this.ghosts[0].state === "scatter" && this.ghostStateTimer > 7000) {
+			for (let i = 0; i < this.ghosts.length; i++) {
+				this.ghosts[i].changeState = true
+			}
+			this.ghostStateTimer = 0
+		}
+	}
+
 	winReset() {
 		this.canvasContext.clearRect(0,
 			0,
@@ -167,6 +185,7 @@ export default class Game {
 		for (let i = 0; i < this.ghosts.length; i++) {
 			this.ghosts[i].reset()
 		}
+		this.ghostStateTimer = 0
 
 		this.inputManager.direction = this.inputManager.DIRECTION_NONE
 		this.inputManager.nextDirection = this.inputManager.DIRECTION_NONE
@@ -208,6 +227,7 @@ export default class Game {
 			this.ghosts[i].moveDelay = 0
 			this.ghosts[i].getStartingPosition()
 		}
+		this.ghostStateTimer = 0
 
 		this.inputManager.direction = this.inputManager.DIRECTION_NONE
 		this.inputManager.nextDirection = this.inputManager.DIRECTION_NONE
@@ -235,6 +255,7 @@ export default class Game {
 		if (this.state === "playing") {
 			this.map.update()
 			this.pacman.update()
+			this.changeGhostState()
 			for (let i = 0; i < this.ghosts.length; i++) {
 				this.ghosts[i].update()
 			}

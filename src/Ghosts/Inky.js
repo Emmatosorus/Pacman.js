@@ -1,5 +1,5 @@
-import * as THREE from "three"
 import Ghost from "./Ghost"
+import {Vector2} from "three";
 
 export default class Inky extends Ghost {
     constructor(mapCode) {
@@ -13,26 +13,28 @@ export default class Inky extends Ghost {
 
         this.inHouse = true
 
+        this.corner = new Vector2(this.game.headerSpaceX + (this.map.map[0].length - 2) * this.map.blocksize, this.game.headerSpaceY + (this.map.map.length - 2) * this.map.blocksize)
+
     }
 
     findTarget()
     {
         let pacmanDir = this.game.inputManager.direction
 
-        let blinkyPos = new THREE.Vector2(this.game.ghosts[0].x, this.game.ghosts[0].y)
+        let blinkyPos = new Vector2(this.game.ghosts[0].x, this.game.ghosts[0].y)
         let targetPos
 
         if (pacmanDir === this.DIRECTION_DOWN) {
-            targetPos = new THREE.Vector2(this.pacman.x, this.pacman.y + (2 * this.map.blocksize))
+            targetPos = new Vector2(this.pacman.x, this.pacman.y + (2 * this.map.blocksize))
         }
         else if (pacmanDir === this.DIRECTION_LEFT) {
-            targetPos = new THREE.Vector2(this.pacman.x - (2 * this.map.blocksize), this.pacman.y)
+            targetPos = new Vector2(this.pacman.x - (2 * this.map.blocksize), this.pacman.y)
         }
         else if (pacmanDir === this.DIRECTION_RIGHT) {
-            targetPos = new THREE.Vector2(this.pacman.x + (2 * this.map.blocksize), this.pacman.y)
+            targetPos = new Vector2(this.pacman.x + (2 * this.map.blocksize), this.pacman.y)
         }
         else {
-            targetPos = new THREE.Vector2(this.pacman.x - (2 * this.map.blocksize), this.pacman.y - (2 * this.map.blocksize))
+            targetPos = new Vector2(this.pacman.x - (2 * this.map.blocksize), this.pacman.y - (2 * this.map.blocksize))
         }
 
         blinkyPos.rotateAround(targetPos, Math.PI)
@@ -46,6 +48,7 @@ export default class Inky extends Ghost {
         this.dotCounter = 0
         this.leaveHouseDelay = 0
         this.direction = this.DIRECTION_RIGHT
+        this.state = "chase"
         this.getStartingPosition()
     }
 
