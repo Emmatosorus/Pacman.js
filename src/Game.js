@@ -103,6 +103,7 @@ export default class Game {
 			this.canvasContext.fillStyle='cyan'
 			this.canvasContext.fillText("Player One", 262, 380)
 		}
+		this.canvasContext.font = "bold italic 19px Emulogic"
 		this.canvasContext.fillStyle='yellow'
 		this.canvasContext.fillText("READY!", 305, 507)
 	}
