@@ -10,7 +10,7 @@ body
 @font-face
 {
     font-family: 'Emulogic';
-    src: url("./static/emulogic-font/Emulogic-zrEw.ttf") format('truetype');
+    src: url("../static/emulogic-font/Emulogic-zrEw.ttf") format('truetype');
     font-weight: normal;
     font-style: normal;
 }

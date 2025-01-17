@@ -5,19 +5,19 @@ export default class Sprites {
 
         
         this.img[0] = new Image()
-		this.img[0].src ="./static/sprites/pacman_animation.png"
+		this.img[0].src ="sprites/pacman_animation.png"
 		this.pacmanFrameCount = 4;
         
 		this.img[1] = new Image()
-		this.img[1].src ="./static/sprites/pacman_lose.png"
+		this.img[1].src ="sprites/pacman_lose.png"
         this.animationFrameCount = 14;
 
         this.img[2] = new Image()
-		this.img[2].src ="./static/sprites/fruit.png"
+		this.img[2].src ="sprites/fruit.png"
         this.fruitFrameCount = 8;
 
         this.img[3] = new Image()
-        this.img[3].src ="./static/sprites/ghosts.png"
+        this.img[3].src ="sprites/ghosts.png"
     }
 
     cleanup() {
