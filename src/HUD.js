@@ -92,7 +92,7 @@ export default class HUD {
         let x = this.ghosts[this.pacman.eatenGhostIndex].x + this.headerSpaceX
         let y = this.ghosts[this.pacman.eatenGhostIndex].y + this.headerSpaceY + (this.map.blocksize * 0.25)
 
-        this.canvasContext.fillText(this.pacman.nbGhostsEaten * 200, x, y)
+        this.canvasContext.fillText(200 * Math.pow(2, this.pacman.nbGhostsEaten - 1), x, y)
     }
 
     drawFruitCounter() {

@@ -105,8 +105,11 @@ export default class Pacman {
 			if (x >= ghostA[0] && x <= ghostB[0] && y >= ghostA[1] && y <= ghostC[1]) {
 				if (this.ghosts[i].state === "frightened") {
 					this.ghosts[i].state = "eaten"
+					this.game.score += 200 * Math.pow(2, this.nbGhostsEaten)
 					this.nbGhostsEaten++
-					this.game.score += 200 * this.nbGhostsEaten
+					if (this.nbGhostsEaten > 4) {
+						this.nbGhostsEaten = 0
+					}
 					this.game.state = "ghostEaten"
 					this.eatenGhostIndex = i
 					this.ghostEatStart = this.time.currentTime
