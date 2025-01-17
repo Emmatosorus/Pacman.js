@@ -38,7 +38,7 @@ export default class HUD {
 
         this.canvasContext.textAlign = 'right'
         this.canvasContext.fillText(this.game.score, this.canvas.width - 570, 70)
-        this.canvasContext.fillText(this.game.score, this.canvas.width - 310, 70)
+        this.canvasContext.fillText(this.game.Highscore, this.canvas.width - 310, 70)
         this.canvasContext.fillText(this.game.level, this.canvas.width - 130, 70)
         this.canvasContext.textAlign = 'left'
     }

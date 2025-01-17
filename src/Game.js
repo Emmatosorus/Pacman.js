@@ -53,6 +53,7 @@ export default class Game {
 		this.state = "pause"
 
 		this.score = 0
+		this.Highscore = 0
 
 		this.setupKeybindingsBind = this.inputManager.setupKeybindings.bind(this.inputManager)
 		window.addEventListener('keydown', this.setupKeybindingsBind)
@@ -237,6 +238,9 @@ export default class Game {
 
 	update() {
 		console.log(this.time.deltaTime)
+		if (this.score > this.Highscore) {
+			this.Highscore = this.score
+		}
 		this.canvasContext.fillStyle='black'
 		this.canvasContext.fillRect(0, 0, this.canvas.width, this.canvas.height)
 
