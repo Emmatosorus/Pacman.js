@@ -127,7 +127,10 @@ export default class Pacman {
 			if (this.map.map[y][x] === this.map.FRUIT && this.map.fruitCollected === false) {
 				this.map.fruitCollected = true
 				this.game.score += this.game.fruitScores[this.map.currentFruit]
-				this.game.map.numberFruitCollected++
+				this.map.numberFruitCollected++
+				this.game.fruitCounter[this.map.totalNumberFruitCollected % 7] = this.map.currentFruit
+				this.map.totalNumberFruitCollected++
+				console.log(this.game.fruitCounter)
 			}
 			return
 		}

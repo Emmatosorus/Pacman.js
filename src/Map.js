@@ -27,6 +27,7 @@ export default class Map {
 		this.dotsCollected = 0
 		this.fruitCollected = true
 		this.numberFruitCollected = 0
+		this.totalNumberFruitCollected = 0
 		this.fruitSpawnTime = 0
 		this.currentFruit = 0
 

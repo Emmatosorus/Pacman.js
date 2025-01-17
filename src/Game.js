@@ -1,5 +1,6 @@
 import Map from "./Map.js"
 import Pacman from "./Pacman.js"
+import HUD from "./HUD.js"
 import InputManager from "./InputManager.js"
 import Sizes from "./Utils/Sizes.js"
 import Time from "./Utils/Time.js"
@@ -47,11 +48,11 @@ export default class Game {
 		this.level = 0
 		
 		this.fruitScores = [100, 300, 500, 700, 1000, 2000, 3000, 5000]
+		this.fruitCounter = [-1, -1, -1, -1, -1, -1, -1]
 		
 		this.state = "pause"
 
 		this.score = 0
-		this.show1UP = 0
 
 		this.setupKeybindingsBind = this.inputManager.setupKeybindings.bind(this.inputManager)
 		window.addEventListener('keydown', this.setupKeybindingsBind)
@@ -59,9 +60,11 @@ export default class Game {
 		this.sprites.img[this.sprites.imgNumber].onload = () => {
 		}
 
+		this.HUD = new HUD()
+
 		this.cleanupBind = this.cleanup.bind(this)
 		window.addEventListener('beforeunload', this.cleanupBind)
-		
+
 		this.time.on('tick', () => {
 			this.update()
 		})
@@ -76,84 +79,6 @@ export default class Game {
 		this.canvas.style.left = "10px"
 		this.canvas.width = 720
 		this.canvas.height = 900
-	}
-
-	drawScore() {
-		this.canvasContext.font = "bold 24px Emulogic"
-		this.canvasContext.fillStyle='white'
-
-		const progress = this.time.deltaTime * 0.004
-				
-		this.show1UP += progress
-
-		if (this.show1UP < 1) {
-			this.canvasContext.fillText("1UP", 80, 40)
-		}	
-
-		if (this.show1UP >= 2) {
-			this.show1UP = 0
-		}
-
-		this.canvasContext.fillText("Highscore", 240, 40)
-		this.canvasContext.fillText("Level", 520, 40)
-
-		this.canvasContext.textAlign = 'right'
-		this.canvasContext.fillText(this.score, this.canvas.width - 570, 70)
-		this.canvasContext.fillText(this.score, this.canvas.width - 310, 70)
-		this.canvasContext.fillText(this.level, this.canvas.width - 130, 70)
-		this.canvasContext.textAlign = 'left'
-	}
-
-	drawPauseText() {
-		this.canvasContext.font = "bold 19px Emulogic"
-		if (this.pacman.lives === 3) {
-			this.canvasContext.fillStyle='cyan'
-			this.canvasContext.fillText("Player One", 262, 380)
-		}
-		this.canvasContext.font = "bold italic 19px Emulogic"
-		this.canvasContext.fillStyle='yellow'
-		this.canvasContext.fillText("READY!", 305, 507)
-	}
-
-	drawPacmanLives()
-	{
-		this.canvasContext.save();
-		this.canvasContext.translate(
-			(this.headerSpaceX + this.map.blocksize) + this.map.blocksize / 2,
-			(this.headerSpaceY + ((this.map.map.length + 0.5) * this.map.blocksize)) + this.map.blocksize / 2
-		);
-
-		this.canvasContext.rotate(Math.PI);
-
-		this.canvasContext.translate(
-			-(this.headerSpaceX + this.map.blocksize) - this.map.blocksize / 2,
-			-(this.headerSpaceY + ((this.map.map.length + 0.5) * this.map.blocksize)) - this.map.blocksize / 2
-		);
-
-		for (let i = 1; i < this.pacman.lives; i++) {
-			this.canvasContext.drawImage(
-				this.sprites.img[0],
-				this.map.blocksize,
-				0,
-				this.map.blocksize,
-				this.map.blocksize,
-				this.headerSpaceX - (i * this.map.blocksize),
-				this.headerSpaceY + ((this.map.map.length + 0.8) * this.map.blocksize),
-				this.map.blocksize,
-				this.map.blocksize
-			)
-		}
-
-		this.canvasContext.restore();
-	}
-
-	drawGhostScore() {
-		this.canvasContext.font = "12px Emulogic"
-		this.canvasContext.fillStyle='cyan'
-		let x = this.ghosts[this.pacman.eatenGhostIndex].x + this.headerSpaceX
-		let y = this.ghosts[this.pacman.eatenGhostIndex].y + this.headerSpaceY + this.map.blocksize
-
-		this.canvasContext.fillText(this.pacman.nbGhostsEaten * 200, x, y)
 	}
 
 	changeGhostState() {
@@ -296,6 +221,9 @@ export default class Game {
 		this.pacman.lives = 3
 		this.pacman.addedLifelives = false
 
+		this.fruitCounter = [-1, -1, -1, -1, -1, -1, -1]
+		this.map.totalNumberFruitCollected = 0
+
 		for (let i = 0; i < this.map.dots.length; i++) {
 			this.map.dots[i].display = true
 		}
@@ -312,8 +240,7 @@ export default class Game {
 			for (let i = 0; i < this.ghosts.length; i++) {
 				this.ghosts[i].update()
 			}
-			this.drawScore()
-			this.drawPacmanLives()
+			this.HUD.update()
 		}
 		else if (this.state === "pause") {
 			this.map.update()
@@ -323,9 +250,7 @@ export default class Game {
 					this.ghosts[i].update()
 				}
 			}
-			this.drawScore()
-			this.drawPauseText()
-			this.drawPacmanLives()
+			this.HUD.update()
 		}
 		else if (this.state === "ghostEaten") {
 			this.map.update()
@@ -334,9 +259,7 @@ export default class Game {
 					this.ghosts[i].update()
 				}
 			}
-			this.drawScore()
-			this.drawPacmanLives()
-			this.drawGhostScore()
+			this.HUD.update()
 			if (this.time.currentTime >= this.pacman.ghostEatStart + 750) {
 				this.state = "playing"
 			}
@@ -357,7 +280,7 @@ export default class Game {
 			if (this.pacman.dieAnimationEnd === true) {
 				this.loseReset()
 			}
-			this.drawPacmanLives()
+			this.HUD.drawPacmanLives()
 		}
 	}
 
