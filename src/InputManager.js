@@ -14,6 +14,8 @@ export default class InputManager {
 
 		this.direction = this.DIRECTION_NONE
 		this.nextDirection = this.DIRECTION_NONE
+
+		this.delayMove = 0
 		
 		this.speed = 4
 
@@ -96,6 +98,11 @@ export default class InputManager {
 
 	movePacman()
 	{
+		this.delayMove += this.game.time.deltaTime
+		if (this.delayMove < 15)
+			return
+		this.delayMove = 0
+
 		this.getDirection()
 		if (this.direction === this.DIRECTION_UP && this.canMove(this.direction)) {
 			this.pacman.y -= this.speed
