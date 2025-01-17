@@ -97,7 +97,7 @@ export default class HUD {
 
     drawFruitCounter() {
         this.canvasContext.textAlign = 'right'
-        for (let i = 0; i < this.game.fruitCounter.length && i < 6; i++) {
+        for (let i = 0; i < this.game.fruitCounter.length && i < 7; i++) {
             if (this.game.fruitCounter[i] !== -1) {
                 this.canvasContext.drawImage(
                     this.sprites.img[2],
