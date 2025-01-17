@@ -92,22 +92,21 @@ export default class Pacman {
 		if (this.ghosts === null)
 			this.ghosts = this.game.ghosts
 
-		const x = Math.floor((this.x + this.map.blocksize * 0.5) / this.map.blocksize)
-		const y = Math.floor((this.y + this.map.blocksize * 0.5) / this.map.blocksize)
+		const x = this.x + (this.map.blocksize * 0.5)
+		const y = this.y + (this.map.blocksize * 0.5)
 
 		for (let i = 0; i < this.ghosts.length; i++) {
-			let ghostX = Math.floor((this.ghosts[i].x + this.map.blocksize * 0.5) / this.map.blocksize)
-			let ghostY = Math.floor((this.ghosts[i].y + this.map.blocksize * 0.5) / this.map.blocksize)
-			if (ghostX === x && ghostY === y) {
+			let ghostA = [this.ghosts[i].x, this.ghosts[i].y]
+			let ghostB = [this.ghosts[i].x + this.map.blocksize, this.ghosts[i].y]
+			let ghostC = [this.ghosts[i].x, this.ghosts[i].y + this.map.blocksize]
+
+			if (x >= ghostA[0] && x <= ghostB[0] && y >= ghostA[1] && y <= ghostC[1]) {
 				if (this.ghosts[i].state === "frightened") {
 					this.ghosts[i].state = "eaten"
 					this.nbGhostsEaten++
 					this.game.score += 200 * this.nbGhostsEaten
 				}
-				else if (this.ghosts[i].state === "eaten") {
-					continue
-				}
-				else {
+				else if (this.ghosts[i].state !== "eaten") {
 					this.game.state = "lose"
 				}
 			}
