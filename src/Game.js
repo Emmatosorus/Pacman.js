@@ -153,6 +153,7 @@ export default class Game {
 
 		this.pacman.currentFrame = 0;
 		this.pacman.currentImage = 0;
+		this.pacman.nbGhostsEaten = 0
 		this.pacman.dieAnimationStart = null
 		this.pacman.dieAnimationEnd = false
 		this.pacman.winAnimationStart = null
@@ -197,6 +198,7 @@ export default class Game {
 		this.pacman.dieAnimationEnd = false
 		this.pacman.winAnimationStart = null
 		this.pacman.winAnimationEnd = false
+		this.pacman.nbGhostsEaten = 0
 		this.pacman.getStartingPosition()
 
 		for (let i = 0; i < this.ghosts.length; i++) {
@@ -234,6 +236,7 @@ export default class Game {
 	}
 
 	update() {
+		console.log(this.time.deltaTime)
 		this.canvasContext.fillStyle='black'
 		this.canvasContext.fillRect(0, 0, this.canvas.width, this.canvas.height)
 
