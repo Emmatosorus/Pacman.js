@@ -160,6 +160,9 @@ export default class Ghost {
     }
 
     forbiddenUp() {
+        if (this.state === "eaten") {
+            return false
+        }
         let x = Math.floor((this.x + this.map.blocksize * 0.5) / this.map.blocksize)
         let y = Math.floor((this.y + this.map.blocksize * 0.5) / this.map.blocksize)
 
@@ -172,6 +175,10 @@ export default class Ghost {
     }
 
     slowZone() {
+        if (this.state === "eaten") {
+            return false
+        }
+
         let x
 
         if (this.direction === this.DIRECTION_LEFT) {
