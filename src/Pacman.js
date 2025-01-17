@@ -29,6 +29,8 @@ export default class Pacman {
 
 		this.powerup = false
 		this.nbGhostsEaten = 0
+		this.eatenGhostIndex = 0
+		this.ghostEatStart = 0
 	}
 
 	getStartingPosition()
@@ -105,6 +107,9 @@ export default class Pacman {
 					this.ghosts[i].state = "eaten"
 					this.nbGhostsEaten++
 					this.game.score += 200 * this.nbGhostsEaten
+					this.game.state = "ghostEaten"
+					this.eatenGhostIndex = i
+					this.ghostEatStart = this.time.currentTime
 				}
 				else if (this.ghosts[i].state !== "eaten") {
 					this.game.state = "lose"
@@ -130,13 +135,15 @@ export default class Pacman {
 			dot.display = false
 			if (dot.big) {
 				this.game.score += 50
-				this.powerup = true
-				for (let i = 0; i < this.ghosts.length; i++) {
-					this.ghosts[i].state = "frightened"
-					this.ghosts[i].changeState = true
+				if (this.game.ghostFrightenedTime !== 0) {
+					this.powerup = true
+					for (let i = 0; i < this.ghosts.length; i++) {
+						this.ghosts[i].state = "frightened"
+						this.ghosts[i].changeState = true
+					}
+					this.game.ghostStateTimer = 0
+					this.game.currentGhostState = "frightened"
 				}
-				this.game.ghostStateTimer = 0
-				this.game.currentGhostState = "frightened"
 			}
 			else {
 				this.game.score += 10

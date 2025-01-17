@@ -37,6 +37,10 @@ export default class Game {
 		this.ghostStateTimer = 0
 		this.ghostCurrentBlink = 0
 		this.currentGhostState = "chase"
+		this.ghostChaseTime = 20000
+		this.ghostScatterTime = 7000
+		this.ghostFrightenedTime = 7000
+		this.ghostBlinkTime = 4000
 
 		this.inputManager = new InputManager()
 
@@ -143,21 +147,31 @@ export default class Game {
 		this.canvasContext.restore();
 	}
 
+	drawGhostScore() {
+		this.canvasContext.font = "12px Emulogic"
+		this.canvasContext.fillStyle='cyan'
+		let x = this.ghosts[this.pacman.eatenGhostIndex].x + this.headerSpaceX
+		let y = this.ghosts[this.pacman.eatenGhostIndex].y + this.headerSpaceY + this.map.blocksize
+
+		this.canvasContext.fillText(this.pacman.nbGhostsEaten * 200, x, y)
+	}
+
 	changeGhostState() {
 		this.ghostStateTimer += this.time.deltaTime
-		if (this.ghosts[0].state === "chase" && this.ghostStateTimer > 20000) {
+		if (this.currentGhostState === "chase" && this.ghostStateTimer > this.ghostChaseTime &&
+			this.ghostScatterTime !== 0) {
 			for (let i = 0; i < this.ghosts.length; i++) {
 				this.ghosts[i].changeState = true
 			}
 			this.ghostStateTimer = 0
 		}
-		else if (this.ghosts[0].state === "scatter" && this.ghostStateTimer > 7000) {
+		else if (this.currentGhostState === "scatter" && this.ghostStateTimer > this.ghostScatterTime) {
 			for (let i = 0; i < this.ghosts.length; i++) {
 				this.ghosts[i].changeState = true
 			}
 			this.ghostStateTimer = 0
 		}
-		if (this.currentGhostState === "frightened" && this.ghostStateTimer > 7000) {
+		if (this.currentGhostState === "frightened" && this.ghostStateTimer > this.ghostFrightenedTime) {
 			for (let i = 0; i < this.ghosts.length; i++) {
 				if (this.ghosts[i].state === "frightened") {
 					this.ghosts[i].changeState = true
@@ -168,7 +182,7 @@ export default class Game {
 				this.pacman.nbGhostsEaten = 0
 			}
 		}
-		else if (this.currentGhostState === "frightened" && this.ghostStateTimer > 4000) {
+		else if (this.currentGhostState === "frightened" && this.ghostStateTimer > this.ghostBlinkTime) {
 			const progress = this.time.deltaTime * 0.004
 			this.ghostCurrentBlink += progress
 			if (this.ghostCurrentBlink > 3) {
@@ -186,6 +200,22 @@ export default class Game {
 
 		this.level++;
 		this.state = "pause"
+
+		if (this.ghostScatterTime > 1000) {
+			this.ghostScatterTime -= 350
+		}
+		else {
+			this.ghostScatterTime = 0
+		}
+
+		if (this.ghostFrightenedTime > 1000) {
+			this.ghostFrightenedTime -= 350
+			this.ghostBlinkTime -= 350
+		}
+		else {
+			this.ghostFrightenedTime = 0
+			this.ghostBlinkTime = 0
+		}
 
 		this.map.dotsCollected = 0
 		this.map.numberFruitCollected = 0
@@ -222,6 +252,10 @@ export default class Game {
 		)
 
 		this.state = "pause"
+		this.ghostScatterTime = 7000
+		this.ghostFrightenedTime = 7000
+		this.ghostBlinkTime = 4000
+
 		this.map.dotsCollected = 0
 		this.map.numberFruitCollected = 0
 		this.map.fruitCollected = true
@@ -292,6 +326,20 @@ export default class Game {
 			this.drawScore()
 			this.drawPauseText()
 			this.drawPacmanLives()
+		}
+		else if (this.state === "ghostEaten") {
+			this.map.update()
+			for (let i = 0; i < this.ghosts.length; i++) {
+				if (i !== this.pacman.eatenGhostIndex) {
+					this.ghosts[i].update()
+				}
+			}
+			this.drawScore()
+			this.drawPacmanLives()
+			this.drawGhostScore()
+			if (this.time.currentTime >= this.pacman.ghostEatStart + 750) {
+				this.state = "playing"
+			}
 		}
 		else if (this.state === "win") {
 			this.map.winAnimation()
