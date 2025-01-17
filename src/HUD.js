@@ -11,8 +11,6 @@ export default class HUD {
         this.sprites = this.game.sprites
         this.time = this.game.time
 
-        this.score = this.game.score
-        this.level = this.game.level
         this.headerSpaceY = this.game.headerSpaceY
         this.headerSpaceX = this.game.headerSpaceX
 
@@ -39,9 +37,9 @@ export default class HUD {
         this.canvasContext.fillText("Level", 520, 40)
 
         this.canvasContext.textAlign = 'right'
-        this.canvasContext.fillText(this.score, this.canvas.width - 570, 70)
-        this.canvasContext.fillText(this.score, this.canvas.width - 310, 70)
-        this.canvasContext.fillText(this.level, this.canvas.width - 130, 70)
+        this.canvasContext.fillText(this.game.score, this.canvas.width - 570, 70)
+        this.canvasContext.fillText(this.game.score, this.canvas.width - 310, 70)
+        this.canvasContext.fillText(this.game.level, this.canvas.width - 130, 70)
         this.canvasContext.textAlign = 'left'
     }
 
@@ -92,7 +90,7 @@ export default class HUD {
         this.canvasContext.font = "12px Emulogic"
         this.canvasContext.fillStyle='cyan'
         let x = this.ghosts[this.pacman.eatenGhostIndex].x + this.headerSpaceX
-        let y = this.ghosts[this.pacman.eatenGhostIndex].y + this.headerSpaceY + this.map.blocksize
+        let y = this.ghosts[this.pacman.eatenGhostIndex].y + this.headerSpaceY + (this.map.blocksize * 0.25)
 
         this.canvasContext.fillText(this.pacman.nbGhostsEaten * 200, x, y)
     }
@@ -119,11 +117,9 @@ export default class HUD {
 
     update()
     {
-        if (this.game.state === "playing" || this.game.state === "pause") {
-            this.drawScore()
-            this.drawPacmanLives()
-            this.drawFruitCounter()
-        }
+        this.drawPacmanLives()
+        this.drawScore()
+        this.drawFruitCounter()
         if (this.game.state === "pause") {
             this.drawPauseText()
         }

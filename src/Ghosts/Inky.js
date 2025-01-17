@@ -47,9 +47,9 @@ export default class Inky extends Ghost {
         this.inHouse = true
         this.dotCounter = 0
         this.leaveHouseDelay = 0
+        this.moveDelay = 0
         this.direction = this.DIRECTION_RIGHT
         this.state = "chase"
-        this.speed = 4
         this.getStartingPosition()
     }
 

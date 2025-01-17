@@ -110,6 +110,9 @@ export default class Pacman {
 					this.game.state = "ghostEaten"
 					this.eatenGhostIndex = i
 					this.ghostEatStart = this.time.currentTime
+					if (this.ghosts[i].x % 4 !== 0) {
+						this.ghosts[i].x += 2
+					}
 				}
 				else if (this.ghosts[i].state !== "eaten") {
 					this.game.state = "lose"
@@ -130,7 +133,6 @@ export default class Pacman {
 				this.map.numberFruitCollected++
 				this.game.fruitCounter[this.map.totalNumberFruitCollected % 7] = this.map.currentFruit
 				this.map.totalNumberFruitCollected++
-				console.log(this.game.fruitCounter)
 			}
 			return
 		}
@@ -141,10 +143,14 @@ export default class Pacman {
 				if (this.game.ghostFrightenedTime !== 0) {
 					this.powerup = true
 					for (let i = 0; i < this.ghosts.length; i++) {
+						if (this.ghosts[i].state === "eaten") {
+							continue
+						}
 						this.ghosts[i].state = "frightened"
 						this.ghosts[i].changeState = true
 					}
 					this.game.ghostStateTimer = 0
+					this.game.ghostCurrentBlink = 1
 					this.game.currentGhostState = "frightened"
 				}
 			}

@@ -305,11 +305,13 @@ export default class Ghost {
     }
 
     move() {
-        this.moveDelay += this.game.time.deltaTime
-        if (this.state !== "eaten" && this.moveDelay < this.speedDelay) {
-            return
+        if (this.state !== "eaten") {
+            this.moveDelay += this.game.time.deltaTime
+            if (this.moveDelay < this.speedDelay) {
+                return
+            }
+            this.moveDelay = 0
         }
-        this.moveDelay = 0
 
         this.chooseDirection()
 

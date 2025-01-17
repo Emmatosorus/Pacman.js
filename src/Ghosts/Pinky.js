@@ -36,6 +36,7 @@ export default class Pinky extends Ghost {
     reset() {
         this.possibleDirections = []
         this.direction = this.DIRECTION_UP
+        this.moveDelay = 0
         this.state = "chase"
         this.getStartingPosition()
     }

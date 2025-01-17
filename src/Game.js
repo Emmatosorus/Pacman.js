@@ -100,6 +100,7 @@ export default class Game {
 			for (let i = 0; i < this.ghosts.length; i++) {
 				if (this.ghosts[i].state === "frightened") {
 					this.ghosts[i].changeState = true
+					this.ghosts[i].currentFrame = 0
 				}
 				this.ghostCurrentBlink = 0
 				this.pacman.powerup = false
@@ -142,6 +143,8 @@ export default class Game {
 			this.ghostBlinkTime = 0
 		}
 
+		this.ghostCurrentBlink = 1
+
 		this.map.dotsCollected = 0
 		this.map.numberFruitCollected = 0
 		this.map.fruitCollected = true
@@ -180,6 +183,7 @@ export default class Game {
 		this.ghostScatterTime = 7000
 		this.ghostFrightenedTime = 7000
 		this.ghostBlinkTime = 4000
+		this.ghostCurrentBlink = 1
 
 		this.map.dotsCollected = 0
 		this.map.numberFruitCollected = 0
@@ -202,9 +206,9 @@ export default class Game {
 			else {
 				this.ghosts[i].speedDelay = 10
 			}
-			this.ghosts[i].moveDelay = 0
-			this.ghosts[i].getStartingPosition()
+			this.ghosts[i].reset()
 		}
+		this.currentGhostState = "chase"
 		this.ghostStateTimer = 0
 
 		this.inputManager.direction = this.inputManager.DIRECTION_NONE

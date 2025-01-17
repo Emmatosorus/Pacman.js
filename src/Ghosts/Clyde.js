@@ -19,6 +19,7 @@ export default class Clyde extends Ghost {
 
     findTarget()
     {
+        console.log(this.x, this.y)
         let pacmanPos = new Vector2(this.pacman.x, this.pacman.y)
         let clydePos = new Vector2(this.x, this.y)
 
@@ -37,6 +38,7 @@ export default class Clyde extends Ghost {
         this.inHouse = true
         this.dotCounter = 0
         this.leaveHouseDelay = 0
+        this.moveDelay = 0
         this.direction = this.DIRECTION_LEFT
         this.state = "chase"
         this.getStartingPosition()
