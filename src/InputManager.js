@@ -22,6 +22,9 @@ export default class InputManager {
     }
 
     setupKeybindings(KeyboardEvent) {
+		if (event.ctrlKey === true) {
+			return
+		}
 		if (KeyboardEvent.code === 'KeyW' || KeyboardEvent.code === 'ArrowUp') {
 			this.nextDirection = this.DIRECTION_UP
 		}

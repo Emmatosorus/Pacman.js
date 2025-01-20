@@ -19,7 +19,6 @@ export default class Clyde extends Ghost {
 
     findTarget()
     {
-        console.log(this.x, this.y)
         let pacmanPos = new Vector2(this.pacman.x, this.pacman.y)
         let clydePos = new Vector2(this.x, this.y)
 

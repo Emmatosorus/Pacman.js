@@ -237,7 +237,6 @@ export default class Game {
 	}
 
 	update() {
-		console.log(this.time.deltaTime)
 		if (this.score > this.Highscore) {
 			this.Highscore = this.score
 		}
