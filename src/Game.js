@@ -9,6 +9,7 @@ import Blinky from "./Ghosts/Blinky.js"
 import Pinky from "./Ghosts/Pinky.js"
 import Inky from "./Ghosts/Inky.js"
 import Clyde from "./Ghosts/Clyde.js"
+import Reset from "./Reset"
 
 let singletone = null
 
@@ -73,6 +74,7 @@ export default class Game {
 		}
 
 		this.HUD = new HUD()
+		this.reset = new Reset()
 
 		this.cleanupBind = this.cleanup.bind(this)
 		window.addEventListener('beforeunload', this.cleanupBind)
@@ -132,123 +134,7 @@ export default class Game {
 		}
 	}
 
-	winReset() {
-		this.canvasContext.clearRect(0,
-			0,
-			this.canvas.width,
-			this.canvas.height
-		)
 
-		this.level++;
-		this.state = "pause"
-
-		if (this.ghostScatterTime > 1000) {
-			this.ghostScatterTime -= 350
-		}
-		else {
-			this.ghostScatterTime = 0
-		}
-
-		if (this.ghostFrightenedTime > 1000) {
-			this.ghostFrightenedTime -= 350
-			this.ghostBlinkTime -= 350
-		}
-		else {
-			this.ghostFrightenedTime = 0
-			this.ghostBlinkTime = 0
-		}
-
-		this.ghostCurrentBlink = 1
-
-		this.map.dotsCollected = 0
-		this.map.numberFruitCollected = 0
-		this.map.fruitCollected = true
-		this.map.currentFruit = 0
-		this.map.wallColor = "#342DCA"
-
-		this.pacman.currentFrame = 0;
-		this.pacman.currentImage = 0;
-		this.pacman.nbGhostsEaten = 0
-		this.pacman.dieAnimationStart = null
-		this.pacman.dieAnimationEnd = false
-		this.pacman.winAnimationStart = null
-		this.pacman.winAnimationEnd = false
-		this.pacman.getStartingPosition()
-
-		for (let i = 0; i < this.ghosts.length; i++) {
-			this.ghosts[i].reset()
-		}
-		this.ghostStateTimer = 0
-
-		this.inputManager.direction = this.inputManager.DIRECTION_NONE
-		this.inputManager.nextDirection = this.inputManager.DIRECTION_NONE
-
-		for (let i = 0; i < this.map.dots.length; i++) {
-			this.map.dots[i].display = true
-		}
-	}
-
-	loseReset() {
-		this.canvasContext.clearRect(0,
-			0,
-			this.canvas.width,
-			this.canvas.height
-		)
-
-		this.state = "pause"
-		this.ghostScatterTime = 7000
-		this.ghostFrightenedTime = 7000
-		this.ghostBlinkTime = 4000
-		this.ghostCurrentBlink = 1
-
-		this.map.dotsCollected = 0
-		this.map.numberFruitCollected = 0
-		this.map.fruitCollected = true
-		this.map.currentFruit = 0
-		this.map.wallColor = "#342DCA"
-
-		this.pacman.currentFrame = 0;
-		this.pacman.currentImage = 0;
-		this.pacman.dieAnimationStart = null
-		this.pacman.dieAnimationEnd = false
-		this.pacman.winAnimationStart = null
-		this.pacman.winAnimationEnd = false
-		this.pacman.nbGhostsEaten = 0
-		this.pacman.getStartingPosition()
-
-		for (let i = 0; i < this.ghosts.length; i++) {
-			if (this.level < 5) {
-				this.ghosts[i].speedDelay = 20
-			}
-			else {
-				this.ghosts[i].speedDelay = 10
-			}
-			this.ghosts[i].reset()
-		}
-		this.currentGhostState = "chase"
-		this.ghostStateTimer = 0
-
-		this.inputManager.direction = this.inputManager.DIRECTION_NONE
-		this.inputManager.nextDirection = this.inputManager.DIRECTION_NONE
-
-		this.pacman.lives--
-
-		if (this.pacman.lives > 0) {
-			return
-		}
-
-		this.level = 0
-		this.score = 0
-		this.pacman.lives = 3
-		this.pacman.addedLifelives = false
-
-		this.fruitCounter = [-1, -1, -1, -1, -1, -1, -1]
-		this.map.totalNumberFruitCollected = 0
-
-		for (let i = 0; i < this.map.dots.length; i++) {
-			this.map.dots[i].display = true
-		}
-	}
 
 	update() {
 		if (this.score > this.Highscore) {
@@ -295,14 +181,14 @@ export default class Game {
 				this.ghosts[i].update()
 			}
 			if (this.pacman.winAnimationEnd === true) {
-				this.winReset()
+				this.reset.winReset()
 			}
 		}
 		else if (this.state === "lose") {
 			this.map.update()
 			this.pacman.dieAnimation()
 			if (this.pacman.dieAnimationEnd === true) {
-				this.loseReset()
+				this.reset.loseReset()
 			}
 			this.HUD.drawPacmanLives()
 		}

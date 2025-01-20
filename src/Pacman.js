@@ -106,7 +106,6 @@ export default class Pacman {
 				if (this.ghosts[i].state === "frightened") {
 					this.ghosts[i].state = "eaten"
 					this.nbGhostsEaten = this.nbGhostsEaten % 4
-					console.log(this.nbGhostsEaten, 200 * Math.pow(2, this.nbGhostsEaten))
 					this.game.score += 200 * Math.pow(2, this.nbGhostsEaten)
 					this.nbGhostsEaten++
 					this.game.state = "ghostEaten"
