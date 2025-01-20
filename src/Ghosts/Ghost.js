@@ -306,6 +306,7 @@ export default class Ghost {
 
     move() {
         this.moveDelay += this.game.time.deltaTime
+
         if ((this.state !== "eaten" && this.moveDelay < this.speedDelay)) {
             return
         }
