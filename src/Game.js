@@ -44,6 +44,7 @@ export default class Game {
 		this.ghostBlinkTime = 4000
 
 		this.inputManager = new InputManager()
+		this.touchScreen = this.inputManager.touchScreen
 
 		this.level = 0
 		
@@ -55,8 +56,18 @@ export default class Game {
 		this.score = 0
 		this.Highscore = 0
 
-		this.setupKeybindingsBind = this.inputManager.setupKeybindings.bind(this.inputManager)
-		window.addEventListener('keydown', this.setupKeybindingsBind)
+		if (this.touchScreen === false) {
+			this.setupKeybindingsBind = this.inputManager.setupKeybindings.bind(this.inputManager)
+			window.addEventListener('keydown', this.setupKeybindingsBind)
+		}
+		else {
+			this.joystickStartBind = this.inputManager.joystickStart.bind(this.inputManager)
+			this.joystickMoveBind = this.inputManager.joystickMove.bind(this.inputManager)
+			this.joystickEndBind = this.inputManager.joystickEnd.bind(this.inputManager)
+			window.addEventListener('touchstart', this.joystickStartBind)
+			window.addEventListener('touchmove', this.joystickMoveBind)
+			window.addEventListener('touchend', this.joystickEndBind)
+		}
 
 		this.sprites.img[this.sprites.imgNumber].onload = () => {
 		}
@@ -297,6 +308,15 @@ export default class Game {
 	cleanup() {
 		window.removeEventListener('beforeunload', this.cleanupBind)
 		cancelAnimationFrame(this.time.request)
+
+		if (this.touchScreen === false) {
+			window.removeEventListener('keydown', this.setupKeybindingsBind)
+		}
+		else {
+			window.removeEventListener('touchstart', this.joystickStartBind)
+			window.removeEventListener('touchmove', this.joystickMoveBind)
+			window.removeEventListener('touchend', this.joystickEndBind)
+		}
 
 		this.time.cleanup()
 		this.inputManager.cleanup()

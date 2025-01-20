@@ -19,7 +19,46 @@ export default class InputManager {
 		
 		this.speed = 4
 
+		this.touchScreen = this.isTouchScreen()
+		this.touchStart = { x: 0, y: 0 }
+		this.touchEnd = { x: 0, y: 0 }
     }
+
+	isTouchScreen() {
+		return ( 'ontouchstart' in window ) || ( navigator.maxTouchPoints > 0 ) || ( navigator.msMaxTouchPoints > 0 )
+	}
+
+	joystickStart(touchEvent) {
+		if (this.game.state === "pause") {
+			this.game.state = "playing"
+		}
+		this.touchStart.x = touchEvent.touches[0].clientX
+		this.touchStart.y = touchEvent.touches[0].clientY
+	}
+
+	joystickMove(touchEvent) {
+		this.touchEnd.x = touchEvent.touches[0].clientX
+		this.touchEnd.y = touchEvent.touches[0].clientY
+	}
+
+	joystickEnd() {
+		const deltaX = this.touchStart.x - this.touchEnd.x
+		const deltaY = this.touchStart.y - this.touchEnd.y
+
+
+		if (deltaX > 0 && Math.abs(deltaY) < Math.abs(deltaX)) {
+			this.nextDirection = this.DIRECTION_LEFT
+		}
+		else if (deltaX < 0 && Math.abs(deltaY) < Math.abs(deltaX)) {
+			this.nextDirection = this.DIRECTION_RIGHT
+		}
+		else if (deltaY > 0 && Math.abs(deltaX) < Math.abs(deltaY)) {
+			this.nextDirection = this.DIRECTION_UP
+		}
+		else if (deltaY < 0 && Math.abs(deltaX) < Math.abs(deltaY)) {
+			this.nextDirection = this.DIRECTION_DOWN
+		}
+	}
 
     setupKeybindings(KeyboardEvent) {
 		if (event.ctrlKey === true) {
