@@ -29,6 +29,7 @@ export default class Map {
 		this.numberFruitCollected = 0
 		this.totalNumberFruitCollected = 0
 		this.fruitSpawnTime = 0
+		this.fruitTimer = 0
 		this.currentFruit = 0
 
 		this.normalWallColor = "#342DCA"
@@ -274,6 +275,7 @@ export default class Map {
 		if (((this.numberFruitCollected === 0 && this.dotsCollected === 50) || // 50
 			(this.numberFruitCollected === 1 && this.dotsCollected === 120))) { // 120
 			this.fruitSpawnTime = this.time.currentTimeSeconds
+			this.fruitTimer = this.fruitSpawnTime - 7
 			this.fruitCollected = false
 
 			if (this.game.level >= 15) {
@@ -287,9 +289,14 @@ export default class Map {
 			}
 
 		}
-		if (this.fruitCollected === false && this.fruitSpawnTime + 7 < this.time.currentTimeSeconds) {
-			this.fruitCollected = true
-			this.numberFruitCollected = 1
+		if (this.fruitCollected === false) {
+			if (this.game.state === "playing") {
+				this.fruitTimer += this.time.deltaTime * 0.001
+			}
+			if (this.fruitSpawnTime < this.fruitTimer) {
+				this.fruitCollected = true
+				this.numberFruitCollected = 1
+			}
 		}
 	}
 
