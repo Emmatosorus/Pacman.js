@@ -153,7 +153,6 @@ export default class Pacman {
 						this.ghosts[i].changeState = true
 					}
 					this.game.ghostStateTimer = 0
-					this.game.ghostCurrentBlink = 1
 					this.game.currentGhostState = "frightened"
 				}
 			}
